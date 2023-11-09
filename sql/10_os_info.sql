@@ -1,3 +1,8 @@
+prompt <h2>Running Databases</h2>
+prompt <pre>
+host ps -ef | grep pmon | grep -v grep 
+prompt </pre>
+
 prompt <h2>Disk Size df -h</h2>
 set echo off head off
 prompt <pre>
