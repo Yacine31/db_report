@@ -8,7 +8,7 @@ sga AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) target FROM gv$system_pa
 pga AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) target FROM gv$system_parameter2 WHERE name = 'pga_aggregate_target'),
 db_block AS (SELECT /*+  MATERIALIZE NO_MERGE  */ value bytes FROM v$system_parameter2 WHERE name = 'db_block_size'),
 db AS (SELECT /*+  MATERIALIZE NO_MERGE  */ name, platform_name FROM v$database),
- pdbs AS (SELECT /*+  MATERIALIZE NO_MERGE  */ * FROM v$pdbs), -- need 12c flag
+-- pdbs AS (SELECT /*+  MATERIALIZE NO_MERGE  */ * FROM v$pdbs), -- need 12c flag
 inst AS (SELECT /*+  MATERIALIZE NO_MERGE  */ host_name, version db_version FROM v$instance),
 data AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(bytes) bytes, COUNT(*) files, COUNT(DISTINCT ts#) tablespaces FROM v$datafile),
 temp AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(bytes) bytes FROM v$tempfile),
@@ -19,8 +19,8 @@ cpu AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) cnt FROM gv$osstat WHERE
 pmem AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) bytes FROM gv$osstat WHERE stat_name = 'PHYSICAL_MEMORY_BYTES')
 SELECT /*+  NO_MERGE  */ /* 1a.1 */
        'Database name:' system_item, db.name system_value FROM db
-UNION ALL
- SELECT '    pdb:'||name, 'Open Mode:'||open_mode FROM pdbs -- need 12c flag
+-- UNION ALL
+--  SELECT '    pdb:'||name, 'Open Mode:'||open_mode FROM pdbs -- need 12c flag
   UNION ALL
 SELECT 'Oracle Database version:', inst.db_version FROM inst
  UNION ALL
