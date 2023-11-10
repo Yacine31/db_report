@@ -1,12 +1,15 @@
 select 
  inst_id,
  instance_name,
+ host_name, 
+to_char(startup_time ,'DD/MM/YYYY') startup_time, 
  status,
 -- VERSION_FULL,
 -- EDITION,
  ARCHIVER,
  INSTANCE_ROLE,
- database_status
+ database_status,
+logins 
 FROM  gv$instance;
 
 SELECT 
@@ -18,5 +21,6 @@ SELECT
  log_mode,
  FORCE_LOGGING,
  CURRENT_SCN FROM gv$database;
+
 
 exit
