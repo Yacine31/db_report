@@ -1,3 +1,4 @@
+prompt <h2>Database/Instance Status</h2>
 select 
  inst_id,
  instance_name,
@@ -21,6 +22,5 @@ SELECT
  log_mode,
  FORCE_LOGGING,
  CURRENT_SCN FROM gv$database;
-
 
 exit
