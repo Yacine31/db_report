@@ -1,4 +1,4 @@
-prompt <h2>Last RMAN backups </h2>
+prompt <h2>Last RMAN backups (30 days/50 rows)</h2>
 alter session set nls_date_format='DD/MM/YYYY HH24:MI:SS' ;
 set linesize 250 heading off;
 set heading on pagesize 999;
@@ -16,6 +16,7 @@ select
         b.input_bytes_display,
         b.output_bytes_display
 FROM v$rman_backup_job_details b
-WHERE b.start_time > (SYSDATE - 30)
-ORDER BY b.start_time asc;
+WHERE b.start_time > (SYSDATE - 30) and rownum <=50
+ORDER BY b.start_time asc
+;
 exit
