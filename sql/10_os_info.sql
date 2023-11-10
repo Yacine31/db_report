@@ -24,9 +24,9 @@ prompt <pre>
 host cat /etc/fstab
 prompt </pre>
 
-prompt <h2>Memory Size free -h </h2>
+prompt <h2>Memory Size (Mo) : free -m </h2>
 prompt <pre>
-host free -h
+host free -m
 prompt </pre>
 
 prompt <h2>lscpu </h2>
