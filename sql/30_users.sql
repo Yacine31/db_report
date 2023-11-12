@@ -1,4 +1,4 @@
-prompt <h2>Database Users </h2>
+prompt <h2>DBA Users </h2>
 set pages 999
 ALTER SESSION SET NLS_DATE_FORMAT ='YYYY/MM/DD HH24:MI';
 SELECT 
@@ -15,5 +15,8 @@ SELECT
   FROM dba_users x
  ORDER BY x.username
 ;
+
+prompt <h2>DBA_Profiles </h2>
+select * from DBA_Profiles order by profile, resource_name;
 
 exit
