@@ -23,4 +23,6 @@ SELECT
  FORCE_LOGGING,
  CURRENT_SCN FROM gv$database;
 
+select * from v$version;
+
 exit
