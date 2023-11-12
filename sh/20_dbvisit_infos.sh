@@ -6,7 +6,8 @@ echo "</pre>"
 
 echo "<h2>dbvctl gap report</h2>"
 export DBV_HOME=/usr/dbvisit/standbymp/oracle
-for db in ${DBV_HOME}/conf/dbv_*.env
+cd ${DBV_HOME}/conf 
+ls -1 dbv_*.env | sed 's/dbv_//g' | sed 's/.env//g' | while read db
 do
 	echo "<pre>"
 	${DBV_HOME}/dbvctl -d $db -i
