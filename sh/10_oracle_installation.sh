@@ -7,18 +7,13 @@ echo "</pre>"
 
 # opatch 
 echo "<h2>Opatch lspatches</h2>"
-echo "<pre>"
-ORA_HOME=$(cat /etc/oratab | egrep -v "^$|^#" | cut -d: -f2 | sort -u)
-for OH in ${ORA_HOME}
-do 
-	export ORACLE_HOME=${ORA_HOME}; ${ORA_HOME}/OPatch/opatch lspatches 
-done
 cat /etc/oratab | egrep -v "^$|^#" | cut -d: -f2 | sort -u | while read oh
 do 
+	echo "<pre>"
 	echo "ORACLE=HOME="$oh
 	echo ""
 	export ORACLE_HOME=$oh
 	$oh/OPatch/opatch lspatches
+	echo "</pre>"
 done
-echo "</pre>"
 
