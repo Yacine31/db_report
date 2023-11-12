@@ -33,4 +33,9 @@ prompt <h2>lscpu </h2>
 prompt <pre>
 host lscpu
 prompt </pre>
+
+prompt <h2>ulimit -a </h2>
+prompt <pre>
+host ulimit -a | sort
+prompt </pre>
 exit
