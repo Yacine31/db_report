@@ -20,7 +20,7 @@ echo "</pre>"
 
 echo "<h2>cat /etc/fstab </h2>"
 echo "<pre>"
-cat /etc/fstab
+cat /etc/fstab | grep -v '^#|^$'
 echo "</pre>"
 
 echo "<h2>Memory Size (Mo) : free -m </h2>"
