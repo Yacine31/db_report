@@ -1,7 +1,7 @@
 # dbvisit
 echo "<h2>Process DBVisit</h2>"
 echo "<pre>"
-ps -ef | grep dbvctl
+ps -ef | grep dbvctl | grep -v grep 
 echo "</pre>"
 
 echo "<h2>dbvctl gap report</h2>"
