@@ -21,12 +21,18 @@ do
 # 
 #         " > ${HTML_FILE}
 
-        # sqlplus -s "/ as sysdba" @rapport_html.sql >> ${HTML_FILE}
         cat sql/00_html_header.html >> ${HTML_FILE}
+
+        # execution des scripts sql
         for f in sql/*.sql
         do
-                # sqlplus -s "/ as sysdba" @$f >> ${HTML_FILE}
                 sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+        done
+
+        # execution des scripts shell
+        for f in sh/*.sh
+        do
+                /bin/sh $f >> ${HTML_FILE}
         done
 
         sed -i 's/<table.*>$/<table class="table table-striped">/g' ${HTML_FILE}
