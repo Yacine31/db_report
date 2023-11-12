@@ -7,4 +7,7 @@ SELECT /*+  NO_MERGE  */
  ORDER BY
        --x.con_id,
 	   x.file_name;
+
+prompt <h2>v$database_block_corruption</h2>
+select * from v$database_block_corruption;
 exit
