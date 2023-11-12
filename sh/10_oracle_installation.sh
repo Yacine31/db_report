@@ -14,6 +14,6 @@ do
 	echo ""
 	export ORACLE_HOME=$oh
 	$oh/OPatch/opatch lspatches
-	echo "<br></pre>"
+	echo "</pre><br>"
 done
 
