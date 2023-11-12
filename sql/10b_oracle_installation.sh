@@ -1,10 +1,3 @@
-prompt <h2>lscpu </h2>
-prompt <pre>
-host lscpu
-prompt </pre>
-exit
-
-
 # inventory.xml
 ORA_INVENTORY=$(cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2)
 cat $ORA_INVENTORY/ContentsXML/inventory.xml >> ${HTML_FILE}

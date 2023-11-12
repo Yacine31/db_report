@@ -38,4 +38,10 @@ prompt <h2>ulimit -a </h2>
 prompt <pre>
 host ulimit -a | sort
 prompt </pre>
+
+prompt <h2>ulimit -a </h2>
+prompt <pre>
+host /bin/sh 10b_oracle_installation.sh
+prompt </pre>
+
 exit
