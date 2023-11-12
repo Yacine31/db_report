@@ -5,7 +5,9 @@ ps -ef | grep dbvctl
 echo "</pre>"
 
 echo "<h2>dbvctl gap report</h2>"
-export DBV_HOME=/usr/dbvisit/standbymp/oracle
+# export DBV_HOME=/usr/dbvisit/standbymp/oracle
+export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}'))
+
 cd ${DBV_HOME}/conf 
 ls -1 dbv_*.env | sed 's/dbv_//g' | sed 's/.env//g' | while read db
 do
