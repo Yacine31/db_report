@@ -1,7 +1,8 @@
 # inventory.xml
+echo "<h2>Inventory.xml</h2>"
 echo "<pre>"
 ORA_INVENTORY=$(cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2)
-cat $ORA_INVENTORY/ContentsXML/inventory.xml
+cat $ORA_INVENTORY/ContentsXML/inventory.xml | grep "<HOME NAME=" | awk '{print $2 " " $3}'
 echo "</pre>"
 
 # opatch 
