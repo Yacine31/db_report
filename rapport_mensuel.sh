@@ -9,8 +9,8 @@ do
         . oraenv -s > /dev/null
 
         cat sql/00_html_header.html >> ${HTML_FILE}
-
-        echo "<h1>Date : 'date +%d/%m/%Y %Hh%M', Hostname : $HNAME, base de données : ${ORACLE_SID}</h1>" >> ${HTML_FILE}
+        DATE_JOUR=$(date +"%d/%m/%Y %Hh%M")
+        echo "<h1>Date : ${DATE_JOUR}, Hostname : $HNAME, base de données : ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         # execution des scripts shell
         for f in sh/*.sh
         do
