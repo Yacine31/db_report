@@ -1,3 +1,9 @@
+# /etc/oratab
+echo "<h2>/etc/oratab</h2>"
+echo "<pre>"
+cat /etc/oratab | egrep -v "^$|^#"
+echo "</pre>"
+
 # inventory.xml
 echo "<h2>Inventory.xml</h2>"
 echo "<pre>"
