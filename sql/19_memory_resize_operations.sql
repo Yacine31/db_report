@@ -1,4 +1,4 @@
-prompt <h2>Memory Resize Operations</h2>
+prompt <h2>Les 50 dernières opérations de Resize de la mémoire :</h2>
 SELECT *
   FROM gv$memory_resize_ops
   where rownum <=50
