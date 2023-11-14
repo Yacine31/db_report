@@ -12,6 +12,12 @@ if [ $count -gt 0 ]; then
 	# on récupère le chemin de l'executable dbvctl
 	export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}' | sort -u))
 
+	# statut de la base de données
+	echo "<h2>Statut de la base : ${ORACLE_SID} sur le serveur $(hostname)</h2>"
+	echo "<pre>"
+	${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i
+	echo "</pre>"
+
 	# on récupère le statut de la base pour exécuter la commande sur la base primaire
 	db_prim=$(${DBV_HOME}/dbvctl -d ${ORACLE_SID} -o status | grep -i "read write" | wc -l)
 	if [ ${db_prim} -gt 0 ]; then
