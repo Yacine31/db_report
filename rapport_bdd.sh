@@ -5,7 +5,7 @@ for r in $(ps -eaf | grep pmon | egrep -v 'grep|APX1' | cut -d '_' -f3)
 do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
-        export HTML_FILE=Rapport_$HNAME_${ORACLE_SID}_${DATETIME}.html
+        export HTML_FILE=Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.html
         . oraenv -s > /dev/null
 
         cat sql/00_html_header.html >> ${HTML_FILE}
