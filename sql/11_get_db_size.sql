@@ -1,4 +1,4 @@
-prompt <h2>Database Size </h2>
+prompt <h2>Taille de la base de données :</h2>
 -- set head off
 -- col "Database Size" format 99,999.99
 -- select 'Database Size (Go) : ' || (
