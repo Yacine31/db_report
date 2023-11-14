@@ -14,6 +14,8 @@ do
         <h2>Date : ${DATE_JOUR}</h2>
         <h2>Hostname : $HNAME</h2>
         <h2>Base de données : ${ORACLE_SID}</h2>" >> ${HTML_FILE}
+        echo "<br><br>" >> ${HTML_FILE}
+        
         # execution des scripts shell
         echo "<h1>Configuration système</h1>" >> ${HTML_FILE}
         for f in sh/*.sh
