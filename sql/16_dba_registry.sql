@@ -10,7 +10,7 @@ SELECT *
 --        PROCEDURE
   FROM dba_registry x
 ORDER BY
-	   x.comp_id;
+	   comp_id;
 exit;
 
 
