@@ -1,6 +1,6 @@
 # script à exécuter si seulement dbvctl existe et une instance avec le nom de service dbv existe aussi
 
-count=$(ps -ef | grep dbvctl | grep -v grep | ${ORACLE_SID} | wc -l)
+count=$(ps -ef | grep dbvctl | grep -v grep | grep ${ORACLE_SID} | wc -l)
 
 if [ $count -gt 0 ]; then
 	# dbvisit
