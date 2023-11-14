@@ -1,4 +1,4 @@
-prompt <h2>Taille des redolog par jours / heure </h2>
+prompt <h2>Historique de bascule de fichiers redolog par jour : </h2>
 
 set head on
 set pages 999 lines 200
@@ -63,7 +63,7 @@ group by to_char(first_time, 'YYYY/MM/dd')
 order by to_char(first_time, 'YYYY/MM/dd')
 ;
 
-prompt <h2>Taille des redolog par jour </h2>
+prompt <h2>Taille des redolog par jour :</h2>
 select
         to_char(first_time, 'YYYY/MM/dd') "Jour",
     count(*) "Nbr de fichiers",
