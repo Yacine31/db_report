@@ -11,7 +11,7 @@ if [ $count -gt 0 ]; then
 
 	echo "<h2>dbvctl gap report</h2>"
 	# export DBV_HOME=/usr/dbvisit/standbymp/oracle
-	export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}'))
+	export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}' | sort -u))
 
 	echo "<pre>"
 	${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i
