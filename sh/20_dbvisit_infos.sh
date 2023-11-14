@@ -3,16 +3,21 @@
 count=$(ps -ef | grep dbvctl | grep -v grep | grep ${ORACLE_SID} | wc -l)
 
 if [ $count -gt 0 ]; then
-	# dbvisit
-	echo "<h2>Process DBVisit</h2>"
+	# les process dbvisit en cours 
+	echo "<h2>Process DBVisit en cours d'exécution</h2>"
 	echo "<pre>"
 	ps -ef | grep dbvctl | grep -v grep 
 	echo "</pre>"
 
-	echo "<h2>dbvctl gap report</h2>"
+	# on récupère le chemin de l'executable dbvctl
 	export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}' | sort -u))
 
-	echo "<pre>"
-	${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i
-	echo "</pre>"
+	# on récupère le statut de la base pour exécuter la commande sur la base primaire
+	db_prim=$(${DBV_HOME}/dbvctl -d ${ORACLE_SID} -o status | grep -i "read write" | wc -l)
+	if [ ${db_prim} -gt 0 ]; then
+		echo "<h2>Rapport de GAP DBVisit pour la base ${ORACLE_SID}</h2>"
+		echo "<pre>"
+		${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i
+		echo "</pre>"
+	fi
 fi
