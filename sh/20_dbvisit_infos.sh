@@ -3,6 +3,8 @@
 count=$(ps -ef | grep dbvctl | grep -v grep | grep ${ORACLE_SID} | wc -l)
 
 if [ $count -gt 0 ]; then
+
+	echo "<h1>Configuration DBVisit</h1>"
 	# les process dbvisit en cours 
 	echo "<h2>Process DBVisit en cours d'exécution</h2>"
 	echo "<pre>"
