@@ -1,4 +1,4 @@
-prompt <h2>Registry (DBA_REGISTRY)</h2>
+prompt <h2>Fonctionnalités installées dans la base de données (DBA_REGISTRY) :</h2>
 SELECT /*+  NO_MERGE  */ 
        x.*
 	   --,c.name con_name
