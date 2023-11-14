@@ -15,7 +15,7 @@ if [ $count -gt 0 ]; then
 	# statut de la base de données
 	echo "<h2>Statut de la base : ${ORACLE_SID} sur le serveur $(hostname)</h2>"
 	echo "<pre>"
-	${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i
+	${DBV_HOME}/dbvctl -d ${ORACLE_SID} -o status
 	echo "</pre>"
 
 	# on récupère le statut de la base pour exécuter la commande sur la base primaire
