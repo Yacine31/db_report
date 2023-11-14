@@ -1,9 +1,9 @@
-prompt <h2>Tablespace details </h2>
-COL TABLESPACE_NAME FORMAT A20 HEAD "Nom espace|disque logique"
-COL PCT_OCCUPATION_THEORIQUE FORMAT 990.00 HEAD "%occ|Theo"
-COL TAILLE_MIB FORMAT 99999990.00 HEAD "Taille|MiB"
-COL TAILLE_MAX_MIB FORMAT 99999990.00 HEAD "Taille max|MiB"
-COL TAILLE_OCCUPEE_MIB FORMAT 99999990.00 HEAD "Espace occupé|MiB"
+prompt <h2>Détail des tablespaces : </h2>
+COL TABLESPACE_NAME FORMAT A20 HEAD "Nom Tablespace"
+COL PCT_OCCUPATION_THEORIQUE FORMAT 990.00 HEAD "% Occup"
+COL TAILLE_MIB FORMAT 99999990.00 HEAD "Taille MB"
+COL TAILLE_MAX_MIB FORMAT 99999990.00 HEAD "Taille max MB"
+COL TAILLE_OCCUPEE_MIB FORMAT 99999990.00 HEAD "Espace occupé MiB"
 WITH TS_FREE_SPACE AS
 (select tablespace_name, file_id, sum(bytes) FREE_O from dba_free_space group by tablespace_name, file_id
 ), TEMP_ALLOC AS
