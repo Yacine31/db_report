@@ -1,8 +1,8 @@
 prompt <h2>Détail des datafiles : </h2>
 
-COL file_name HEAD "Nom du datafile"
+COL file_name HEAD "Datafile"
 COL file_id HEAD "File ID"
-COL TABLESPACE_NAME FORMAT A20 HEAD "Nom Tablespace"
+COL TABLESPACE_NAME FORMAT A20 HEAD "Tablespace"
 COL autoextensible FORMAT A15 HEAD "Auto Extensible"
 COL status head "Statut"
 COL online_status format a15 head "Online Statut"
