@@ -1,6 +1,6 @@
-# run script only if dbvctl is running
+# script à exécuter si seulement dbvctl existe et une instance avec le nom de service dbv existe aussi
 
-count=$(ps -ef | grep dbvctl | grep -v grep | wc -l)
+count=$(ps -ef | grep dbvctl | grep -v grep | ${ORACLE_SID} | wc -l)
 
 if [ $count -gt 0 ]; then
 	# dbvisit
@@ -10,20 +10,9 @@ if [ $count -gt 0 ]; then
 	echo "</pre>"
 
 	echo "<h2>dbvctl gap report</h2>"
-	# export DBV_HOME=/usr/dbvisit/standbymp/oracle
 	export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}' | sort -u))
 
 	echo "<pre>"
 	${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i
 	echo "</pre>"
-
-
-	# cd ${DBV_HOME}/conf 
-	# ls -1 dbv_*.env | sed 's/dbv_//g' | sed 's/.env//g' | while read db
-	# do
-	#	echo "<pre>"
-	#	${DBV_HOME}/dbvctl -d $db -i
-	#	echo "</pre>"
-	#	echo "<br>"
-	# done
 fi
