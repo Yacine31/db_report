@@ -10,7 +10,7 @@ do
 
         cat sql/00_html_header.html >> ${HTML_FILE}
         DATE_JOUR=$(date +"%d/%m/%Y %Hh%M")
-        echo "<h1>Rapport de base de données ${ORACLE_SID}</h1>
+        echo "<h1>Rapport de base de données</h1>
         <h2>Date : ${DATE_JOUR}</h2>
         <h2>Hostname : $HNAME</h2>
         <h2>base de données : ${ORACLE_SID}</h2>" >> ${HTML_FILE}
