@@ -21,8 +21,9 @@ do
                 /bin/sh $f >> ${HTML_FILE}
         done
 
+        echo "<br><br>" >> ${HTML_FILE}
         # execution des scripts sql
-        echo "<h1>Configuration de la base de données</h1>" >> ${HTML_FILE}
+        echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         for f in sql/*.sql
         do
                 sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
