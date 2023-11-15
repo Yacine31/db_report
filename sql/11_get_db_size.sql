@@ -69,4 +69,3 @@ SELECT d.dbid,
        WHEN s.bytes > 0 THEN s.bytes||' B' END approx
   FROM v$database d,
        dbsize s;
-exit
