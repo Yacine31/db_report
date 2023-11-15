@@ -47,4 +47,3 @@ name = 'open_cursors'
 )
 ;
 
-exit
