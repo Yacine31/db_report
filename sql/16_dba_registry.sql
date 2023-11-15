@@ -11,7 +11,6 @@ SELECT *
   FROM dba_registry x
 ORDER BY
 	   comp_id;
-exit;
 
 
 
