@@ -7,4 +7,3 @@ FROM
 WHERE NAME='db_recovery_file_dest_size';
 prompt
 SELECT * FROM V$FLASH_RECOVERY_AREA_USAGE; 
-exit
