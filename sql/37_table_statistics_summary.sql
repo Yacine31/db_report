@@ -39,4 +39,3 @@ FROM   x
  ORDER BY
        --x.con_id,
        owner, object_type;
-exit
