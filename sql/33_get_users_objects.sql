@@ -1,3 +1,4 @@
+prompt <h2>Les objets par utilisateur</h2>
 select * from
 (
     select owner, object_type ,count(*) as object_count from dba_objects 
