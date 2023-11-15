@@ -19,4 +19,4 @@ FROM v$rman_backup_job_details b
 WHERE b.start_time > (SYSDATE - 30) and rownum <=50
 ORDER BY b.start_time asc
 ;
-exit
+
