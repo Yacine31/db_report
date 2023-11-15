@@ -1,4 +1,5 @@
 prompt <h2>Fichiers de journalisation (Redolog) :</h2>
+alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 SELECT /*+  NO_MERGE  */ 
      *
   FROM v$log
@@ -15,5 +16,5 @@ SELECT 'StandbyLog',G.GROUP#, G.THREAD#, G.SEQUENCE#, G.BYTES/1024/1024 TAILLE_M
 FROM V$STANDBY_LOG G, V$LOGFILE F
 WHERE G.GROUP#=F.GROUP#
 ORDER BY 1,3,4,2;
-exit
+
 
