@@ -78,4 +78,4 @@ SELECT s.name,
        WHEN 'db_2k_cache_size'          THEN 19
        END,
        s.inst_id;
-exit
+
