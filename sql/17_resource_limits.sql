@@ -5,4 +5,3 @@ SELECT /*+  NO_MERGE  */
  ORDER BY
        resource_name,
        inst_id;
-exit
