@@ -24,13 +24,22 @@ do
         done
 
         echo "<br><br>" >> ${HTML_FILE}
+
+        # Si ASM, on exécute les scripts ASM
+        if [ $(echo ${ORACLE_SID} | grep ASM | wc -l) -gt 0 ]; then
+                echo "<h1>Configuration de l'instance ${ORACLE_SID}</h1>" >> ${HTML_FILE}
+                for f in asm/*.sql
+                do
+                        sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+                done
+        fi
+
         # execution des scripts sql
         echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         for f in sql/*.sql
         do
                 sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
         done
-
 
         sed -i 's/<table.*>$/<table class="table table-striped">/g' ${HTML_FILE}
 
