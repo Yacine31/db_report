@@ -4,14 +4,14 @@ COL file_id HEAD "File ID"
 COL file_name HEAD "Datafile"
 COL tablespace_name FORMAT A20 HEAD "Tablespace"
 
-COL bytes FORMAT 99999999.00 HEAD "Bytes MB"
-COL maxbytes FORMAT 99999999.00 HEAD "MaxBytes MB"
+COL bytes FORMAT 99999999.00 HEAD "Size MB"
+COL maxbytes FORMAT 99999999.00 HEAD "MaxSize MB"
 COL Pct_Used FORMAT 999.00 HEAD "% Used"
 
 
 COL autoextensible FORMAT A15 HEAD "Auto Extensible"
-COL status head "Statut"
-COL online_status format a15 head "Online Statut"
+COL status head "Status"
+COL online_status format a15 head "Online Status"
 
 SELECT  
        file_id, file_name, tablespace_name, 
