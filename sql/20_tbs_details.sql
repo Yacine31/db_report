@@ -37,18 +37,18 @@ COL TAILLE_OCCUPEE_MIB FORMAT 99999990.00 HEAD "Espace occupé MiB"
 -- ORDER BY TABLESPACE_NAME;-- 
 
 COL TABLESPACE_NAME FORMAT A20 HEAD "Tablespace"
-COL Allocated FORMAT 99999990.00 HEAD "Allocated MB"
-COL Used FORMAT 99999990.00 HEAD "Used MB"
-COL Free FORMAT 99999990.00 HEAD "Freed MB"
-COL Max FORMAT 99999990.00 HEAD "MaxSize MB"
-COL Pct_Used FORMAT 990.00 HEAD "% Used"
+COL Allocated FORMAT 99999999.00 HEAD "Allocated MB"
+COL Used FORMAT 99999999.00 HEAD "Used MB"
+COL Free FORMAT 99999999.00 HEAD "Freed MB"
+COL Max FORMAT 99999999.00 HEAD "MaxSize MB"
+COL Pct_Used FORMAT 999.00 HEAD "% Used"
 
 select
     a.tablespace_name,
-    a.bytes_alloc alloc,
-    a.bytes_alloc - nvl(b.bytes_free, 0) used,
-    nvl(b.bytes_free, 0)  free,
-    maxbytes Max,
+    a.bytes_alloc/1024/1024 alloc,
+    (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used,
+    (nvl(b.bytes_free, 0))/1024/1024  free,
+    maxbytes/1024/1024 Max,
     (a.bytes_alloc - nvl(b.bytes_free, 0)) / maxbytes * 100 Pct_Used
 from
     (
@@ -77,11 +77,11 @@ where
 union all
 select
     h.tablespace_name,
-    sum(h.bytes_free + h.bytes_used) alloc,
-    sum(nvl(p.bytes_used, 0)) used,
-    sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0)) free,
-    sum(f.maxbytes) max,
-    (sum(h.bytes_free + h.bytes_used) - sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0))) / sum(f.maxbytes) "Pct_Used%Max"
+    (sum(h.bytes_free + h.bytes_used))/1024/1024 alloc,
+    (sum(nvl(p.bytes_used, 0)))/1024/1024 used,
+    (sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0)))/1024/1024 free,
+    (sum(f.maxbytes))/1024/1024 max,
+    (sum(h.bytes_free + h.bytes_used) - sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0))) / sum(f.maxbytes) Pct_Used
 from
     sys.v_$temp_space_header h,
     sys.v_$temp_extent_pool p,
