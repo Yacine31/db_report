@@ -15,8 +15,8 @@ COL online_status format a15 head "Online Statut"
 
 SELECT  
        file_id, file_name, tablespace_name, 
-       round(bytes/1024/1024,0) ,  
-       round(maxbytes/1024/1024,0) , 
+       round(bytes/1024/1024,0) bytes,  
+       round(maxbytes/1024/1024,0) maxbytes, 
        round(100*bytes/maxbytes) Pct_Used,
        online_status,
        status, autoextensible
