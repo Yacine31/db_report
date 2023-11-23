@@ -59,6 +59,7 @@ sum(decode(to_char(first_time, 'hh24'),'22',1,0)) "22",
 sum(decode(to_char(first_time, 'hh24'),'23',1,0)) "23",
 sum(decode(to_char(first_time, 'hh24'),'24',1,0)) "24"
 from v$log_history
+where first_time > systimestamp - 30
 group by to_char(first_time, 'YYYY/MM/dd')
 order by to_char(first_time, 'YYYY/MM/dd')
 ;
@@ -69,6 +70,7 @@ select
         count(*) "Nbr de fichiers",
         ROUND(sum(BLOCKS*BLOCK_SIZE)/1024/1024, 0) "Taille_Mo"
 from v$archived_log
+where first_time > systimestamp - 30
 group by to_char(first_time, 'YYYY/MM/dd')
 order by to_char(first_time, 'YYYY/MM/dd')
 ;
