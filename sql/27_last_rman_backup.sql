@@ -9,7 +9,11 @@ column device_type format a10;
 
 select
         b.input_type "Type",
-        b.status "Status",
+        case 
+                when b.status = 'FAILED' 
+                then '<span class="highlight">'||b.status||'</span>' 
+                else b.status 
+                end "Status",
         to_char(b.start_time,'DD-MM-YYYY HH24:MI') "Start Time",
         to_char(b.end_time,'DD-MM-YYYY HH24:MI') "End Time",
         b.output_device_type "Device Type",
