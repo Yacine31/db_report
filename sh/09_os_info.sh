@@ -23,6 +23,11 @@ echo "<pre>"
 cat /etc/fstab | egrep -v '^#|^$'
 echo "</pre>"
 
+echo "<h2>Contenu du contab du compte oracle :</h2>"
+echo "<pre>"
+crontab -l
+echo "</pre>"
+
 echo "<h2>Taille mémoire en Mo (free -m) :</h2>"
 echo "<pre>"
 free -m
