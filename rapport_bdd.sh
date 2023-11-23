@@ -1,7 +1,7 @@
 DATETIME=`date +%Y%m%d%H%M`
 HNAME=$(hostname)
 
-for r in $(ps -eaf | grep pmon | egrep -v 'grep|APX1' | cut -d '_' -f3)
+for r in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
 do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
