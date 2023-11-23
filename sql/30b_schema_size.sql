@@ -1,8 +1,8 @@
 prompt <h2>Taille des objets par schéma (Mo):</h2>
 select
-    ds.owner owner,
-    round(sum(ds.bytes) / 1024 / 1024) "schema size mega",
-    du.default_tablespace "default tablespace"
+    ds.owner "Owner",
+    round(sum(ds.bytes) / 1024 / 1024) "Schema Size MB",
+    du.default_tablespace "Default Tablespace"
 from
     dba_segments ds,
     dba_users du
