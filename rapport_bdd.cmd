@@ -1,12 +1,37 @@
 @echo off
 setlocal enabledelayedexpansion
+REM 
+REM for /f "tokens=3 delims=_" %%r in ('netstart | find /i "OracleService"') do (
+REM     set ORAENV_ASK=NO
+REM     set ORACLE_SID=%%r
+REM     set ORACLE_SID=%ORACLE_SID:~13%
+REM     set HTML_FILE=Rapport_%HNAME%_!ORACLE_SID!_%DATE:~6,4%%DATE:~3,2%%DATE:~0,2%_%TIME:~0,2%%TIME:~3,2%.html
+REM     call oraenv -s >nul
+REM 
+REM     type sql\00_html_header.html >> !HTML_FILE!
+REM 
+REM     set DATE_JOUR=!DATE:~0,2!/!DATE:~3,2!/!DATE:~6,4! !TIME:~0,2!h!TIME:~3,2!
+REM     echo ^<h1^>Rapport de base de données^</h1^> >> !HTML_FILE!
+REM     echo ^<h2^>Date : !DATE_JOUR!^</h2^> >> !HTML_FILE!
+REM     echo ^<h2^>Hostname : %COMPUTERNAME%^</h2^> >> !HTML_FILE!
+REM     echo ^<h2^>Base de données : !ORACLE_SID!^</h2^> >> !HTML_FILE!
+REM     echo ^<br^><br^> >> !HTML_FILE!
+REM 
+REM     echo ^<h1^>Configuration système^</h1^> >> !HTML_FILE!
+REM     for %%f in (sh\*.sh) do (
+REM         echo call %%f >> !HTML_FILE!
+REM     )
+REM )
 
-REM for /f "tokens=3 delims=_" %%r in ('tasklist /fi "imagename eq OracleService*" ^| findstr /v "APX1"') do (
 for /f "tokens=3 delims=_" %%r in ('netstart | find /i "OracleService"') do (
-    set ORAENV_ASK=NO
     set ORACLE_SID=%%r
     set ORACLE_SID=%ORACLE_SID:~13%
     set HTML_FILE=Rapport_%HNAME%_!ORACLE_SID!_%DATE:~6,4%%DATE:~3,2%%DATE:~0,2%_%TIME:~0,2%%TIME:~3,2%.html
+    echo ORACLE_SID=!ORACLE_SID!
+    echo HTML_FILE=!HTML_FILE!
+)
+
+exit
     call oraenv -s >nul
 
     type sql\00_html_header.html >> !HTML_FILE!
