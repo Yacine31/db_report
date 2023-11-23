@@ -9,7 +9,7 @@ COL file_size_mb FORMAT 99999999.99 HEAD "File Size MB"
 COL space_used_mb FORMAT 99999999.99 HEAD "Space Used MB"
 COL space_free_mb FORMAT 99999999.99 HEAD "Space Free MB"
 COL maxsize_mb FORMAT 99999999.99 HEAD "Max Size MB"
-COL percent_used FORMAT 99.9 HEAD "% Used"
+COL percent_used FORMAT 999.9 HEAD "% Used"
 
 COL autoextensible FORMAT A15 HEAD "Auto Extensible"
 COL status head "Status"
@@ -44,6 +44,8 @@ from
     dba_data_files d
 where
     a.file_id = b.file_id (+) and d.file_id=a.file_id
+order by 
+    d.file_name
 ;
 
 prompt <h2>Existance de blocks corrompus :</h2>
