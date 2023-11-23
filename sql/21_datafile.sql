@@ -44,6 +44,7 @@ from
     dba_data_files d
 where
     a.file_id = b.file_id (+) and d.file_id=a.file_id
+;
 
 prompt <h2>Existance de blocks corrompus :</h2>
 select * from v$database_block_corruption;
