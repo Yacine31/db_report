@@ -8,6 +8,10 @@ cd db_report
 sh -x rapport_bdd.sh
 ```
 ## Sous Windows
+Installer git [https://git-scm.com/download/win](https://git-scm.com/download/win)
 ```info
-Le script ne fonctionne pas, les fichiers sql ne contiennent pas les retours chariots adaptés à Windows
+cd /d c:\
+git clone https://github.com/Yacine31/db_report
+cd db_report
+rapport_bdd.cmd
 ```
