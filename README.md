@@ -8,8 +8,14 @@ cd db_report
 sh -x rapport_bdd.sh
 ```
 ## Sous Windows
+Télécharger le zip ici : [https://github.com/Yacine31/db_report/archive/refs/heads/main.zip](https://github.com/Yacine31/db_report/archive/refs/heads/main.zip)
+
+- Décompresser dans c:\db_report
+- Exécuter le script rapport_bdd.cmd
+
+Ou avec GIT : 
 Installer git [https://git-scm.com/download/win](https://git-scm.com/download/win)
-```info
+```cmd
 cd /d c:\
 git clone https://github.com/Yacine31/db_report
 cd db_report
