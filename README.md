@@ -8,6 +8,6 @@ cd db_report
 sh -x rapport_bdd.sh
 ```
 ## Sous Windows
-```cmd
-
+```info
+Le script ne fonctionne pas, les fichiers sql ne contiennent pas les retours chariots adaptés à Windows
 ```

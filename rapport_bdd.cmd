@@ -1,50 +1,33 @@
-@echo off
+@echo on
+
 setlocal enabledelayedexpansion
-REM 
-REM for /f "tokens=3 delims=_" %%r in ('netstart | find /i "OracleService"') do (
-REM     set ORAENV_ASK=NO
-REM     set ORACLE_SID=%%r
-REM     set ORACLE_SID=%ORACLE_SID:~13%
-REM     set HTML_FILE=Rapport_%HNAME%_!ORACLE_SID!_%DATE:~6,4%%DATE:~3,2%%DATE:~0,2%_%TIME:~0,2%%TIME:~3,2%.html
-REM     call oraenv -s >nul
-REM 
-REM     type sql\00_html_header.html >> !HTML_FILE!
-REM 
-REM     set DATE_JOUR=!DATE:~0,2!/!DATE:~3,2!/!DATE:~6,4! !TIME:~0,2!h!TIME:~3,2!
-REM     echo ^<h1^>Rapport de base de données^</h1^> >> !HTML_FILE!
-REM     echo ^<h2^>Date : !DATE_JOUR!^</h2^> >> !HTML_FILE!
-REM     echo ^<h2^>Hostname : %COMPUTERNAME%^</h2^> >> !HTML_FILE!
-REM     echo ^<h2^>Base de données : !ORACLE_SID!^</h2^> >> !HTML_FILE!
-REM     echo ^<br^><br^> >> !HTML_FILE!
-REM 
-REM     echo ^<h1^>Configuration système^</h1^> >> !HTML_FILE!
-REM     for %%f in (sh\*.sh) do (
-REM         echo call %%f >> !HTML_FILE!
-REM     )
-REM )
 
-for /f "tokens=3 delims=_" %%r in ('netstart | find /i "OracleService"') do (
-    set ORACLE_SID=%%r
-    set ORACLE_SID=%ORACLE_SID:~13%
-    set HTML_FILE=Rapport_%HNAME%_!ORACLE_SID!_%DATE:~6,4%%DATE:~3,2%%DATE:~0,2%_%TIME:~0,2%%TIME:~3,2%.html
+for /f "tokens=*" %%r in ('net start ^| find /i "OracleService"') do (
+    set "ORACLE_SID=%%r"
+    set "ORACLE_SID=!ORACLE_SID:~13!"
     echo ORACLE_SID=!ORACLE_SID!
-    echo HTML_FILE=!HTML_FILE!
-)
+    set HTML_FILE=Rapport_%HNAME%_!ORACLE_SID!_%DATE:~6,4%%DATE:~3,2%%DATE:~0,2%.html
 
-exit
-    call oraenv -s >nul
-
+    set TMP_SQLFILE="c:\tmp_sqlfile.sql"
+    echo exclam=!TMP_SQLFILE!
     type sql\00_html_header.html >> !HTML_FILE!
 
-    set DATE_JOUR=!DATE:~0,2!/!DATE:~3,2!/!DATE:~6,4! !TIME:~0,2!h!TIME:~3,2!
-    echo ^<h1^>Rapport de base de données^</h1^> >> !HTML_FILE!
+    set DATE_JOUR=%DATE:~6,4%%DATE:~3,2%%DATE:~0,2%
+    echo 
+    echo ^<h1^>Rapport de base de donnees^</h1^> >> !HTML_FILE!
     echo ^<h2^>Date : !DATE_JOUR!^</h2^> >> !HTML_FILE!
     echo ^<h2^>Hostname : %COMPUTERNAME%^</h2^> >> !HTML_FILE!
-    echo ^<h2^>Base de données : !ORACLE_SID!^</h2^> >> !HTML_FILE!
+    echo ^<h2^>Base de donnees : !ORACLE_SID!^</h2^> >> !HTML_FILE!
     echo ^<br^><br^> >> !HTML_FILE!
 
-    echo ^<h1^>Configuration système^</h1^> >> !HTML_FILE!
-    for %%f in (sh\*.sh) do (
-        echo call %%f >> !HTML_FILE!
+    echo ^<h1^>Configuration de la base de donnees !ORACLE_SID! ^</h1^> >> !HTML_FILE!
+    for %%f in (sql\*.sql) do (
+        echo "SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF" > !TMP_SQLFILE! 
+        type %%f >> !TMP_SQLFILE!
+        REM echo call sqlplus / as sysdba @!TMP_SQLFILE! >> !HTML_FILE!
+        type !TMP_SQLFILE! ^| sqlplus / as sysdba >> !HTML_FILE!
     )
+
+    type sql\99_html_footer.html >> !HTML_FILE!
+    echo Rapport de la base !ORACLE_SID! dans le fichier html : !HTML_FILE!
 )
