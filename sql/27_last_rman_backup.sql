@@ -7,20 +7,24 @@ column input_bytes_display format a12;
 column output_bytes_display format a12;
 column device_type format a10;
 
-select
-        b.input_type "Type",
-        case 
-                when b.status = 'FAILED' 
-                then '<span class="highlight">'||b.status||'</span>' 
-                else b.status 
-                end "Status",
-        to_char(b.start_time,'DD-MM-YYYY HH24:MI') "Start Time",
-        to_char(b.end_time,'DD-MM-YYYY HH24:MI') "End Time",
-        b.output_device_type "Device Type",
-        b.input_bytes_display "Input Bytes",
-        b.output_bytes_display "Output Bytes"
-FROM v$rman_backup_job_details b
-WHERE b.start_time > (SYSDATE - 30) and rownum <=50
-ORDER BY b.start_time asc
-;
+SELECT
+    b.input_type                                "Type",
+    CASE
+        WHEN b.status = 'FAILED' THEN
+            '<span class="highlight">' || b.status || '</span>'
+        ELSE
+            b.status
+    END                                         "Status",
+    to_char(b.start_time, 'DD-MM-YYYY HH24:MI') "Start Time",
+    to_char(b.end_time, 'DD-MM-YYYY HH24:MI')   "End Time",
+    b.output_device_type                        "Device Type",
+    b.input_bytes_display                       "Input Bytes",
+    b.output_bytes_display                      "Output Bytes"
+FROM
+    v$rman_backup_job_details b
+WHERE
+        b.start_time > ( sysdate - 30 )
+    AND ROWNUM <= 50
+ORDER BY
+    b.start_time DESC;
 
