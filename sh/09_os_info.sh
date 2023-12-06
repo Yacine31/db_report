@@ -8,6 +8,11 @@ echo "<pre>"
 ps -ef | grep tnslsnr| grep -v grep 
 echo "</pre>"
 
+echo "<h2>Uptime :</h2>"
+echo "<pre>"
+uptime
+echo "</pre>"
+
 echo "<h2>Espace disque (df -h) :</h2>"
 echo "<pre>"
 df -h
