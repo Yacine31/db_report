@@ -1,7 +1,10 @@
 prompt <h2>Resource Limit (GV$RESOURCE_LIMIT)</h2>
-SELECT /*+  NO_MERGE  */ 
-       *
-  FROM gv$resource_limit
- ORDER BY
-       resource_name,
-       inst_id;
+SELECT
+    *
+FROM
+    gv$resource_limit
+WHERE
+    resource_name IN ( 'processes', 'sessions' )
+ORDER BY
+    resource_name,
+    inst_id;
