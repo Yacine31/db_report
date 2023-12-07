@@ -49,6 +49,13 @@ ulimit -a | sort
 echo "</pre>"
 
 echo "<h2>Les 50 dernières erreur dans /var/log/messages :</h2>"
-echo "<pre>"
-cat /var/log/messages* | egrep -i 'error|failed' 
-echo "</pre>"
+if sudo -l &> /dev/null ; then
+    echo "L'utilisateur a les droits sudo. on continue."
+	echo "<pre>"
+	sudo cat /var/log/messages | egrep -i 'error|failed' 
+	echo "</pre>"
+else
+	echo "<pre>"
+    echo "L'utilisateur n'a les droits pour lire les fichiers log."
+	echo "</pre>"
+fi
