@@ -1,11 +1,13 @@
 DATETIME=`date +%Y%m%d%H%M`
 HNAME=$(hostname)
+OUTPUT_DIR=output/$(date +%Y%m%d)
+mkdir -p ${OUTPUT_DIR}
 
 for r in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
 do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
-        export HTML_FILE=Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.html
+        export HTML_FILE=${OUTPUT_DIR}/Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.html
         . oraenv -s > /dev/null
 
         cat sql/00_html_header.html >> ${HTML_FILE}
