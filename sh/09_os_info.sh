@@ -50,9 +50,9 @@ echo "</pre>"
 
 echo "<h2>Les 50 dernières erreur dans /var/log/messages :</h2>"
 if sudo -l &> /dev/null ; then
-    echo "L'utilisateur a les droits sudo. on continue."
+    # L'utilisateur a les droits sudo. on continue
 	echo "<pre>"
-	sudo cat /var/log/messages | egrep -i 'error|failed' 
+	sudo cat /var/log/messages | egrep -i 'error|failed' | tail -50 
 	echo "</pre>"
 else
 	echo "<pre>"
