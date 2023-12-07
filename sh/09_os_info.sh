@@ -48,3 +48,7 @@ echo "<pre>"
 ulimit -a | sort
 echo "</pre>"
 
+echo "<h2>Les 50 dernières erreur dans /var/log/messages :</h2>"
+echo "<pre>"
+cat /var/log/messages* | egrep -i 'error|failed' 
+echo "</pre>"
