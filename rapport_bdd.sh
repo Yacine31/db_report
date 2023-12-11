@@ -47,11 +47,12 @@ do
 
         cat sql/99_html_footer.html >> ${HTML_FILE}
 
-        # coloriage des mots clé
+        # coloriage des mots clé en rouge ou en vert
         for txt in INVALID FAILED NOARCHIVELOG
         do 
                 sed -i "s#${txt}#<span style='color: red; background-color: yellow;'>${txt}</span>#g" ${HTML_FILE}
         done
+
         for txt in COMPLETED
         do 
                 sed -i "s#${txt}#<span style='color: white; background-color: green;'>${txt}</span>#g" ${HTML_FILE}
