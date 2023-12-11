@@ -3,19 +3,20 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var content = document.getElementById("content");
-        var text = content.innerHTML;
+function colorerMots(element) {
+  const tds = document.querySelectorAll("td");
+  for (const td of tds) {
+    const text = td.textContent;
+    const motsACouleur = ["Error", "Failed", "COMPLETED"];
+    for (const mot of motsACouleur) {
+      text = text.replace(mot, `<span style="color: red; background-color: yellow;">${mot}</span>`);
+    }
+    td.textContent = text;
+  }
+}
 
-        // Remplacez ici les mots que vous souhaitez mettre en surbrillance
-        var wordsToHighlight = ["DEFERRED"];
+const element = document.querySelector("table");
+colorerMots(element);
 
-        wordsToHighlight.forEach(function(word) {
-            var regex = new RegExp('\\b(' + word + ')\\b', 'gi');
-            text = text.replace(regex, '<span class="highlight">$1</span>');
-        });
-
-        content.innerHTML = text;
-    });
 </script>
 </html>
