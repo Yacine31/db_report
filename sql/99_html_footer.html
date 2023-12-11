@@ -1,4 +1,21 @@
 
 <br />
 </body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var content = document.getElementById("content");
+        var text = content.innerHTML;
+
+        // Remplacez ici les mots que vous souhaitez mettre en surbrillance
+        var wordsToHighlight = ["DEFERRED"];
+
+        wordsToHighlight.forEach(function(word) {
+            var regex = new RegExp('\\b(' + word + ')\\b', 'gi');
+            text = text.replace(regex, '<span class="highlight">$1</span>');
+        });
+
+        content.innerHTML = text;
+    });
+</script>
 </html>
