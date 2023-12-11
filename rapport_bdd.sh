@@ -50,7 +50,7 @@ do
         # coloriage des mots clé
         for txt in INVALID FAILED NOARCHIVELOG COMPLETED
         do 
-                sed -i "s#<td>${txt}</td>#<td><span style='color: red; background-color: yellow;'>${txt}</span></td>#g" ${HTML_FILE}
+                sed -i "s#${txt}#<span style='color: red; background-color: yellow;'>${txt}</span>#g" ${HTML_FILE}
         done
 
         echo Rapport dans le fichier html : ${HTML_FILE}
