@@ -50,12 +50,12 @@ do
         # coloriage des mots clé en rouge ou en vert
         for txt in INVALID FAILED NOARCHIVELOG OFFLINE MOUNTED
         do 
-                sed -i "s#${txt}#<span style='color: red; background-color: yellow;'>${txt}</span>#g" ${HTML_FILE}
+                sed -i "s#<td>${txt}</td>#<td style='color: red; background-color: yellow;'>${txt}</td>#g" ${HTML_FILE}
         done
 
         for txt in COMPLETED
         do 
-                sed -i "s#${txt}#<span style='color: white; background-color: green;'>${txt}</span>#g" ${HTML_FILE}
+                sed -i "s#<td>${txt}</td>#<td style='color: white; background-color: green;'>${txt}</td>#g" ${HTML_FILE}
         done
 
         echo Rapport dans le fichier html : ${HTML_FILE}
