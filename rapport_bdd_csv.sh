@@ -24,7 +24,7 @@ do
         if [ $(ps -ef | grep pmon | grep ASM | wc -l) -gt 0 ]; then
                 for f in asm/*.sql
                 do
-                        CSV_FILE=${OUTPUT_DIR}/$(echo $f| sed 's/.sql$/.csv/g')
+                        CSV_FILE=${OUTPUT_DIR}/$(basename $f | sed 's/.sql$/.csv/g')
                         sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP CSV ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | grep -v "^prompt" | sqlplus -s / as sysdba > ${CSV_FILE}
                 done
         fi
@@ -33,7 +33,7 @@ do
         echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${CSV_FILE}
         for f in sql/*.sql
         do
-                CSV_FILE=${OUTPUT_DIR}/$(echo $f| sed 's/.sql$/.csv/g')
+                CSV_FILE=${OUTPUT_DIR}/$(basename $f | sed 's/.sql$/.csv/g')
                 sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP CSV ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | grep -v "^prompt" | sqlplus -s / as sysdba > ${CSV_FILE}
         done
 
