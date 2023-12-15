@@ -38,6 +38,8 @@ do
                 sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP CSV ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | grep -v "^prompt" | sqlplus -s / as sysdba > ${CSV_FILE}
         done
 
+        # suppression du zip s'il existe déjà
+        rm -f ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip 2>/dev/null
         # compression pour récupérer la totalité en zip
         zip -r ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip ${OUTPUT_DIR}
 
