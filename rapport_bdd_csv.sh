@@ -7,7 +7,7 @@ do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
 
-        OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/$(DATE_REP)
+        OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/${DATE_REP}
         mkdir -p ${OUTPUT_DIR}
 
         # export CSV_FILE=${OUTPUT_DIR}/Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.csv
@@ -39,10 +39,10 @@ do
         done
 
         # suppression du zip s'il existe déjà
-        rm -f ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip 2>/dev/null
+        rm -f ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip 2>/dev/null
         # compression pour récupérer la totalité en zip
-        zip -r ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip ${OUTPUT_DIR}
+        zip -r ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip ${OUTPUT_DIR}
 
         echo Les fichiers CSV sont dans le répertoire : ${OUTPUT_DIR}
-        echo Pour récupérer les fichiers dans un seul zip :  ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip
+        echo Pour récupérer les fichiers dans un seul zip :  ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip
 done
