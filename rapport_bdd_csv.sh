@@ -18,7 +18,8 @@ do
         # execution des scripts shell
         for f in sh/*.sh
         do
-                /bin/sh $f >> ${CSV_FILE}
+                CSV_FILE=${OUTPUT_DIR}/$(basename $f | sed 's/.sh$/.csv/g')
+                /bin/sh $f > ${CSV_FILE}
         done
 
         # Si ASM, on exécute les scripts ASM
@@ -41,7 +42,7 @@ do
         # suppression du zip s'il existe déjà
         rm -f ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip 2>/dev/null
         # compression pour récupérer la totalité en zip
-        zip -r ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip ${OUTPUT_DIR}
+        zip -r ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip ${OUTPUT_DIR} 1>/dev/null
 
         echo Les fichiers CSV sont dans le répertoire : ${OUTPUT_DIR}
         echo Pour récupérer les fichiers dans un seul zip :  ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip
