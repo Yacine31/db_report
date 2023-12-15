@@ -2,13 +2,15 @@ DATETIME=$(date +%Y%m%d_%H%M)
 HNAME=$(hostname)
 DATE_REP=$(date +%Y_%m_%d)
 
+[ "${ID_CLIENT}" ] || echo "$0 ID_CLIENT" && exit 1
+
 for r in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
 do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
 
         # OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/${DATE_REP}
-        OUTPUT_DIR=${HNAME}/${ORACLE_SID}/${DATE_REP}
+        OUTPUT_DIR=${ID_CLIENT}/${HNAME}/${ORACLE_SID}/${DATE_REP}
         mkdir -p ${OUTPUT_DIR}
 
         # export CSV_FILE=${OUTPUT_DIR}/Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.csv
@@ -48,3 +50,4 @@ do
         echo Les fichiers CSV sont dans le répertoire : ${OUTPUT_DIR}
         echo Pour récupérer les fichiers dans un seul zip :  ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip
 done
+
