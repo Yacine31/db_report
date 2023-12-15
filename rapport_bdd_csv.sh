@@ -1,12 +1,13 @@
-DATETIME=`date +%Y%m%d_%H%M`
+DATETIME=$(date +%Y%m%d_%H%M)
 HNAME=$(hostname)
+DATE_REP=$(date +%Y_%m_%d)
 
 for r in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
 do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
 
-        OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/$(date +%Y_%m_%d)
+        OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/$(DATE_REP)
         mkdir -p ${OUTPUT_DIR}
 
         # export CSV_FILE=${OUTPUT_DIR}/Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.csv
@@ -37,5 +38,9 @@ do
                 sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP CSV ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | grep -v "^prompt" | sqlplus -s / as sysdba > ${CSV_FILE}
         done
 
+        # compression pour récupérer la totalité en zip
+        zip -r ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip ${OUTPUT_DIR}
+
         echo Les fichiers CSV sont dans le répertoire : ${OUTPUT_DIR}
+        echo Pour récupérer les fichiers dans un seul zip :  ${HNAME}_${ORACLE_SID}_$(DATE_REP).zip
 done
