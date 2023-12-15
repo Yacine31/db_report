@@ -7,7 +7,8 @@ do
         export ORAENV_ASK=NO
         export ORACLE_SID=$r
 
-        OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/${DATE_REP}
+        # OUTPUT_DIR=output/${HNAME}/${ORACLE_SID}/${DATE_REP}
+        OUTPUT_DIR=${HNAME}/${ORACLE_SID}/${DATE_REP}
         mkdir -p ${OUTPUT_DIR}
 
         # export CSV_FILE=${OUTPUT_DIR}/Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.csv
