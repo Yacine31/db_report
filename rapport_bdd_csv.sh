@@ -49,11 +49,11 @@ do
         done
 
         # suppression du zip s'il existe déjà
-        rm -f ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip 2>/dev/null
+        rm -f ${ID_CLIENT}_${HNAME}_${ORACLE_SID}_${DATE_REP}.zip 2>/dev/null
         # compression pour récupérer la totalité en zip
-        zip -r ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip ${OUTPUT_DIR} 1>/dev/null
+        zip -r ${ID_CLIENT}_${HNAME}_${ORACLE_SID}_${DATE_REP}.zip ${OUTPUT_DIR} 1>/dev/null
 
         echo Les fichiers CSV sont dans le répertoire : ${OUTPUT_DIR}
-        echo Pour récupérer les fichiers dans un seul zip :  ${HNAME}_${ORACLE_SID}_${DATE_REP}.zip
+        echo Pour récupérer les fichiers dans un seul zip :  ${ID_CLIENT}_${HNAME}_${ORACLE_SID}_${DATE_REP}.zip
 done
 
