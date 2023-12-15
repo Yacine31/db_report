@@ -2,7 +2,13 @@ DATETIME=$(date +%Y%m%d_%H%M)
 HNAME=$(hostname)
 DATE_REP=$(date +%Y_%m_%d)
 
-[ "${ID_CLIENT}" ] || ( echo "$0 ID_CLIENT" && exit 1 )
+ID_CLIENT=$1
+
+if [ "x${ID_CLIENT}" == "x" ] 
+then 
+        echo "$0 ID_CLIENT" 
+        exit 1
+fi 
 
 for r in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
 do
