@@ -26,7 +26,7 @@ SELECT 'Oracle Database version:', inst.db_version FROM inst
  UNION ALL
 SELECT 'Database block size:', TRIM(TO_CHAR(db_block.bytes / POWER(2,10), '90'))||' KB' FROM db_block
  UNION ALL
-SELECT 'Database size:', TRIM(TO_CHAR(ROUND((data.bytes + temp.bytes + log.bytes + control.bytes) / POWER(10,12), 3), '999,999,990.000'))||' TB'
+SELECT 'Database size:', TRIM(TO_CHAR(ROUND((data.bytes + temp.bytes + log.bytes + control.bytes) / POWER(10,9), 3), '999,999,990.000'))||' GB'
   FROM db, data, temp, log, control
  UNION ALL
 SELECT 'Datafiles:', data.files||' (on '||data.tablespaces||' tablespaces)' FROM data
