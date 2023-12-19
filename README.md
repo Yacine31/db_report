@@ -7,6 +7,14 @@ git clone https://github.com/Yacine31/db_report
 cd db_report
 sh -x rapport_bdd.sh
 ```
+
+il est possible de générer plusieurs CSV avec la commande :
+```bash
+sh rapport_bdd_csv.sh
+```
+Un ensemble de fichiers CSV est généré sous format zip 
+
+
 ## Sous Windows
 Télécharger le zip ici : [https://github.com/Yacine31/db_report/archive/refs/heads/main.zip](https://github.com/Yacine31/db_report/archive/refs/heads/main.zip)
 
