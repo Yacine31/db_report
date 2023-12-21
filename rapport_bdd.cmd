@@ -21,7 +21,7 @@ for /f "tokens=*" %%r in ('net start ^| find /i "OracleService"') do (
         echo SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF > !TMP_SQLFILE! 
         echo WHENEVER SQLERROR CONTINUE >> !TMP_SQLFILE! 
         type %%f >> !TMP_SQLFILE!
-        echo EXIT >> !TMP_SQLFILE! 
+        REM echo EXIT >> !TMP_SQLFILE! 
         echo Execution du script %%f
         call sqlplus -S / as sysdba @!TMP_SQLFILE! >> !HTML_FILE!
     )
