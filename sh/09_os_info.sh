@@ -49,9 +49,9 @@ esac
 
 case "$os_type" in
     Linux)
-		echo "<h2>Liste des disques disponibles (lsblk -f) :</h2>"
+		echo "<h2>Liste des disques disponibles (lsblk) :</h2>"
 		echo "<pre>"
-		lsblk -f
+		lsblk
 		echo "</pre>"
 
 		echo "<h2>Taille mémoire en Mo (free -m) :</h2>"
