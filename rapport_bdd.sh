@@ -1,3 +1,4 @@
+export LANG=en_US
 DATETIME=`date +%Y%m%d%H%M`
 HNAME=$(hostname)
 OUTPUT_DIR=output/$(date +%Y%m%d)

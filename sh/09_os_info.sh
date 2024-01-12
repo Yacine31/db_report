@@ -16,10 +16,20 @@ echo "<pre>"
 uptime
 echo "</pre>"
 
-echo "<h2>Contenu du fichier /etc/fstab :</h2>"
-echo "<pre>"
-cat /etc/fstab | egrep -v '^#|^$'
-echo "</pre>"
+case "$os_type" in
+    AIX)
+		echo "<h2>Espace disque (lsfs) :</h2>"
+		echo "<pre>"
+        lsfs
+		echo "</pre>"
+        ;;
+    Linux)
+		echo "<h2>Contenu du fichier /etc/fstab :</h2>"
+		echo "<pre>"
+		cat /etc/fstab | egrep -v '^#|^$'
+		echo "</pre>"
+        ;;
+esac
 
 echo "<h2>Contenu du contab du compte oracle :</h2>"
 echo "<pre>"
@@ -31,6 +41,7 @@ echo "<pre>"
 ulimit -a | sort
 echo "</pre>"
 
+# espace disque en fonction de l'OS
 case "$os_type" in
     AIX)
 		echo "<h2>Espace disque (df -g) :</h2>"
