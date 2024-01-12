@@ -32,7 +32,8 @@ do
                 echo "<h1>Configuration de l'instance ASM</h1>" >> ${HTML_FILE}
                 for f in asm/*.sql
                 do
-                        sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+                        # sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+                        cat asm/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
                 done
         fi
 
@@ -40,7 +41,8 @@ do
         echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         for f in sql/*.sql
         do
-                sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+                # sed '1 s/^/SET PAGES 999 FEEDBACK OFF MARKUP HTML ON SPOOL ON PREFORMAT OFF ENTMAP OFF\n/' $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+                cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
         done
 
         sed -i 's/<table.*>$/<table class="table table-striped">/g' ${HTML_FILE}
