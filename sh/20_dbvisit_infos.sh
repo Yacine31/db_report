@@ -13,6 +13,12 @@ if [ $count -gt 0 ]; then
 
 	# on récupère le chemin de l'executable dbvctl
 	export DBV_HOME=$(dirname $(ps -ef | grep dbvctl | grep -v grep | awk '{print $8}' | sort -u))
+	# si les exacutables sont lancé avec ./dbvctl, le résultat retourné est .
+	# dans ce cas on remplace par la valeur par défaut : /usr/dbvisit/standby
+	if [ "$DBV_HOME" = "." ]; then
+		# Attribuer une nouvelle valeur à DBV_HOME
+		export DBV_HOME="/usr/dbvisit/standby"
+	fi
 
 	# statut de la base de données
 	echo "<h2>Statut de la base : ${ORACLE_SID} sur le serveur $(hostname)</h2>"
