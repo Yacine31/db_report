@@ -23,6 +23,7 @@ do
 	# exécuter la commande
 	echo "<br><pre>"
 	echo $lsnrctl_command
+	echo export TNS_ADMIN=$binary_path/network/admin
 	export TNS_ADMIN=$binary_path/network/admin
 	eval "$lsnrctl_command"
 	echo "</pre><br>"
