@@ -22,7 +22,7 @@ do
 	lsnrctl_command="$binary_path status $listener_name"
 	# exécuter la commande
 	echo "<pre>"
-	eval ${lsnrctl_command}
+	eval "$lsnrctl_command"
 	echo "</pre>"
 done
 
