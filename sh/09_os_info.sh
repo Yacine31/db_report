@@ -11,6 +11,21 @@ echo "<pre>"
 ps -ef | grep tnslsnr| grep -v grep 
 echo "</pre>"
 
+echo "<h2>Statut des listeners :</h2>"
+ps -ef | grep tnslsnr| grep -v grep | while read l
+do
+	# Récupérer le chemin du binaire tnslsnr à partir de la sortie de ps
+	binary_path=echo $l | awk '{print $8}'
+	# Extraire le nom du listener
+	listener_name=$(echo $l | awk '{print $8}')
+	# Construire la commande lsnrctl status
+	lsnrctl_command="$binary_path status $listener_name"
+	# exécuter la commande
+	echo "<pre>"
+	eval ${lsnrctl_command}
+	echo "</pre>"
+done
+
 echo "<h2>Uptime :</h2>"
 echo "<pre>"
 uptime
