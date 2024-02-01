@@ -21,9 +21,9 @@ do
 	# Construire la commande lsnrctl status
 	lsnrctl_command="$binary_path status $listener_name"
 	# exécuter la commande
-	echo "<pre>"
+	echo "<br><pre>"
 	eval "$lsnrctl_command"
-	echo "</pre>"
+	echo "</pre><br>"
 done
 
 echo "<h2>Uptime :</h2>"
