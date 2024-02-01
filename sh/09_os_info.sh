@@ -22,6 +22,8 @@ do
 	lsnrctl_command="$binary_path status $listener_name"
 	# exécuter la commande
 	echo "<br><pre>"
+	echo $lsnrctl_command
+	export TNS_ADMIN=$binary_path/network/admin
 	eval "$lsnrctl_command"
 	echo "</pre><br>"
 done
