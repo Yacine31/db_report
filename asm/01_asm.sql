@@ -27,7 +27,7 @@ SELECT
     a.mode_status,
     a.state,
     a.redundancy,
-    to_char(a.create_date, 'DD/MM/YYYY HH24:MI')
+    to_char(a.create_date, 'DD/MM/YYYY HH24:MI') "Create Date"
 FROM
     v$asm_disk      a,
     v$asm_diskgroup dg
