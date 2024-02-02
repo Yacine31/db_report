@@ -45,6 +45,7 @@ COL Pct_Used FORMAT 999.00 HEAD "% Used"
 
 select
     a.tablespace_name,
+    t.bigfile,
     a.bytes_alloc/1024/1024 alloc,
     (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used,
     (nvl(b.bytes_free, 0))/1024/1024  free,
@@ -77,6 +78,7 @@ where
 union all
 select
     h.tablespace_name,
+    dt.bigfile,
     (sum(h.bytes_free + h.bytes_used))/1024/1024 alloc,
     (sum(nvl(p.bytes_used, 0)))/1024/1024 used,
     (sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0)))/1024/1024 free,
@@ -95,7 +97,8 @@ where
     and h.tablespace_name = dt.tablespace_name
 group by
     h.tablespace_name,
-    dt.contents
+    dt.contents,
+    dt.bigfile
 order by
     1
 ;
