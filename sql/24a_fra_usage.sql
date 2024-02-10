@@ -1,11 +1,36 @@
 prompt <h2>Fast Recovery Area Usage</h2>
-select 'Taille FRA MiB' as property, p.value / 1024 / 1024  as value from 
-v$parameter p WHERE name = 'db_recovery_file_dest_size'
-union all
-select 'Espace utilise MiB' as property, round((p.value * tot_pct / 100) / 1024 / 1024, 0) as value from 
-( SELECT SUM(percent_space_used) tot_pct FROM v$flash_recovery_area_usage ) , V$PARAMETER P 
-WHERE name = 'db_recovery_file_dest_size'
-union all
-select 'Pourcentage utilise' as property, tot_pct  as value from 
-( SELECT SUM(percent_space_used) tot_pct FROM v$flash_recovery_area_usage ) 
-;
+
+SELECT
+    'Taille FRA MiB'                                  AS PROPERTY,
+    P.VALUE / 1024 / 1024 AS VALUE
+FROM
+    V$PARAMETER P
+WHERE
+    NAME = 'db_recovery_file_dest_size'
+UNION
+ALL
+SELECT
+    'Espace utilise MiB'                              AS PROPERTY,
+    ROUND((P.VALUE * TOT_PCT / 100) / 1024 / 1024, 0) AS VALUE
+FROM
+    (
+        SELECT
+            SUM(PERCENT_SPACE_USED) TOT_PCT
+        FROM
+            V$FLASH_RECOVERY_AREA_USAGE
+    )           ,
+    V$PARAMETER P
+WHERE
+    NAME = 'db_recovery_file_dest_size'
+UNION
+ALL
+SELECT
+    'Pourcentage utilise'                             AS PROPERTY,
+    TOT_PCT                                           AS VALUE
+FROM
+    (
+        SELECT
+            SUM(PERCENT_SPACE_USED) TOT_PCT
+        FROM
+            V$FLASH_RECOVERY_AREA_USAGE
+    )           ;

@@ -1,16 +1,16 @@
 prompt <h2>Taille des objets par schéma (Mo):</h2>
-select
-    ds.owner "Owner",
-    round(sum(ds.bytes) / 1024 / 1024) "Schema Size MB",
-    du.default_tablespace "Default Tablespace"
-from
-    dba_segments ds,
-    dba_users du
-where
-    ds.OWNER = du.USERNAME
-group by
-    ds.owner,
-    du.default_tablespace
-order by
-    ds.owner
-;
+
+SELECT
+    DS.OWNER                           "Owner",
+    ROUND(SUM(DS.BYTES) / 1024 / 1024) "Schema Size MB",
+    DU.DEFAULT_TABLESPACE              "Default Tablespace"
+FROM
+    DBA_SEGMENTS DS,
+    DBA_USERS    DU
+WHERE
+    DS.OWNER = DU.USERNAME
+GROUP BY
+    DS.OWNER,
+    DU.DEFAULT_TABLESPACE
+ORDER BY
+    DS.OWNER;

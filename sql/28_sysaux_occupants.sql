@@ -1,5 +1,9 @@
 prompt <h2>SYSAUX Occupants</h2>
-SELECT /*+  NO_MERGE  */ 
-       v.*, ROUND(v.space_usage_kbytes / POWER(10,6), 3) space_usage_gbs
-  FROM v$sysaux_occupants v
- ORDER BY 1;
+
+SELECT /*+  NO_MERGE  */
+     V.*,
+     ROUND(V.SPACE_USAGE_KBYTES / POWER(10, 6), 3) SPACE_USAGE_GBS
+FROM
+     V$SYSAUX_OCCUPANTS V
+ORDER BY
+     1;

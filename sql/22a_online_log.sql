@@ -1,13 +1,12 @@
 prompt <h2>Fichiers de journalisation (Redolog) :</h2>
-alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
+
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 
 SELECT
     *
 FROM
-    v$log
+    V$LOG
 ORDER BY
-    group#,
-    thread#,
-    sequence#;
-
-
+    GROUP#,
+    THREAD#,
+    SEQUENCE#;

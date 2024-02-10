@@ -1,10 +1,11 @@
 prompt <h2>Dictionary Stats / Fixed Objects Stats</h2>
 
 SELECT
-	to_char(max(end_time),'dd/mm/yyyy hh24:mi') latest, operation
+	TO_CHAR(MAX(END_TIME), 'dd/mm/yyyy hh24:mi') LATEST,
+	OPERATION
 FROM
-	dba_optstat_operations
+	DBA_OPTSTAT_OPERATIONS
 WHERE
-	operation in ('gather_dictionary_stats', 'gather_fixed_objects_stats')
+	OPERATION IN ('gather_dictionary_stats', 'gather_fixed_objects_stats')
 GROUP BY
-	operation;
+	OPERATION;

@@ -1,2 +1,9 @@
 prompt <h2>Statut des jobs autotask </h2>
-select client_name, status,attributes,service_name from dba_autotask_client;
+
+SELECT
+    CLIENT_NAME,
+    STATUS,
+    ATTRIBUTES,
+    SERVICE_NAME
+FROM
+    DBA_AUTOTASK_CLIENT;

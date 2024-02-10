@@ -1,3 +1,13 @@
 prompt <h2>Invalid objects</h2>
-select owner, count(*) "invalid objects" FROM dba_objects WHERE status <> 'VALID' group by owner order by owner;
-exit
+
+SELECT
+    OWNER,
+    COUNT(*) "invalid objects"
+FROM
+    DBA_OBJECTS
+WHERE
+    STATUS <> 'VALID'
+GROUP BY
+    OWNER
+ORDER BY
+    OWNER;

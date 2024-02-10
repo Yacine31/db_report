@@ -1,2 +1,6 @@
 prompt <h2>Existance de blocks corrompus :</h2>
-select * from v$database_block_corruption;
+
+SELECT
+    *
+FROM
+    V$DATABASE_BLOCK_CORRUPTION;

@@ -39,14 +39,6 @@ CASE WHEN sga.target > 0 THEN 'SGA '   ||TRIM(TO_CHAR(ROUND(sga.target / POWER(2
 CASE WHEN pga.target > 0 THEN 'PGA '   ||TRIM(TO_CHAR(ROUND(pga.target / POWER(2,30), 1), '999,990.0'))||' GB, ' END||
 CASE WHEN mem.target > 0 THEN 'AMM' ELSE CASE WHEN sga.target > 0 THEN 'ASMM' ELSE 'MANUAL' END END
   FROM mem, sga, pga
---  UNION ALL
--- SELECT 'Hardware:', 'Unknown' FROM dual
---  UNION ALL
--- SELECT 'Storage:','' FROM DUAL WHERE '' IS NOT NULL
---  UNION ALL
--- SELECT 'Storage Version:','' FROM DUAL WHERE '' IS NOT NULL
---  UNION ALL
--- SELECT 'Processor:', 'Common KVM processor' FROM DUAL
  UNION ALL
 SELECT 'Physical CPUs:', core.cnt||' cores'||CASE WHEN rac.instances > 0 THEN ', on '||rac.db_type END FROM rac, core
  UNION ALL

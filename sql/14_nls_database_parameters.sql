@@ -1,3 +1,8 @@
 prompt <h2>Paramètres NLS au niveau de la base de données :</h2>
-select * from nls_database_parameters order by parameter;
 
+SELECT
+    *
+FROM
+    NLS_DATABASE_PARAMETERS
+ORDER BY
+    PARAMETER;

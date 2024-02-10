@@ -1,40 +1,55 @@
 -- SCRIPT - to Set the 'SESSION_CACHED_CURSORS' and 'OPEN_CURSORS' Parameters Based on Usage (Doc ID 208857.1)
 prompt <h2>Sessions and Cursors usage </h2>
-select
-	'session_cached_cursors' parameter,
-	lpad(value, 5) value,
-	decode(value, 0, ' n/a', to_char(100 * used / value, '990') || '%') usage
-from
-( 
-	select	max(s.value) used
-	from v$statname n, v$sesstat s
-	where
-		n.name = 'session cursor cache count'
-		and s.statistic# = n.statistic#
-),
-( 
-	select value
-	from v$parameter
-	where name = 'session_cached_cursors'
-)
-union all
-select
-	'open_cursors',
-	lpad(value, 5),
-	to_char(100 * used / value, '990') || '%'
-from
-( 
-	select max(sum(s.value)) used
-	from v$statname n, v$sesstat s
-	where
-		n.name in ('opened cursors current') and
-		s.statistic# = n.statistic#
-	group by s.sid
-),
-( 
-	select value
-	from v$parameter
-	where name = 'open_cursors'
-)
-;
 
+SELECT
+	'session_cached_cursors'         PARAMETER,
+	LPAD(VALUE, 5)                   VALUE,
+	DECODE(VALUE, 0, ' n/a', TO_CHAR(100 * USED / VALUE, '990')
+	                         || '%') USAGE
+FROM
+	(
+		SELECT
+			MAX(S.VALUE) USED
+		FROM
+			V$STATNAME N,
+			V$SESSTAT  S
+		WHERE
+			N.NAME = 'session cursor cache count'
+			AND S.STATISTIC# = N.STATISTIC#
+	),
+	(
+		SELECT
+			VALUE
+		FROM
+			V$PARAMETER
+		WHERE
+			NAME = 'session_cached_cursors'
+	)
+UNION
+ALL
+SELECT
+	'open_cursors',
+	LPAD(VALUE, 5),
+	TO_CHAR(100 * USED / VALUE, '990')
+	|| '%'
+FROM
+	(
+		SELECT
+			MAX(SUM(S.VALUE)) USED
+		FROM
+			V$STATNAME N,
+			V$SESSTAT  S
+		WHERE
+			N.NAME IN ('opened cursors current')
+			AND S.STATISTIC# = N.STATISTIC#
+		GROUP BY
+			S.SID
+	),
+	(
+		SELECT
+			VALUE
+		FROM
+			V$PARAMETER
+		WHERE
+			NAME = 'open_cursors'
+	);

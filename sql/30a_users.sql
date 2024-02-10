@@ -1,18 +1,19 @@
 prompt <h2>DBA Users </h2>
-set pages 999
-ALTER SESSION SET NLS_DATE_FORMAT ='YYYY/MM/DD HH24:MI';
-SELECT 
-       x.username,
-       x.user_id,
-       x.account_status,
-       x.lock_date,
-       x.expiry_date,
-       x.default_tablespace,
-       x.temporary_tablespace,
-       x.created,
-       x.profile, 
-       x.password_versions
-  FROM dba_users x
- ORDER BY x.username
-;
 
+ALTER SESSION SET NLS_DATE_FORMAT ='YYYY/MM/DD HH24:MI';
+
+SELECT
+     X.USERNAME,
+     X.USER_ID,
+     X.ACCOUNT_STATUS,
+     X.LOCK_DATE,
+     X.EXPIRY_DATE,
+     X.DEFAULT_TABLESPACE,
+     X.TEMPORARY_TABLESPACE,
+     X.CREATED,
+     X.PROFILE,
+     X.PASSWORD_VERSIONS
+FROM
+     DBA_USERS X
+ORDER BY
+     X.USERNAME;

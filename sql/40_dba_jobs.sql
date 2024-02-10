@@ -1,6 +1,8 @@
 prompt <h2>Liste des jobs dans : dba_jobs </h2>
-alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
-SELECT * FROM dba_jobs;
 
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 
-
+SELECT
+    *
+FROM
+    DBA_JOBS;

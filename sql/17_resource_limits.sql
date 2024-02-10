@@ -1,10 +1,11 @@
 prompt <h2>Resource Limit (GV$RESOURCE_LIMIT)</h2>
+
 SELECT
     *
 FROM
-    gv$resource_limit
+    GV$RESOURCE_LIMIT
 WHERE
-    resource_name IN ( 'processes', 'sessions' )
+    RESOURCE_NAME IN ( 'processes', 'sessions' )
 ORDER BY
-    resource_name,
-    inst_id;
+    RESOURCE_NAME,
+    INST_ID;
