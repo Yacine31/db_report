@@ -12,12 +12,15 @@ ps -ef | grep tnslsnr| grep -v grep
 echo "</pre>"
 
 echo "<h2>Statut des listeners :</h2>"
-ps -ef | grep tnslsnr| grep -v grep | while read l
+ps -ef | grep tnslsnr | grep -v grep | while read l
 do
-	# Récupérer le chemin du binaire tnslsnr à partir de la sortie de ps
-	binary_path=$(echo $l | grep -o '/[^ ]*' | sed 's#/bin/tnslsnr##')
+	# Récupérer le chemin ORACLE_HOME à partir de la sortie de ps -ef
+	# ---- La commande grep -o ne fonctionne pas sur AIX, on la remplace par perl -lne
+	# binary_path=$(echo $l | grep -o '/[^ ]*' | sed 's#/bin/tnslsnr##')
+	binary_path=$(echo $l | perl -lne 'print $1 if /(\S*tnslsnr\S*)/' | sed 's#/bin/tnslsnr##')
 	# Extraire le nom du listener
-	listener_name=$(echo $l | grep -o 'tnslsnr [^ ]*' | sed 's/tnslsnr //')
+	# listener_name=$(echo $l | grep -o 'tnslsnr [^ ]*' | sed 's/tnslsnr //')
+	listener_name=$(echo $l | perl -lne 'print $1 if /\btnslsnr\s+(\S+)/' | sed 's/tnslsnr //')
 	# Construire la commande lsnrctl status
 	lsnrctl_command="$binary_path/bin/lsnrctl status $listener_name"
 	# exécuter la commande
