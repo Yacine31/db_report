@@ -15,9 +15,11 @@ echo "<h2>Statut des listeners :</h2>"
 ps -ef | grep tnslsnr| grep -v grep | while read l
 do
 	# Récupérer le chemin du binaire tnslsnr à partir de la sortie de ps
-	binary_path=$(echo $l | awk '{print $8}' | sed 's#/bin/tnslsnr##')
+	# binary_path=$(echo $l | awk '{print $8}' | sed 's#/bin/tnslsnr##')
+	binary_path=$(echo $l | egrep -o '/[^ ]*' | sed 's#/bin/tnslsnr##')
 	# Extraire le nom du listener
-	listener_name=$(echo $l | awk '{print $9}')
+	# listener_name=$(echo $l | awk '{print $9}')
+	listener_name=$(echo $l | grep -o 'tnslsnr [^ ]*' | sed 's/tnslsnr //')
 	# Construire la commande lsnrctl status
 	lsnrctl_command="$binary_path/bin/lsnrctl status $listener_name"
 	# exécuter la commande
