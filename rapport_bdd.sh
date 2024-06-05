@@ -39,7 +39,7 @@ do
         fi
 
         # vérifier si la base est une CDB
-        if [ "$(/bin/sh sql/cdb/is_CDB.sh)" == "YES" ]; then
+        if [ "$(/bin/sh sql/cdb/is_CDB.sh | tail -1)" == "YES" ]; then
                 echo "Base CDB : ${ORACLE_SID}"
                 # Executer les scripts sql pour les PDB
                 for f in sql/cdb/*.sql; do
