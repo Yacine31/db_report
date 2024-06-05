@@ -1,3 +1,3 @@
-prompt <h2>Database/Version</h2>
+prompt <h2>Liste des PLuggables Databases</h2>
 
 show pdbs;
