@@ -38,6 +38,15 @@ do
                 done
         fi
 
+        # vérifier si la base est une CDB
+        if [ "$(/bin/sh sql/cdb/is_cdb.sh)" == "YES"]
+                for f in sql/cdb/*.sql
+                # Executer les scripts sql pour les PDB
+                do
+                        cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
+                done
+        fi
+
         # execution des scripts sql
         echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         for f in sql/*.sql
