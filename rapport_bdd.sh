@@ -39,7 +39,7 @@ do
         fi
 
         # vérifier si la base est une CDB
-        if [ "$(/bin/sh sql/cdb/is_cdb.sh)" == "YES" ]; then
+        if [ "$(/bin/sh sql/cdb/is_CDB.sh)" == "YES" ]; then
                 # Executer les scripts sql pour les PDB
                 for f in sql/cdb/*.sql; do
                         # Exécuter les scripts SQL pour les PDB
