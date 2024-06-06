@@ -1,7 +1,7 @@
 prompt <h2>Détail des datafiles : </h2>
 
 
-ECLARE
+DECLARE
     v_is_cdb VARCHAR2(3);
 BEGIN
     -- Vérifier si la base de données est une CDB
