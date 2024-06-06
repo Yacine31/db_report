@@ -32,7 +32,8 @@ cdb_files AS (
                     sum(f.bytes) bytes_free
                 from dba_free_space f group by file_id
             ) b,
-            dba_data_files d, cdb_pdbs p
+            dba_data_files d, 
+            cdb_pdbs p
         where
             a.file_id = b.file_id (+) and d.file_id=a.file_id and d.pdb_id=p.con_id
         order by 
