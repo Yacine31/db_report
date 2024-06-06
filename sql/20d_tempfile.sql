@@ -7,14 +7,14 @@ COL file_name HEAD "Tempfile"
 COL tablespace_name FORMAT A20 HEAD "Tablespace"
 
 COL file_size_mb FORMAT 999999999.00 HEAD "File Size MB"
-COL space_used_mb FORMAT 999999999.00 HEAD "Space Used MB"
-COL space_free_mb FORMAT 999999999.00 HEAD "Space Free MB"
+-- COL space_used_mb FORMAT 999999999.00 HEAD "Space Used MB"
+-- COL space_free_mb FORMAT 999999999.00 HEAD "Space Free MB"
 COL maxsize_mb FORMAT 999999999.00 HEAD "Max Size MB"
-COL percent_used FORMAT 999.00 HEAD "% Used"
+-- COL percent_used FORMAT 999.00 HEAD "% Used"
 
 COL autoextensible FORMAT A15 HEAD "Auto Extensible"
 COL status head "Status"
-COL online_status format a15 head "Online Status"
+-- COL online_status format a15 head "Online Status"
 
 WITH
 -- Sous-requête pour les fichiers de données dans une CDB
@@ -26,28 +26,12 @@ cdb_files AS (
         d.file_id,
         d.tablespace_name,
         d.file_name,
-        a.bytes_alloc/1024/1024 AS file_size_mb,
-        (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
-        NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
-        a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
+        d.bytes/1024/1024 AS file_size_mb,
+        d.maxbytes/1024/1024 AS maxsize_mb,
         d.autoextensible,
         d.status
     FROM
-        (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_alloc,
-                SUM(DECODE(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) AS maxbytes
-            FROM cdb_temp_files f GROUP BY file_id
-        ) a
-        LEFT JOIN (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_free
-            FROM cdb_free_space f GROUP BY file_id
-        ) b ON a.file_id = b.file_id
-        JOIN cdb_temp_files d ON a.file_id = d.file_id
+        cdb_temp_files d 
         JOIN cdb_pdbs p ON d.con_id = p.pdb_id
     WHERE 
         (SELECT cdb FROM v$database) = 'YES'
@@ -59,34 +43,21 @@ non_cdb_files AS (
     SELECT
         0 AS pdb_id,
         NULL AS pdb_name,
+        p.con_id AS pdb_id,
+        p.pdb_name AS pdb_name,
         d.file_id,
         d.tablespace_name,
         d.file_name,
-        a.bytes_alloc/1024/1024 AS file_size_mb,
-        (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
-        NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
-        a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
+        d.bytes/1024/1024 AS file_size_mb,
+        d.maxbytes/1024/1024 AS maxsize_mb,
         d.autoextensible,
         d.status
     FROM
-        (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_alloc,
-                SUM(DECODE(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) AS maxbytes
-            FROM dba_temp_files f GROUP BY file_id
-        ) a
-        LEFT JOIN (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_free
-            FROM dba_temp_free_space f GROUP BY file_id
-        ) b ON a.file_id = b.file_id
-        JOIN dba_temp_files d ON a.file_id = d.file_id
---    WHERE 
---        (SELECT cdb FROM v$database) = 'NO'
-    ORDER BY d.tablespace_name, d.file_name
+        cdb_temp_files d 
+        JOIN cdb_pdbs p ON d.con_id = p.pdb_id
+    WHERE 
+        (SELECT cdb FROM v$database) = 'YES'
+    ORDER BY p.pdb_id, d.tablespace_name, d.file_name
 )
 -- Requête finale combinant les résultats des sous-requêtes
 SELECT * FROM cdb_files
