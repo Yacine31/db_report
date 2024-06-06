@@ -51,11 +51,10 @@ non_cdb_files AS (
         d.autoextensible,
         d.status
     FROM
-        cdb_temp_files d 
-        JOIN cdb_pdbs p ON d.con_id = p.pdb_id
+        dba_temp_files d 
     WHERE 
-        (SELECT cdb FROM v$database) = 'YES'
-    ORDER BY p.pdb_id, d.tablespace_name, d.file_name
+        (SELECT cdb FROM v$database) = 'NO'
+    ORDER BY d.tablespace_name, d.file_name
 )
 -- Requête finale combinant les résultats des sous-requêtes
 SELECT * FROM cdb_files
