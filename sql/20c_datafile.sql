@@ -1,5 +1,21 @@
 prompt <h2>CDB/PDB - Détail des datafiles : </h2>
 
+COL con_id HEAD "CON ID"
+COL pdb_name HEAD "PDB Name"
+COL file_id HEAD "File ID"
+COL file_name HEAD "Datafile"
+COL tablespace_name FORMAT A20 HEAD "Tablespace"
+
+COL file_size_mb FORMAT 999999999.00 HEAD "File Size MB"
+COL space_used_mb FORMAT 999999999.00 HEAD "Space Used MB"
+COL space_free_mb FORMAT 999999999.00 HEAD "Space Free MB"
+COL maxsize_mb FORMAT 999999999.00 HEAD "Max Size MB"
+COL percent_used FORMAT 999.00 HEAD "% Used"
+
+COL autoextensible FORMAT A15 HEAD "Auto Extensible"
+COL status head "Status"
+COL online_status format a15 head "Online Status"
+
 WITH
 -- Sous-requête pour les fichiers de données dans une CDB
 cdb_files AS (
