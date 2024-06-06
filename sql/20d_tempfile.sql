@@ -1,9 +1,9 @@
-prompt <h2>CDB/PDB - Détail des datafiles : </h2>
+prompt <h2>Détail des tempfile : </h2>
 
 COL con_id HEAD "CON ID"
 COL pdb_name HEAD "PDB Name"
 COL file_id HEAD "File ID"
-COL file_name HEAD "Datafile"
+COL file_name HEAD "Tempfile"
 COL tablespace_name FORMAT A20 HEAD "Tablespace"
 
 COL file_size_mb FORMAT 999999999.00 HEAD "File Size MB"
@@ -57,8 +57,8 @@ cdb_files AS (
 non_cdb_files AS (
     -- non_cdb_files.sql
     SELECT
-        NULL AS pdb_id,
-        NULL AS pdb_name,
+        0 AS pdb_id,
+        0 AS pdb_name,
         d.file_id,
         d.tablespace_name,
         d.file_name,
