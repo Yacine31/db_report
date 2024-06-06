@@ -36,8 +36,8 @@ cdb_files AS (
             cdb_pdbs p
         where
             a.file_id = b.file_id (+) and d.file_id=a.file_id and d.pdb_id=p.con_id
-        order by 
-            p.con_id, p.pdb_name, d.file_name
+        -- order by 
+        --     p.con_id, p.pdb_name, d.file_name
     )    
     WHERE 
         (SELECT cdb AS is_cdb FROM v$database) = 'YES'
