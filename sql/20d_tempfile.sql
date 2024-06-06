@@ -43,8 +43,6 @@ non_cdb_files AS (
     SELECT
         0 AS pdb_id,
         NULL AS pdb_name,
-        p.con_id AS pdb_id,
-        p.pdb_name AS pdb_name,
         d.file_id,
         d.tablespace_name,
         d.file_name,
