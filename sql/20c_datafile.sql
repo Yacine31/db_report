@@ -49,7 +49,7 @@ cdb_files AS (
             FROM cdb_free_space f GROUP BY file_id
         ) b ON a.file_id = b.file_id
         JOIN cdb_data_files d ON a.file_id = d.file_id
-        JOIN cdb_pdbs p ON d.con_id = p.pdb_id
+        RIGHT JOIN cdb_pdbs p ON d.con_id = p.pdb_id
     WHERE 
         (SELECT cdb FROM v$database) = 'YES'
     ORDER BY p.pdb_id, d.tablespace_name, d.file_name
