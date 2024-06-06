@@ -58,7 +58,7 @@ non_cdb_files AS (
     -- non_cdb_files.sql
     SELECT
         0 AS pdb_id,
-        0 AS pdb_name,
+        '0' AS pdb_name,
         d.file_id,
         d.tablespace_name,
         d.file_name,
