@@ -34,6 +34,7 @@ cdb_files AS (
         ) b ON a.file_id = b.file_id
         JOIN cdb_data_files d ON a.file_id = d.file_id
         JOIN cdb_pdbs p ON d.con_id = p.pdb_id
+    ORDER BY p.pdb_id, d.tablespace_name, d.file_name
     WHERE 
         (SELECT cdb FROM v$database) = 'YES'
 ),
@@ -74,9 +75,7 @@ non_cdb_files AS (
 )
 -- Requête finale combinant les résultats des sous-requêtes
 SELECT * FROM cdb_files
-    ORDER BY 
-        p.pdb_id, d.tablespace_name, d.file_name
 UNION ALL
 SELECT * FROM non_cdb_files;
-    ORDER BY 
-        d.tablespace_name, d.file_name
+--    ORDER BY 
+--        d.tablespace_name, d.file_name
