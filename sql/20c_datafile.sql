@@ -9,13 +9,6 @@ BEGIN
 
     IF v_is_cdb = 'YES' THEN
         -- Si la base de données est une CDB, exécuter la requête avec pdb_id et pdb_name
-        DBMS_OUTPUT.PUT_LINE('PDB ID: ' || rec.pdb_id || 
-                             ', PDB Name: ' || rec.pdb_name || 
-                             ', Tablespace Name: ' || rec.tablespace_name || 
-                             ', File Name: ' || rec.file_name || 
-                             ', Size (MB): ' || rec.Size_Mo || 
-                             ', Max Size (MB): ' || rec.Maxsize_Mo || 
-                             ', Autoextensible: ' || rec.autoextensible);
         FOR rec IN (
             SELECT 
                 p.pdb_id AS pdb_id,
