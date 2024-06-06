@@ -4,7 +4,7 @@ WITH
 -- Sous-requête pour les fichiers de données dans une CDB
 cdb_files AS (
     -- cdb_files.sql
-    SELECT
+(    SELECT
         p.con_id AS pdb_id,
         p.pdb_name AS pdb_name,
         d.file_id,
@@ -35,7 +35,7 @@ cdb_files AS (
         JOIN cdb_data_files d ON a.file_id = d.file_id
         JOIN cdb_pdbs p ON d.con_id = p.pdb_id
     ORDER BY p.pdb_id, d.tablespace_name, d.file_name
-    WHERE 
+)    WHERE 
         (SELECT cdb FROM v$database) = 'YES'
 ),
 -- Sous-requête pour les fichiers de données dans une non-CDB
