@@ -86,8 +86,8 @@ non_cdb_files AS (
             FROM dba_free_space f GROUP BY file_id
         ) b ON a.file_id = b.file_id
         JOIN dba_data_files d ON a.file_id = d.file_id
-    WHERE 
-        (SELECT cdb FROM v$database) = 'NO'
+--    WHERE 
+--        (SELECT cdb FROM v$database) = 'NO'
     ORDER BY d.tablespace_name, d.file_name
 )
 -- Requête finale combinant les résultats des sous-requêtes
