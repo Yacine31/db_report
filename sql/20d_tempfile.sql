@@ -58,7 +58,7 @@ non_cdb_files AS (
     -- non_cdb_files.sql
     SELECT
         0 AS pdb_id,
-        '0' AS pdb_name,
+        NULL AS pdb_name,
         d.file_id,
         d.tablespace_name,
         d.file_name,
@@ -81,7 +81,7 @@ non_cdb_files AS (
             SELECT
                 f.file_id,
                 SUM(f.bytes) AS bytes_free
-            FROM dba_free_space f GROUP BY file_id
+            FROM dba_temp_free_space f GROUP BY file_id
         ) b ON a.file_id = b.file_id
         JOIN dba_temp_files d ON a.file_id = d.file_id
 --    WHERE 
