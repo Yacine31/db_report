@@ -1,7 +1,9 @@
-prompt <h2>CDB/PDB - Détail des datafiles : </h2>
-
+SET SERVEROUT OFF
 COLUMN is_cdb NEW_VALUE is_cdb_var
 SELECT cdb AS is_cdb FROM v$database;
+
+SET SERVEROUT ON
+prompt <h2>CDB/PDB - Détail des datafiles : </h2>
 
 SELECT 
     CASE 
@@ -9,7 +11,7 @@ SELECT
         ELSE NULL 
     END AS pdb_id,
     CASE 
-        WHEN '&is_cdb_var' = 'YES' THEN p.name 
+        WHEN '&is_cdb_var' = 'YES' THEN p.pdb_name 
         ELSE NULL 
     END AS pdb_name,
     df.tablespace_name, 
