@@ -1,5 +1,9 @@
 prompt <h2>Liste des PLuggables Databases</h2>
 
+col application_root for a25
+col application_pdb for a25
+col application_seed for a25
+
 SELECT
     p.con_id,
     p.dbid,
