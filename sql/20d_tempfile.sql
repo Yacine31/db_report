@@ -32,7 +32,7 @@ cdb_files AS (
         d.status
     FROM
         cdb_temp_files d 
-        JOIN cdb_pdbs p ON d.con_id = p.pdb_id
+        RIGHT JOIN cdb_pdbs p ON d.con_id = p.pdb_id
     WHERE 
         (SELECT cdb FROM v$database) = 'YES'
     ORDER BY p.pdb_id, d.tablespace_name, d.file_name
