@@ -12,7 +12,7 @@ ps -ef | grep tnslsnr| grep -v grep
 echo "</pre>"
 
 echo "<h2>Statut des listeners :</h2>"
-ps -ef | grep tnslsnr | grep -v grep | while read l
+ps -ef | grep tnslsnr | egrep -i "LISTENER|${ORACLE_SID}" | grep -v grep | while read l
 do
 	# Récupérer le chemin ORACLE_HOME à partir de la sortie de ps -ef
 	# ---- La commande grep -o ne fonctionne pas sur AIX, on la remplace par perl -lne
