@@ -1,4 +1,4 @@
-prompt <h2>CDB/PDB - Détail des datafiles : </h2>
+prompt <h2>base "$sid" - Détail des datafiles : </h2>
 
 COL con_id HEAD "con_id"
 COL pdb_name HEAD "pdb_name"
