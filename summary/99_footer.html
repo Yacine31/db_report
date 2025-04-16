@@ -29,12 +29,16 @@
       }
       // Tu peux ajouter d’autres règles ici si besoin
     ];
-  
+    
     // 🎨 Appliquer les règles de coloration dynamiquement
     const colorizeDynamicColumns = () => {
       document.querySelectorAll("table").forEach(table => {
-        const ths = table.querySelectorAll("thead th");
-  
+        const rows = table.querySelectorAll("tr");
+        if (rows.length === 0) return;
+
+        const headerRow = rows[0];
+        const ths = headerRow.querySelectorAll("th");
+
         rules.forEach(rule => {
           let targetIndex = -1;
           ths.forEach((th, index) => {
@@ -44,26 +48,38 @@
               targetIndex = index;
             }
           });
-  
+
           if (targetIndex !== -1) {
-            table.querySelectorAll("tbody tr").forEach(row => {
+            rows.forEach((row, i) => {
+              if (i === 0) return; // skip header
+
               const cell = row.children[targetIndex];
               if (!cell) return;
-              const text = cell.textContent.trim().replace('%', '').replace(',', '.');
-              const value = parseFloat(text);
-              if (isNaN(value)) return;
-  
-              for (const threshold of rule.thresholds) {
-                if (value >= threshold.min) {
-                  cell.style.backgroundColor = threshold.color;
-                  cell.style.color = threshold.text;
-                  cell.style.fontWeight = 'bold';
-                  break;
+
+              const rawText = cell.textContent.trim();
+              const numeric = parseFloat(rawText.replace('%', '').replace(',', '.'));
+
+              if (rule.matchText) {
+                if (rawText.toUpperCase().includes(rule.matchText.toUpperCase())) {
+                  Object.entries(rule.style).forEach(([prop, val]) => {
+                    cell.style[prop] = val;
+                  });
+                }
+              } else if (!isNaN(numeric)) {
+                for (const threshold of rule.thresholds) {
+                  if (numeric >= threshold.min) {
+                    cell.style.backgroundColor = threshold.color;
+                    cell.style.color = threshold.text;
+                    cell.style.fontWeight = 'bold';
+                    break;
+                  }
                 }
               }
-  
-              // Alignement à droite aussi si c’est un chiffre
-              cell.classList.add('numeric');
+
+              // alignement à droite si numérique
+              if (!isNaN(numeric)) {
+                cell.classList.add("numeric");
+              }
             });
           }
         });
