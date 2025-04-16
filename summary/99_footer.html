@@ -1,0 +1,27 @@
+<script>
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabId = button.getAttribute('data-tab');
+
+        // Gérer l'état des boutons
+        tabButtons.forEach(btn => {
+          btn.classList.remove('text-blue-600', 'border-blue-600');
+          btn.classList.add('text-gray-600');
+        });
+        button.classList.add('text-blue-600', 'border-blue-600');
+        button.classList.remove('text-gray-600');
+
+        // Gérer l'affichage des contenus
+        tabContents.forEach(content => {
+          content.classList.add('hidden');
+        });
+        document.getElementById(tabId).classList.remove('hidden');
+      });
+    });
+  </script>
+
+</body>
+</html>
