@@ -12,7 +12,7 @@ mkdir -p ${OUTPUT_DIR}
 for sqlfile in summary/*.sql
 do
     # on prepare le fichier output
-    FILENAME=$(basename "$sqlfile")
+    FILENAME=$(basename "$sqlfile" | cut -d_ -f2)
     BASENAME="${FILENAME%.*}"
     HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}_${HNAME}_${DATETIME}.html
     # insertion du header HTML
