@@ -25,16 +25,18 @@
     const colorColumnIndex = 9;
 
     const colorizeCells = () => {
-      const rows = document.querySelectorAll('table tr:nth-child(n+2)'); // Ignore l'en-tête
-      rows.forEach(row => {
-        const cell = row.children[colorColumnIndex];
-        const value = parseFloat(cell.innerText);
-        if (!isNaN(value)) {
-          if (value > 90) {
-            cell.classList.add('red');
-          } else if (value >= 80 && value <= 90) {
-            cell.classList.add('orange');
-          }
+    const rows = document.querySelectorAll('table tr:nth-child(n+2)'); // Ignore l'en-tête
+    rows.forEach(row => {
+      const cell = row.children[colorColumnIndex];
+      const value = parseFloat(cell.innerText);
+      if (!isNaN(value)) {
+        if (value > 90) {
+          cell.classList.add('red');
+        } else if (value >= 80 && value <= 90) {
+          cell.classList.add('orange');
+        }
+        // Appliquer la classe 'numeric' pour l'alignement à droite
+        cell.classList.add('numeric');
         }
       });
     };
