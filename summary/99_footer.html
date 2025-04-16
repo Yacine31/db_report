@@ -10,7 +10,7 @@
     });
   });
 */ 
-  
+
   // Permet de sélectionner une ligne en cliquant dessus
   document.addEventListener('DOMContentLoaded', () => {
     const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
@@ -20,7 +20,25 @@
       const v2 = getCellValue(asc ? b : a, idx);
       return !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.localeCompare(v2);
     };
-  
+
+    // Sélection de la colonne (par exemple la 3ème colonne, index 2)
+    const colorColumnIndex = 9;
+
+    const colorizeCells = () => {
+      const rows = document.querySelectorAll('table tr:nth-child(n+2)'); // Ignore l'en-tête
+      rows.forEach(row => {
+        const cell = row.children[colorColumnIndex];
+        const value = parseFloat(cell.innerText);
+        if (!isNaN(value)) {
+          if (value > 90) {
+            cell.classList.add('red');
+          } else if (value >= 80 && value <= 90) {
+            cell.classList.add('orange');
+          }
+        }
+      });
+    };
+
     // permet de trier le tableau
     document.querySelectorAll('table th').forEach(th => {
       th.addEventListener('click', () => {
@@ -35,6 +53,9 @@
         rows.sort(comparer(index, asc)).forEach(row => tbody.appendChild(row));
       });
     });
+    
+    // Appliquer la colorisation après chargement du tableau
+    colorizeCells();
   });
   </script>
   
