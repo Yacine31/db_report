@@ -1,5 +1,6 @@
 <script>
   // Permet de sélectionner une ligne en cliquant dessus
+/*
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('table tr').forEach(row => {
       row.addEventListener('click', () => {
@@ -8,7 +9,34 @@
       });
     });
   });
-</script>
-
+*/ 
+  
+  // Permet de sélectionner une ligne en cliquant dessus
+  document.addEventListener('DOMContentLoaded', () => {
+    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+  
+    const comparer = (idx, asc) => (a, b) => {
+      const v1 = getCellValue(asc ? a : b, idx);
+      const v2 = getCellValue(asc ? b : a, idx);
+      return !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.localeCompare(v2);
+    };
+  
+    // permet de trier le tableau
+    document.querySelectorAll('table th').forEach(th => {
+      th.addEventListener('click', () => {
+        const table = th.closest('table');
+        const tbody = table.querySelector('tbody') || table;
+        const rows = Array.from(tbody.querySelectorAll('tr:nth-child(n+2)')); // ignore header
+        const index = Array.from(th.parentNode.children).indexOf(th);
+        const asc = !th.classList.contains('asc');
+        table.querySelectorAll('th').forEach(th => th.classList.remove('asc', 'desc'));
+        th.classList.toggle('asc', asc);
+        th.classList.toggle('desc', !asc);
+        rows.sort(comparer(index, asc)).forEach(row => tbody.appendChild(row));
+      });
+    });
+  });
+  </script>
+  
 </body>
 </html>
