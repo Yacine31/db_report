@@ -16,7 +16,7 @@ do
     BASENAME="${FILENAME%.*}"
     HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}${HNAME}_${DATETIME}.html
     # insertion du header HTML
-    cat 00_header.html >> ${HTML_FILE}
+    cat summary/00_header.html >> ${HTML_FILE}
 
     for sid in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
     do
@@ -25,11 +25,11 @@ do
             . oraenv -s > /dev/null
 
             # ajouter le resultat du script sql dans la page html
-            cat 01_sql_header.txt $sqlfile | sqlplus -s / as sysdba >> ${HTML_FILE}
+            cat summary/01_sql_header.txt $sqlfile | sqlplus -s / as sysdba >> ${HTML_FILE}
     done
 
     # insertion du footer HTML
-    cat 99_footer.html >> ${HTML_FILE}
+    cat summary/99_footer.html >> ${HTML_FILE}
 
     echo Rapport synthèse pour ${FILENAME} dans : ${HTML_FILE}
 done
