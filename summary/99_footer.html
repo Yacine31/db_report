@@ -1,79 +1,109 @@
 <script>
-  // Permet de sélectionner une ligne en cliquant dessus
-/*
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('table tr').forEach(row => {
-      row.addEventListener('click', () => {
-        document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
-        row.classList.add('selected');
-      });
-    });
-  });
-*/ 
-
-  // Permet de sélectionner une ligne en cliquant dessus
   document.addEventListener('DOMContentLoaded', () => {
     const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
   
     const comparer = (idx, asc) => (a, b) => {
-      const v1 = getCellValue(asc ? a : b, idx);
-      const v2 = getCellValue(asc ? b : a, idx);
-      return !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.localeCompare(v2);
+      const v1 = getCellValue(asc ? a : b, idx).replace(',', '.');
+      const v2 = getCellValue(asc ? b : a, idx).replace(',', '.');
+      return !isNaN(v1) && !isNaN(v2) ? parseFloat(v1) - parseFloat(v2) : v1.localeCompare(v2);
     };
-
-    // Sélection de la colonne (par exemple la 3ème colonne, index 2)
-    const colorColumnIndex = 6;
-
-    const colorizeCells = () => {
-    const rows = document.querySelectorAll('table tr:nth-child(n+2)'); // Ignore l'en-tête
-    rows.forEach(row => {
-      const cell = row.children[colorColumnIndex];
-      const value = parseFloat(cell.innerText);
-      if (!isNaN(value)) {
-        if (value > 90) {
-          cell.classList.add('red');
-        } else if (value >= 80 && value <= 90) {
-          cell.classList.add('orange');
+  
+    // 🎯 Configuration des règles de colorisation
+    const rules = [
+      {
+        keywords: ["percent_used","percent", "used", "utilisation", "%"],
+        thresholds: [
+          { min: 90, color: "#fecaca", text: "#991b1b" },    // rouge
+          { min: 80, color: "#fef08a", text: "#92400e" },    // jaune
+          { min: 0,  color: "#bbf7d0", text: "#065f46" }     // vert
+        ]
+      },
+      {
+        keywords: ["status"], // 👈 règle pour la colonne STATUS
+        matchText: "FAILED",  // mot-clé à détecter
+        style: {              // style à appliquer si trouvé
+          color: "#fff",
+          backgroundColor: "#dc2626", // rouge foncé
+          fontWeight: "bold"
         }
-        // Appliquer la classe 'numeric' pour l'alignement à droite
-        cell.classList.add('numeric');
-        }
+      }
+      // Tu peux ajouter d’autres règles ici si besoin
+    ];
+  
+    // 🎨 Appliquer les règles de coloration dynamiquement
+    const colorizeDynamicColumns = () => {
+      document.querySelectorAll("table").forEach(table => {
+        const ths = table.querySelectorAll("thead th");
+  
+        rules.forEach(rule => {
+          let targetIndex = -1;
+          ths.forEach((th, index) => {
+            const text = th.textContent.trim().toLowerCase();
+            const match = rule.keywords.some(keyword => text.includes(keyword));
+            if (match && targetIndex === -1) {
+              targetIndex = index;
+            }
+          });
+  
+          if (targetIndex !== -1) {
+            table.querySelectorAll("tbody tr").forEach(row => {
+              const cell = row.children[targetIndex];
+              if (!cell) return;
+              const text = cell.textContent.trim().replace('%', '').replace(',', '.');
+              const value = parseFloat(text);
+              if (isNaN(value)) return;
+  
+              for (const threshold of rule.thresholds) {
+                if (value >= threshold.min) {
+                  cell.style.backgroundColor = threshold.color;
+                  cell.style.color = threshold.text;
+                  cell.style.fontWeight = 'bold';
+                  break;
+                }
+              }
+  
+              // Alignement à droite aussi si c’est un chiffre
+              cell.classList.add('numeric');
+            });
+          }
+        });
       });
     };
-
-    // alignement à droit des colonnes numériques
+  
+    // ➕ Appliquer alignement numérique à toutes les cellules numériques
     const alignNumericCells = () => {
-    const rows = document.querySelectorAll('table tr:nth-child(n+2)');
-    rows.forEach(row => {
-      Array.from(row.children).forEach(cell => {
-        const value = parseFloat(cell.innerText.replace(',', '.')); // gérer les virgules si jamais
-        if (!isNaN(value)) {
-          cell.classList.add('numeric');
-        }
+      document.querySelectorAll('table tr:nth-child(n+2)').forEach(row => {
+        Array.from(row.children).forEach(cell => {
+          const value = parseFloat(cell.textContent.replace(',', '.'));
+          if (!isNaN(value)) {
+            cell.classList.add('numeric');
+          }
+        });
       });
-    });
-  };
-
-  // permet de trier le tableau
+    };
+  
+    // 🔁 Tri au clic sur les entêtes
     document.querySelectorAll('table th').forEach(th => {
       th.addEventListener('click', () => {
         const table = th.closest('table');
         const tbody = table.querySelector('tbody') || table;
-        const rows = Array.from(tbody.querySelectorAll('tr:nth-child(n+2)')); // ignore header
+        const rows = Array.from(tbody.querySelectorAll('tr:nth-child(n+2)'));
         const index = Array.from(th.parentNode.children).indexOf(th);
         const asc = !th.classList.contains('asc');
         table.querySelectorAll('th').forEach(th => th.classList.remove('asc', 'desc'));
         th.classList.toggle('asc', asc);
         th.classList.toggle('desc', !asc);
         rows.sort(comparer(index, asc)).forEach(row => tbody.appendChild(row));
+  
+        // Recoloriser après le tri (au cas où les lignes changent de position)
+        colorizeDynamicColumns();
       });
     });
-
-    // Appliquer la colorisation après chargement du tableau
-    colorizeCells();
+  
+    // 🚀 Initialisation
+    colorizeDynamicColumns();
     alignNumericCells();
   });
   </script>
-  
 </body>
 </html>
