@@ -41,7 +41,20 @@
       });
     };
 
-    // permet de trier le tableau
+    // alignement à droit des colonnes numériques
+    const alignNumericCells = () => {
+    const rows = document.querySelectorAll('table tr:nth-child(n+2)');
+    rows.forEach(row => {
+      Array.from(row.children).forEach(cell => {
+        const value = parseFloat(cell.innerText.replace(',', '.')); // gérer les virgules si jamais
+        if (!isNaN(value)) {
+          cell.classList.add('numeric');
+        }
+      });
+    });
+  };
+
+  // permet de trier le tableau
     document.querySelectorAll('table th').forEach(th => {
       th.addEventListener('click', () => {
         const table = th.closest('table');
@@ -55,9 +68,10 @@
         rows.sort(comparer(index, asc)).forEach(row => tbody.appendChild(row));
       });
     });
-    
+
     // Appliquer la colorisation après chargement du tableau
     colorizeCells();
+    alignNumericCells();
   });
   </script>
   
