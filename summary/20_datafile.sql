@@ -14,6 +14,8 @@ COL autoextensible FORMAT A15 HEAD "autoextensible"
 COL status head "status"
 COL online_status format a15 head "online_status"
 
+select name from v$database;
+
 WITH
 -- Sous-requête pour les fichiers de données dans une CDB
 cdb_files AS (

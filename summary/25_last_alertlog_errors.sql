@@ -1,5 +1,7 @@
 prompt <h2>Les dernières erreurs de la base de données (Les 30 derniers jours et les 50 dernières lignes)</h2>
 
+select name from v$database;
+
 SELECT
     TO_CHAR(ORIGINATING_TIMESTAMP, 'DD-MM-YYYY HH:MM:SS') "Date",
     MESSAGE_TEXT                                          "Message"
