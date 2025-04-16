@@ -20,7 +20,7 @@ do
             border-b-2 border-blue-600" data-tab="tab1">'$sid'</button>' >> ${DIV_ONGLETS} 
 
         # ajouter le resultat du script sql dans la page html
-        cat ../sql/20c_datafile.sql $f | sqlplus -s / as sysdba >> ${DIV_CONTENU}
+        cat 01_sql_header.txt ../sql/20c_datafile.sql | sqlplus -s / as sysdba >> ${DIV_CONTENU}
 done
 # on ferme les DIV dans le menu html
 echo '</div>' >> ${DIV_ONGLETS}
