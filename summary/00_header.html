@@ -20,14 +20,20 @@
     }
 
     th, td {
-      padding: 12px 15px;
+      padding: 8px 10px;
       border: 1px solid #ddd;
       text-align: left;
+      font-size: 14px;
     }
 
     th {
       background-color: #4CAF50;
       color: white;
+      cursor: pointer;
+    }
+
+    th:hover {
+      background-color: #45a049;
     }
 
     tr:hover {
@@ -42,11 +48,9 @@
     th.asc::after {
       content: " 🔼";
     }
-
     th.desc::after {
       content: " 🔽";
     }
-
   </style>
 </head>
 <body>
