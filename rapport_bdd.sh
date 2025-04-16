@@ -72,3 +72,7 @@ do
 
         echo Rapport dans le fichier html : ${HTML_FILE}
 done
+
+# execution des scripts de synthèse :
+cd summary
+bash run.sh
