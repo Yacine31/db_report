@@ -74,5 +74,4 @@ do
 done
 
 # execution des scripts de synthèse :
-cd summary
-bash run.sh
+bash summary.sh
