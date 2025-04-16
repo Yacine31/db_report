@@ -1,7 +1,7 @@
 export LANG=en_US
 DATETIME=`date +%Y%m%d%H%M`
 HNAME=$(hostname)
-OUTPUT_DIR=output/$(date +%Y%m%d)
+OUTPUT_DIR=../output/$(date +%Y%m%d)
 mkdir -p ${OUTPUT_DIR}
 
 HTML_FILE=${OUTPUT_DIR}/Summary_${HNAME}_${DATETIME}.html
