@@ -24,6 +24,8 @@ do
             export ORACLE_SID=$sid
             . oraenv -s > /dev/null
 
+            # ajout du nom de la base
+            echo '<h3>Base de données : '$sid'</h3>' >> ${HTML_FILE}
             # ajouter le resultat du script sql dans la page html
             cat summary/01_sql_header.txt $sqlfile | sqlplus -s / as sysdba >> ${HTML_FILE}
     done
