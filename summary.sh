@@ -14,7 +14,7 @@ do
     # on prepare le fichier output
     FILENAME=$(basename "$sqlfile")
     BASENAME="${FILENAME%.*}"
-    HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}${HNAME}_${DATETIME}.html
+    HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}_${HNAME}_${DATETIME}.html
     # insertion du header HTML
     cat summary/00_header.html >> ${HTML_FILE}
 
