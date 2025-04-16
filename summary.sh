@@ -13,7 +13,7 @@ for sqlfile in summary/*.sql
 do
     # on prepare le fichier output
     FILENAME=$(basename "$sqlfile")
-    BASENAME="${$FILENAME%.*}"
+    BASENAME="${FILENAME%.*}"
     HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}${HNAME}_${DATETIME}.html
     # insertion du header HTML
     cat 00_header.html >> ${HTML_FILE}
