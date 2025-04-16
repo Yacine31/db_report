@@ -23,10 +23,10 @@ do
         cat 01_sql_header.txt ../sql/20c_datafile.sql | sqlplus -s / as sysdba >> ${DIV_CONTENU}
 done
 # on ferme les DIV dans le menu html
-echo '</div>' >> ${DIV_ONGLETS}
+# echo '</div>' >> ${DIV_ONGLETS}
 
 # on ferme les DIV dans le contenu des onglets
-echo '</div>' >> ${DIV_CONTENU}
+# echo '</div>' >> ${DIV_CONTENU}
 
 # on va concaténer les sources HTML dans une seule page
 cat 00_header.html >> ${HTML_FILE}
