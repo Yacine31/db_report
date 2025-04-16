@@ -14,6 +14,9 @@ do
         export ORACLE_SID=$sid
         . oraenv -s > /dev/null
 
+        # ajout du titre :
+        echo '<h2>base "$sid" - Détail des datafiles : </h2>' >> ${DIV_CONTENU}
+ 
         # ajouter le resultat du script sql dans la page html
         cat 01_sql_header.txt 20_datafile.sql | sqlplus -s / as sysdba >> ${DIV_CONTENU}
 done
