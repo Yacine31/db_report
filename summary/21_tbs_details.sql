@@ -1,6 +1,7 @@
 prompt <h3>Détail des tablespaces : </h3>
 
 COL TABLESPACE_NAME FORMAT A20 HEAD "tablespace"
+COL BIGFILE FORMAT A10 HEAD "bigfile"
 COL alloc FORMAT 99999999.00 HEAD "allocated_mb"
 COL used FORMAT 99999999.00 HEAD "used_mb"
 COL free FORMAT 99999999.00 HEAD "free_mb"

@@ -1,14 +1,15 @@
 COL con_id HEAD "con_id"
+COL pdb_id HEAD "pdb_id"
 COL pdb_name HEAD "pdb_name"
 COL file_id HEAD "file_id"
 COL file_name HEAD "file_name"
 COL tablespace_name FORMAT A20 HEAD "tablespace"
 
 COL file_size_mb FORMAT 999999999.00 HEAD "file_size_mb"
+COL percent_used FORMAT 999.00 HEAD "percent_used"
 COL space_used_mb FORMAT 999999999.00 HEAD "space_used_mb"
 COL space_free_mb FORMAT 999999999.00 HEAD "space_free_mb"
 COL maxsize_mb FORMAT 999999999.00 HEAD "maxsize_mb"
-COL percent_used FORMAT 999.00 HEAD "percent_used"
 
 COL autoextensible FORMAT A15 HEAD "autoextensible"
 COL status head "status"
@@ -25,10 +26,10 @@ cdb_files AS (
         d.tablespace_name,
         d.file_name,
         a.bytes_alloc/1024/1024 AS file_size_mb,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
         (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
         NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
         a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
         d.autoextensible,
         d.status,
         d.online_status
@@ -62,10 +63,10 @@ non_cdb_files AS (
         d.tablespace_name,
         d.file_name,
         a.bytes_alloc/1024/1024 AS file_size_mb,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
         (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
         NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
         a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
         d.autoextensible,
         d.status,
         d.online_status
