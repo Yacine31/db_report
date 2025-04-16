@@ -20,7 +20,8 @@ done
 
 # on va concaténer les sources HTML dans une seule page
 cat 00_header.html >> ${HTML_FILE}
-cat ${DIV_CONTENU} >> ${HTML_FILE}
+sed -n '/<table>/,/<\/table>/p' ${DIV_CONTENU} >> ${HTML_FILE}
+# cat ${DIV_CONTENU} >> ${HTML_FILE}
 cat 99_footer.html >> ${HTML_FILE}
 
 echo Rapport dans le fichier html : ${HTML_FILE}
