@@ -65,7 +65,7 @@ do
                 for script in "$LOCAL_DIR"/*.sh; do
                         [ -f "$script" ] || continue
                         echo "[INFO] Exécution du script local : $script"
-                        bash "$script"
+                        bash "$script" >> ${HTML_FILE}
                 done
         else
                 echo "[INFO] Aucun script local détecté dans ${LOCAL_DIR}."
