@@ -10,9 +10,9 @@ echo "<h2>Vérification des logs des exports Datapump</h2>"
 echo "<h3>Vérification de la présence d'erreurs dans les logs :</h3>"
 RESULT=$(find "${EXPDP_DIR}" -iname "export_*.log" -exec grep -H "ORA-" "{}" \;)
 if [ -z "$RESULT" ]; then
-    echo "<pre>Aucune erreur ORA- détectée dans les fichiers logs du mois ${CURRENT_DATE}.<pre>"
+    echo "<pre>Aucune erreur ORA- détectée dans les fichiers logs du mois ${CURRENT_DATE}.</pre>"
 else
-    echo "<pre>$RESULT<pre>"
+    echo "<pre>$RESULT</pre>"
 fi
 
 # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
