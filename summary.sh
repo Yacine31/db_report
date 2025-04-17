@@ -16,7 +16,7 @@ do
     BASENAME="${FILENAME%.*}"
     HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}_${HNAME}_${DATETIME}.html
     # insertion du header HTML
-    cat summary/00_header.html >> ${HTML_FILE}
+    cat html/00_html_header.html >> ${HTML_FILE}
 
     for sid in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
     do
@@ -31,7 +31,7 @@ do
     done
 
     # insertion du footer HTML
-    cat summary/99_footer.html >> ${HTML_FILE}
+    cat html/99_html_footer.html >> ${HTML_FILE}
 
     echo Rapport synthèse pour ${FILENAME} dans : ${HTML_FILE}
 done

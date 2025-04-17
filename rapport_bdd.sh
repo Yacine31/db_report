@@ -12,7 +12,7 @@ do
         export HTML_FILE=${OUTPUT_DIR}/Rapport_${HNAME}_${ORACLE_SID}_${DATETIME}.html
         . oraenv -s > /dev/null
 
-        cat sql/00_html_header.html >> ${HTML_FILE}
+        cat html/00_html_header.html >> ${HTML_FILE}
         DATE_JOUR=$(date +"%d/%m/%Y %Hh%M")
         echo "<h1>Rapport de base de données ${ORACLE_SID} sur le serveur $HNAME </h1>
         <h2>Date : ${DATE_JOUR}</h2>
@@ -70,7 +70,7 @@ do
                 echo "[INFO] Aucun script local détecté dans ${LOCAL_DIR}."
         fi
 
-        cat sql/99_html_footer.html >> ${HTML_FILE}
+        cat html/99_html_footer.html >> ${HTML_FILE}
 
         echo Rapport dans le fichier html : ${HTML_FILE}
 done
