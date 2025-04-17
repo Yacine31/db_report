@@ -3,19 +3,142 @@
 </body>
 
 <script>
-function colorerMots(element) {
-  const tds = document.querySelectorAll("td");
-  for (const td of tds) {
-    const text = td.textContent;
-    const motsACouleur = ["Error", "Failed", "COMPLETED"];
-    for (const mot of motsACouleur) {
-      text = text.replace(mot, `<span style="color: red; background-color: yellow;">${mot}</span>`);
-    }
-    td.textContent = text;
-  }
-}
-
-colorerMots(element);
-
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+    
+      const comparer = (idx, asc) => (a, b) => {
+        const v1 = getCellValue(asc ? a : b, idx).replace(',', '.');
+        const v2 = getCellValue(asc ? b : a, idx).replace(',', '.');
+        return !isNaN(v1) && !isNaN(v2) ? parseFloat(v1) - parseFloat(v2) : v1.localeCompare(v2);
+      };
+    
+      // 🎯 Configuration des règles de colorisation
+      const rules = [
+        {
+          keywords: ["percent_used", "% used", "utilisation", "%"],
+          thresholds: [
+            { min: 90, color: "#fecaca", text: "#991b1b" },    // rouge
+            { min: 80, color: "#fef08a", text: "#92400e" },    // jaune
+            { min: 0,  color: "#bbf7d0", text: "#065f46" }     // vert
+          ]
+        },
+        {
+          keywords: ["status"], // 👈 règle pour la colonne STATUS
+          matchText: "FAILED",  // mot-clé à détecter
+          style: {              // style à appliquer si trouvé
+            color: "#fff",
+            backgroundColor: "#dc2626", // rouge foncé
+            fontWeight: "bold"
+          }
+        },
+        {
+          keywords: ["status"], // 👈 règle pour la colonne STATUS
+          matchText: "COMPLETED",  // mot-clé à détecter
+          style: {              // style à appliquer si trouvé
+            backgroundColor: "#bbf7d0", // vert
+            fontWeight: "bold"
+          }
+        },
+        {
+          keywords: ["account_status"], // 👈 règle pour la colonne STATUS
+          matchText: "OPEN",  // mot-clé à détecter
+          style: {              // style à appliquer si trouvé
+            backgroundColor: "#bbf7d0", // vert
+            fontWeight: "bold"
+          }
+        }
+        // Tu peux ajouter d’autres règles ici si besoin
+      ];
+      
+      // 🎨 Appliquer les règles de coloration dynamiquement
+      const colorizeDynamicColumns = () => {
+        document.querySelectorAll("table").forEach(table => {
+          const rows = table.querySelectorAll("tr");
+          if (rows.length === 0) return;
+  
+          const headerRow = rows[0];
+          const ths = headerRow.querySelectorAll("th");
+  
+          rules.forEach(rule => {
+            let targetIndex = -1;
+            ths.forEach((th, index) => {
+              const text = th.textContent.trim().toLowerCase();
+              const match = rule.keywords.some(keyword => text.includes(keyword));
+              if (match && targetIndex === -1) {
+                targetIndex = index;
+              }
+            });
+  
+            if (targetIndex !== -1) {
+              rows.forEach((row, i) => {
+                if (i === 0) return; // skip header
+  
+                const cell = row.children[targetIndex];
+                if (!cell) return;
+  
+                const rawText = cell.textContent.trim();
+                const numeric = parseFloat(rawText.replace('%', '').replace(',', '.'));
+  
+                if (rule.matchText) {
+                  if (rawText.toUpperCase().includes(rule.matchText.toUpperCase())) {
+                    Object.entries(rule.style).forEach(([prop, val]) => {
+                      cell.style[prop] = val;
+                    });
+                  }
+                } else if (!isNaN(numeric)) {
+                  for (const threshold of rule.thresholds) {
+                    if (numeric >= threshold.min) {
+                      cell.style.backgroundColor = threshold.color;
+                      cell.style.color = threshold.text;
+                      cell.style.fontWeight = 'bold';
+                      break;
+                    }
+                  }
+                }
+  
+                // alignement à droite si numérique
+                if (!isNaN(numeric)) {
+                  cell.classList.add("numeric");
+                }
+              });
+            }
+          });
+        });
+      };
+    
+      // ➕ Appliquer alignement numérique à toutes les cellules numériques
+      const alignNumericCells = () => {
+        document.querySelectorAll('table tr:nth-child(n+2)').forEach(row => {
+          Array.from(row.children).forEach(cell => {
+            const value = parseFloat(cell.textContent.replace(',', '.'));
+            if (!isNaN(value)) {
+              cell.classList.add('numeric');
+            }
+          });
+        });
+      };
+    
+      // 🔁 Tri au clic sur les entêtes
+      document.querySelectorAll('table th').forEach(th => {
+        th.addEventListener('click', () => {
+          const table = th.closest('table');
+          const tbody = table.querySelector('tbody') || table;
+          const rows = Array.from(tbody.querySelectorAll('tr:nth-child(n+2)'));
+          const index = Array.from(th.parentNode.children).indexOf(th);
+          const asc = !th.classList.contains('asc');
+          table.querySelectorAll('th').forEach(th => th.classList.remove('asc', 'desc'));
+          th.classList.toggle('asc', asc);
+          th.classList.toggle('desc', !asc);
+          rows.sort(comparer(index, asc)).forEach(row => tbody.appendChild(row));
+    
+          // Recoloriser après le tri (au cas où les lignes changent de position)
+          colorizeDynamicColumns();
+        });
+      });
+    
+      // 🚀 Initialisation
+      colorizeDynamicColumns();
+      alignNumericCells();
+    });
+    </script>
 </html>
