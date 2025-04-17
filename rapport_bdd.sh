@@ -55,6 +55,23 @@ do
                 cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
         done
 
+        # exécution des scripts dans sh/local si présents
+        # Chemin du dossier local
+        LOCAL_DIR="sh/local"
+
+        # Exécution des scripts locaux si le dossier existe
+        if [ -d "$LOCAL_DIR" ]; then
+        echo "[INFO] Détection du dossier local : $LOCAL_DIR"
+                for script in "$LOCAL_DIR"/*.sh; do
+                        [ -f "$script" ] || continue
+                        echo "[INFO] Exécution du script local : $script"
+                        bash "$script"
+                done
+        else
+                echo "[INFO] Aucun script local détecté dans ${LOCAL_DIR}."
+        fi
+
+        # modification du html pour le CSS
         sed -i 's/<table.*>$/<table class="table table-striped">/g' ${HTML_FILE}
 
         cat sql/99_html_footer.html >> ${HTML_FILE}
