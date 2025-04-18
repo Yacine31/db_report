@@ -18,5 +18,5 @@ fi
 # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
 echo "<h3>Vérification des dernières lignes dans les logs :</h3>"
 echo "<pre>"
-find "${EXPDP_DIR}" -iname "export_*.log" -exec bash -c 'echo "--- {} ---"; head -10 "{}"; tail -10 "{}"' \;
+find "${EXPDP_DIR}" -iname "export_*.log" -exec bash -c 'echo "--- {} ---"; head -10 "{}"; echo "---"; tail -10 "{}"' \;
 echo "</pre>"
