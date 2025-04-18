@@ -1,7 +1,7 @@
 #!/bin/bash
 # script pour vérifier les logs des fichiers datapump et voir si des erreurs sont présentes
 
-EXPDP_DIR="/u04/expdp"
+EXPDP_DIR="/u04/backup"
 CURRENT_DATE=$(date +%Y_%m)   # date au format 2025_04
 
 echo "<h2>Vérification des logs des exports Datapump</h2>"
