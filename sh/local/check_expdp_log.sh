@@ -17,11 +17,10 @@ fi
 
 # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
 echo "<h3>Vérification des dernières lignes dans les logs :</h3>"
-# find "${EXPDP_DIR}" -iname "export_*.log" -exec bash -c 'echo "<b>--- {} ---</b><pre>"; head -10 "{}"; echo "</pre><pre>"; tail -10 "{}"; echo "</pre>"' \;
-# autre façon d'écrire la commande find : définition de la fonction d'affichage plus lisible
+# préparation de la commande find : définition de la fonction d'affichage plus lisible
 show_log_excerpt() {
   local file="$1"
-  echo "<b>--- ${file} ---</b>"
+  echo "<br><b>--- ${file} ---</b> "
   echo "<pre>"
   head -10 "$file"
   echo "</pre><pre>"
