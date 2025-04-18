@@ -16,15 +16,15 @@ else
 fi
 
 # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
-echo "<h3>Vérification des dernières lignes dans les logs :</h3>"
+echo "<h3>Affichage des 10 premières et 10 dernières lignes des fichiers logs :</h3>"
 # préparation de la commande find : définition de la fonction d'affichage plus lisible
 show_log_excerpt() {
   local file="$1"
-  echo "<br><b>--- ${file} ---</b> "
+  echo "<br><b>--- ${file} ---</b> "    # affiche le nom du fichier en gras
   echo "<pre>"
-  head -10 "$file"
-  echo "</pre><pre>"
-  tail -10 "$file"
+  head -10 "$file"                      # affiche les 10 première lignes dans le bloc PRE
+  echo "</pre><pre>" 
+  tail -10 "$file"                      # affiche les 10 dernières lignes dans le bloc PRE
   echo "</pre>"
 }
 # export pour rendre la fonction accessible à bash -c
