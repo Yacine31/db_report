@@ -24,6 +24,7 @@ do
         echo "<h1>Configuration système</h1>" >> ${HTML_FILE}
         for f in sh/*.sh
         do
+                echo "[INFO] Exécution du script : $f"
                 bash $f >> ${HTML_FILE}
         done
 
@@ -34,6 +35,7 @@ do
                 echo "<h1>Configuration de l'instance ASM</h1>" >> ${HTML_FILE}
                 for f in asm/*.sql
                 do
+                        echo "[INFO] Exécution du script : $f"
                         cat asm/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
                 done
         fi
@@ -43,6 +45,7 @@ do
                 # Executer les scripts sql pour les PDB
                 for f in sql/cdb/*.sql; do
                         # Exécuter les scripts SQL pour les PDB
+                        echo "[INFO] Exécution du script : $f"
                         cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
                 done
         fi
@@ -51,24 +54,9 @@ do
         echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         for f in sql/*.sql
         do
+                echo "[INFO] Exécution du script : $f"
                 cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE} 
         done
-
-        # exécution des scripts dans sh/local si présents
-        # Chemin du dossier local
-        LOCAL_DIR="sh/local"
-
-        # Exécution des scripts locaux si le dossier existe
-        if [ -d "$LOCAL_DIR" ]; then
-        echo "[INFO] Détection du dossier local : $LOCAL_DIR"
-                for f in "$LOCAL_DIR"/*.sh; do
-                        [ -f "$f" ] || continue
-                        echo "[INFO] Exécution du script local : $f"
-                        bash "$f" >> ${HTML_FILE}
-                done
-        else
-                echo "[INFO] Aucun script local détecté dans ${LOCAL_DIR}."
-        fi
 
         cat html/99_html_footer.html >> ${HTML_FILE}
 

@@ -35,3 +35,35 @@ do
 
     echo Rapport synthèse pour ${FILENAME} dans : ${HTML_FILE}
 done
+
+# exécution des scripts dans sh/local si présents
+# Chemin du dossier local
+LOCAL_DIR="sh/local"
+
+for shfile in ${LOCAL_DIR}/*.sh
+do
+
+    # on prépare le fichier output
+    FILENAME=$(basename "$shfile")
+    BASENAME="${FILENAME%.*}"
+    HTML_FILE=${OUTPUT_DIR}/Summary_${BASENAME}_${HNAME}_${DATETIME}.html
+
+    # insertion du header HTML
+    cat html/00_html_header.html >> ${HTML_FILE}
+
+    if [ -d "$LOCAL_DIR" ]; then
+        echo "[INFO] Détection du dossier local : $LOCAL_DIR"
+        for f in "$LOCAL_DIR"/*.sh; do
+                [ -f "$f" ] || continue
+                echo "[INFO] Exécution du script local : $f"
+                bash "$f" >> ${HTML_FILE}
+        done
+    else
+            echo "[INFO] Aucun script local détecté dans ${LOCAL_DIR}."
+    fi
+
+    # insertion du footer HTML
+    cat html/99_html_footer.html >> ${HTML_FILE}
+
+    echo Rapport synthèse pour ${FILENAME} dans : ${HTML_FILE}
+done
