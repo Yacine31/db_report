@@ -1,2 +1,2 @@
-# répértoire avec scripts spécifiques et locaux à certains environnements
-sh/local/
+# fichier avec les variables d'environnement
+.env
