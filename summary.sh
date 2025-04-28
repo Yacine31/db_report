@@ -1,14 +1,36 @@
 #!/bin/bash
+#------------------------------------------------------------------------------
 # Ce script exécute des sql pour fournir une vue global de certains aspect de la base
 # tous les datafiles, toutes les sauvegardes, toutes les erreur dans alertlog, ...
+#------------------------------------------------------------------------------
 export LANG=en_US
 DATETIME=`date +%Y%m%d%H%M`
 HNAME=$(hostname)
 OUTPUT_DIR=output/$(date +%Y%m%d)
 mkdir -p ${OUTPUT_DIR}
 
+#------------------------------------------------------------------------------
+# inititalisation des variables d'environnement
+#------------------------------------------------------------------------------
+export SCRIPTS_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
+# Nom du fichier .env
+ENV_FILE=${SCRIPTS_DIR}"/.env"
+
+# Vérifier si le fichier .env existe
+if [ ! -f "$ENV_FILE" ]; then
+    echo "Erreur : Le fichier $ENV_FILE n'existe pas."
+    echo "Erreur : Impossible de charger les variables d'environnement."
+    exit 1
+fi
+
+# Charger les variables d'environnement depuis le fichier .env
+source "$ENV_FILE"
+
+
+#------------------------------------------------------------------------------
 # Execution des scripts sql
+#------------------------------------------------------------------------------
 for sqlfile in summary/*.sql
 do
     # on prepare le fichier output
@@ -36,8 +58,10 @@ do
     echo Rapport synthèse pour ${FILENAME} dans : ${HTML_FILE}
 done
 
+#------------------------------------------------------------------------------
 # exécution des scripts dans sh/local si présents
 # Chemin du dossier local
+#------------------------------------------------------------------------------
 LOCAL_DIR="sh/local"
 
 for shfile in ${LOCAL_DIR}/*.sh

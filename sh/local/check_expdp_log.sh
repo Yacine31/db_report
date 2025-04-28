@@ -1,7 +1,8 @@
 #!/bin/bash
 # script pour vérifier les logs des fichiers datapump et voir si des erreurs sont présentes
 
-EXPDP_DIR="/u04/backup"
+# EXPDP_DIR="/u04/backup" : la variable d'environnement est chargée depuis le fichier .env
+
 CURRENT_DATE=$(date +%Y_%m)   # date au format 2025_04
 
 echo "<h2>Vérification des logs des exports Datapump</h2>"
