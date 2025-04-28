@@ -24,7 +24,7 @@ do
         echo "<h1>Configuration système</h1>" >> ${HTML_FILE}
         for f in sh/*.sh
         do
-                echo "[INFO] Exécution du script : $f"
+                echo "[INFO] Serveur $HNAME - Exécution du script : $f"
                 bash $f >> ${HTML_FILE}
         done
 
@@ -35,7 +35,7 @@ do
                 echo "<h1>Configuration de l'instance ASM</h1>" >> ${HTML_FILE}
                 for f in asm/*.sql
                 do
-                        echo "[INFO] Exécution du script : $f"
+                        echo "[INFO] Base ${ORACLE_SID} - Exécution du script : $f"
                         cat asm/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
                 done
         fi
@@ -45,7 +45,7 @@ do
                 # Executer les scripts sql pour les PDB
                 for f in sql/cdb/*.sql; do
                         # Exécuter les scripts SQL pour les PDB
-                        echo "[INFO] Exécution du script : $f"
+                        echo "[INFO] Base ${ORACLE_SID} - Exécution du script : $f"
                         cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE}
                 done
         fi
@@ -54,7 +54,7 @@ do
         echo "<h1>Configuration de la base de données ${ORACLE_SID}</h1>" >> ${HTML_FILE}
         for f in sql/*.sql
         do
-                echo "[INFO] Exécution du script : $f"
+                echo "[INFO] Base ${ORACLE_SID} - Exécution du script : $f"
                 cat sql/sql_header.txt $f | sqlplus -s / as sysdba >> ${HTML_FILE} 
         done
 
