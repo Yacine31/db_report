@@ -1,18 +1,17 @@
-
-Exemple de script qui génère un rapport html avec quelques infos de la base, les fichiers, les logs et les sauvegardes
+Ensemble de scripts qui génèrent des rapports html avec quelques infos du serveur, les bases de données en cours d'exécution, les fichiers, les logs et les sauvegardes
 
 ## Sous Linux
 ```bash
 git clone https://github.com/Yacine31/db_report
 cd db_report
-sh -x rapport_bdd.sh
+# Copier le fichier .env.local dans .env
+cp .env.lcal .env
+# Executer le script
+bash rapport_bdd.sh
 ```
 
-il est possible de générer plusieurs CSV avec la commande :
-```bash
-sh rapport_bdd_csv.sh
-```
-Un ensemble de fichiers CSV est généré sous format zip 
+Le résultat est dans le sous répertoire ``` output/YYYYMMDD ```
+
 
 
 ## Sous Windows
