@@ -1,6 +1,6 @@
 prompt <h2>Taille des redolog par jour :</h2>
 
-SELECT
+select /* axiome */
         TO_CHAR(FIRST_TIME, 'YYYY/MM/dd')          "Jour",
         COUNT(*)                                   "Nbr de fichiers",
         ROUND(SUM(BLOCKS*BLOCK_SIZE)/1024/1024, 0) "Taille_Mo"

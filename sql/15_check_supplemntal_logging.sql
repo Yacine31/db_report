@@ -1,6 +1,6 @@
 prompt <h2>Database supplemental logging :</h2>
 
-select 'force_logging' as property, force_logging as value from v$database
+select /* axiome */ 'force_logging' as property, force_logging as value from v$database
 union all
 select 'supplemental_log_data_min' as property, supplemental_log_data_min as value from v$database
 union all

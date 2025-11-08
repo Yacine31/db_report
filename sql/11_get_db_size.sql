@@ -2,7 +2,7 @@ prompt <h2>Taille de la base de données :</h2>
 
 WITH
 sizes AS (
-SELECT /*+  MATERIALIZE NO_MERGE  */ /* 1f.60 */
+select /* axiome */ /*+  MATERIALIZE NO_MERGE  */ /* 1f.60 */
        'Data' file_type,
        SUM(bytes) bytes
   FROM v$datafile

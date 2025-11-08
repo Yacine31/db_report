@@ -1,6 +1,6 @@
 prompt <h2>Statut des jobs autotask </h2>
 
-SELECT
+select /* axiome */
     CLIENT_NAME,
     STATUS,
     ATTRIBUTES,

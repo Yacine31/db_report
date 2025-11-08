@@ -1,6 +1,6 @@
 prompt <h2>Database/Version</h2>
 
-SELECT
+select /* axiome */
     *
 FROM
     V$VERSION;

@@ -1,6 +1,6 @@
 prompt <h2>Invalid objects</h2>
 
-SELECT
+select /* axiome */
     OWNER,
     COUNT(*) "invalid objects"
 FROM

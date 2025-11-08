@@ -1,6 +1,6 @@
 prompt <h2>Resource Limit (GV$RESOURCE_LIMIT)</h2>
 
-SELECT
+select /* axiome */
     *
 FROM
     GV$RESOURCE_LIMIT

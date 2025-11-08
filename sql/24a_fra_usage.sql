@@ -1,6 +1,6 @@
 prompt <h2>Fast Recovery Area Usage</h2>
 
-SELECT
+select /* axiome */
     'Taille FRA MiB'                                  AS PROPERTY,
     P.VALUE / 1024 / 1024 AS VALUE
 FROM

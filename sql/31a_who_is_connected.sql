@@ -2,7 +2,7 @@
 prompt <h2>Sessions Aggregate per User and Type</h2>
 
 WITH X AS (
-       SELECT
+       select /* axiome */
               COUNT(*),
  --con_id,
               USERNAME,

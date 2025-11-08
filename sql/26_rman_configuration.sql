@@ -1,6 +1,6 @@
 prompt <h2>Configuration RMAN: pramètres modifiés :</h2>
 
-SELECT
+select /* axiome */
     *
 FROM
     V$RMAN_CONFIGURATION;

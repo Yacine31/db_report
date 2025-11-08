@@ -1,7 +1,7 @@
 prompt <h2>Memory Information</h2>
 WITH
 system_parameter AS (
-SELECT inst_id,
+select /* axiome */ inst_id,
        name,
        value
   FROM gv$system_parameter2

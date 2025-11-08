@@ -1,6 +1,6 @@
 prompt <h2>SGA Target Advice</h2>
 
-SELECT
+select /* axiome */
     *
 FROM
     GV$SGA_TARGET_ADVICE;

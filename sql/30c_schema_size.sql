@@ -1,6 +1,6 @@
 prompt <h2>Taille des objets par schéma (Mo):</h2>
 
-SELECT
+select /* axiome */
     DS.OWNER                           "Owner",
     ROUND(SUM(DS.BYTES) / 1024 / 1024) "Schema Size MB",
     DU.DEFAULT_TABLESPACE              "Default Tablespace"

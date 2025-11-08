@@ -1,6 +1,6 @@
 prompt <h3>Détail du tablespace UNDO : </h3>
 
-SELECT
+select /* axiome */
     a.tablespace_name,
     a.file_id,
     a.bytes / 1024 / 1024 AS size_mb,
