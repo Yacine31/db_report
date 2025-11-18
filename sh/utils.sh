@@ -19,16 +19,24 @@ print_h2() {
 # Si la commande échoue, elle affiche un message d'erreur mis en évidence.
 run_and_print() {
   local cmd="$1"
-  # echo "<pre><b>${cmd}</b></pre>"
+  local cmd_html
+
+  # Échapper les caractères HTML pour un affichage sûr
+  cmd_html=$(echo "${cmd}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+
   echo "<br><pre>"
-  # Exécute la commande, redirige stderr vers stdout pour tout capturer
+  # Affiche la commande échappée en rouge et gras
+  echo "<b style=\"color:red;\">${cmd_html}</b>"
+
+  # Ajoute une ligne vide pour la séparation
+  echo ""
+
+  # Exécute la commande originale, redirige stderr vers stdout pour tout capturer
   if output=$(eval "${cmd}" 2>&1); then
     echo "$output"
   else
     echo "<div class=\"error-block\">"
-    echo "ERREUR: La commande suivante a échoué :"
-    echo "Commande: ${cmd}"
-    echo "Message d'erreur:"
+    echo "ERREUR: La commande a échoué avec le message suivant :"
     echo "$output"
     echo "</div>"
   fi

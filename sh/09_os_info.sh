@@ -75,16 +75,16 @@ case "$os_type" in
         print_h2 "Top 10 processus par utilisation CPU (top -b -n 1)"
         run_and_print "top -b -n 1 | head -n 17"
 
-        print_h2 "Derniers messages du noyau (dmesg | tail -n 20)"
+        print_h2 "Derniers messages du noyau (dmesg | tail -n 30)"
         if sudo -ln &> /dev/null; then
-            run_and_print "sudo dmesg | tail -n 20"
+            run_and_print "sudo dmesg | tail -n 30"
         else
             echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter dmesg.</pre>"
         fi
 
-        print_h2 "Les 50 dernières erreurs dans /var/log/messages"
+        print_h2 "Les 30 dernières erreurs dans /var/log/messages"
         if sudo -ln &> /dev/null; then
-            run_and_print "sudo cat /var/log/messages | egrep -i 'error|failed' | tail -50"
+            run_and_print "sudo cat /var/log/messages | egrep -i 'error|failed' | tail -30"
         else
             echo "<pre>L'utilisateur n'a pas les droits sudo pour lire les fichiers log.</pre>"
         fi
