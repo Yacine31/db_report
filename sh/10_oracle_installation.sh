@@ -53,6 +53,7 @@ ps -ef | grep tnslsnr | grep -v grep | while read -r l; do
   
   if [ -n "$binary_path" ] && [ -n "$listener_name" ]; then
     export TNS_ADMIN="$binary_path/network/admin"
+    export ORACLE_HOME="$binary_path"
     print_h2 "Statut du listener : ${listener_name}"
     lsnrctl_command="$binary_path/bin/lsnrctl status $listener_name"
     run_and_print "$lsnrctl_command"
