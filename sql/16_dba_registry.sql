@@ -1,6 +1,6 @@
 prompt <h2>Fonctionnalités installées dans la base de données (DBA_REGISTRY) :</h2>
 
-SELECT
+select /* db-html-report */
   *
 FROM
   DBA_REGISTRY

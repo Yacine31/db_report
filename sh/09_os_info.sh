@@ -1,122 +1,100 @@
-# faire des commandes pour AIX et pour Linux
+#!/bin/bash
+
+# Importe les fonctions utilitaires
+source "$(dirname "$0")/utils.sh"
+
+# --- Script principal ---
+
 os_type=$(uname -s)
 
-echo "<h2>Bases de données en cours d'exécution :</h2>"
-echo "<pre>"
-ps -ef | grep pmon | grep -v grep 
-echo "</pre>"
+print_h2 "Bases de données en cours d'exécution"
+run_and_print "ps -ef | grep pmon | grep -v grep"
 
-echo "<h2>Listeners en cours d'exécution :</h2>"
-echo "<pre>"
-ps -ef | grep tnslsnr | grep -v grep 
-echo "</pre>"
+print_h2 "Listeners en cours d'exécution"
+run_and_print "ps -ef | grep tnslsnr | grep -v grep"
 
-echo "<h2>Statut du listener :</h2>"
-# ps -ef | grep tnslsnr | egrep -i "LISTENER_${ORACLE_SID}" | grep -v grep | while read l
-ps -ef | grep tnslsnr | egrep -i " LISTENER |${ORACLE_SID}" | grep -v grep | while read l
-do
-	# Récupérer le chemin ORACLE_HOME à partir de la sortie de ps -ef
-	# ---- La commande grep -o ne fonctionne pas sur AIX, on la remplace par perl -lne
-	# binary_path=$(echo $l | grep -o '/[^ ]*' | sed 's#/bin/tnslsnr##')
-	binary_path=$(echo $l | perl -lne 'print $1 if /(\S*tnslsnr\S*)/' | sed 's#/bin/tnslsnr##')
-	# Extraire le nom du listener
-	# listener_name=$(echo $l | grep -o 'tnslsnr [^ ]*' | sed 's/tnslsnr //')
-	listener_name=$(echo $l | perl -lne 'print $1 if /\btnslsnr\s+(\S+)/' | sed 's/tnslsnr //')
-	# Construire la commande lsnrctl status
-	lsnrctl_command="$binary_path/bin/lsnrctl status $listener_name"
-	# exécuter la commande
-	echo "<br><pre>"
-	echo $lsnrctl_command
-	echo export TNS_ADMIN=$binary_path/network/admin
-	export TNS_ADMIN=$binary_path/network/admin
-	eval "$lsnrctl_command"
-	echo "</pre><br>"
+print_h2 "Statut du listener : ${listener_name}"
+# Boucle pour le statut du listener, car elle est plus complexe
+ps -ef | grep tnslsnr | egrep -i " LISTENER |${ORACLE_SID}" | grep -v grep | while read -r l; do
+  binary_path=$(echo "$l" | perl -lne 'print $1 if /(\S*tnslsnr\S*)/' | sed 's#/bin/tnslsnr##')
+  listener_name=$(echo "$l" | perl -lne 'print $1 if /\btnslsnr\s+(\S+)/' | sed 's/tnslsnr //')
+  
+  if [ -n "$binary_path" ] && [ -n "$listener_name" ]; then
+    export TNS_ADMIN="$binary_path/network/admin"
+    lsnrctl_command="$binary_path/bin/lsnrctl status $listener_name"
+    # echo "<b>Listener: ${listener_name}</b>"
+    run_and_print "$lsnrctl_command"
+  fi
 done
 
-echo "<h2>Uptime :</h2>"
-echo "<pre>"
-uptime
-echo "</pre>"
+print_h2 "Uptime"
+run_and_print "uptime"
 
 case "$os_type" in
     AIX)
-		echo "<h2>Espace disque (lsfs) :</h2>"
-		echo "<pre>"
-        lsfs
-		echo "</pre>"
+        print_h2 "Espace disque (lsfs)"
+        run_and_print "lsfs"
         ;;
     Linux)
-		echo "<h2>Contenu du fichier /etc/fstab :</h2>"
-		echo "<pre>"
-		cat /etc/fstab | egrep -v '^#|^$'
-		echo "</pre>"
+        print_h2 "Contenu du fichier /etc/fstab"
+        run_and_print "cat /etc/fstab | egrep -v '^#|^$'"
         ;;
 esac
 
-echo "<h2>Contenu du contab du compte oracle :</h2>"
-echo "<pre>"
-crontab -l
-echo "</pre>"
+print_h2 "Contenu du contab du compte oracle"
+run_and_print "crontab -l"
 
-echo "<h2>Limites de l'utilisateur "oracle" (ulimit -a) :</h2>"
-echo "<pre>"
-ulimit -a | sort
-echo "</pre>"
+print_h2 "Limites de l'utilisateur (ulimit -a)"
+run_and_print "ulimit -a | sort"
 
-# espace disque en fonction de l'OS
 case "$os_type" in
     AIX)
-		echo "<h2>Espace disque (df -g) :</h2>"
-		echo "<pre>"
-        df -g
-		echo "</pre>"
+        print_h2 "Espace disque (df -g)"
+        run_and_print "df -g"
         ;;
     Linux)
-		echo "<h2>Espace disque (df -h) :</h2>"
-		echo "<pre>"
-        df -h
-		echo "</pre>"
+        print_h2 "Espace disque (df -h)"
+        run_and_print "df -h"
         ;;
 esac
 
-
 case "$os_type" in
     Linux)
-		echo "<h2>Liste des disques disponibles (lsblk) :</h2>"
-		echo "<pre>"
-		lsblk
-		echo "</pre>"
+        print_h2 "Liste des disques disponibles (lsblk)"
+        run_and_print "lsblk"
 
-		echo "<h2>Taille mémoire en Mo (free -m) :</h2>"
-		echo "<pre>"
-		free -m
-		echo "</pre>"
+        print_h2 "Taille mémoire en Mo (free -m)"
+        run_and_print "free -m"
 
-		echo "<h2>Caractéristiques CPU (lscpu) :</h2>"
-		echo "<pre>"
-		lscpu
-		echo "</pre>"
+        print_h2 "Caractéristiques CPU (lscpu)"
+        run_and_print "lscpu"
 
-		echo "<h2>Les 50 dernières erreur dans /var/log/messages :</h2>"
-		if sudo -l &> /dev/null ; then
-		    # L'utilisateur a les droits sudo. on continue
-			echo "<pre>"
-			sudo cat /var/log/messages | egrep -i 'error|failed' | tail -50 
-			echo "</pre>"
-		else
-			echo "<pre>"
-		    echo "L'utilisateur n'a les droits pour lire les fichiers log."
-			echo "</pre>"
-		fi
+        print_h2 "Statistiques VM (vmstat 2 20)"
+        run_and_print "vmstat 2 20"
+
+        print_h2 "Top 10 processus par utilisation CPU (ps --width 150)"
+        run_and_print "ps -eo pid,user,%cpu,%mem,vsz,rss,tty,stat,start,time,command --sort=-%cpu --width 1000 | head -n 17 | cut -c 1-180"
+
+        print_h2 "Derniers messages du noyau (dmesg -T | tail -n 30)"
+        if sudo -ln &> /dev/null; then
+            run_and_print "sudo dmesg -T | tail -n 30"
+        else
+            echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter dmesg.</pre>"
+        fi
+
+        print_h2 "Les 30 dernières erreurs dans /var/log/messages"
+        if sudo -ln &> /dev/null; then
+            run_and_print "sudo cat /var/log/messages | egrep -i 'error|failed' | tail -30"
+        else
+            echo "<pre>L'utilisateur n'a pas les droits sudo pour lire les fichiers log.</pre>"
+        fi
         ;;
 esac
 
 case "$os_type" in
     AIX)
-		echo "<h2>Configuration système (prtconf) :</h2>"
-		echo "<pre>"
-        prtconf
-		echo "</pre>"
+        print_h2 "Configuration système (prtconf)"
+        run_and_print "prtconf"
         ;;
 esac
 

@@ -1,6 +1,6 @@
 prompt <h2>Invalid objects</h2>
 
-SELECT
+select /* db-html-report */
     OWNER,
     COUNT(*) "invalid objects"
 FROM

@@ -1,7 +1,7 @@
 prompt <h2>Database/Instance Status</h2>
 alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 
-SELECT 'DATABASE_NAME' AS property, name AS value FROM gv$database
+select /* db-html-report */ 'DATABASE_NAME' AS property, name AS value FROM gv$database
 UNION ALL
 SELECT 'DATABASE_ROLE' AS property, DATABASE_ROLE AS value FROM gv$database
 UNION ALL

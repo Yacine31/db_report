@@ -1,6 +1,6 @@
 prompt <h2>Failed scheduled jobs </h2>
 
-SELECT
+select /* db-html-report */
     OWNER,
     JOB_NAME,
     JOB_TYPE,

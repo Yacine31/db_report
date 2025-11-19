@@ -3,7 +3,7 @@ alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 
 COL MEMBER FORMAT A90 WRAPPED
 BREAK ON GROUP# SKIP 1 ON THREAD# ON SEQUENCE# ON TAILLE_MIB ON "STATUS(ARCHIVED)"
-SELECT
+select /* db-html-report */
     'OnlineLog'           t,
     g.group#,
     g.thread#,

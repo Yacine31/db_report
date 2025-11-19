@@ -1,6 +1,6 @@
 prompt <h2>Statut des jobs autotask </h2>
 
-SELECT
+select /* db-html-report */
     CLIENT_NAME,
     STATUS,
     ATTRIBUTES,

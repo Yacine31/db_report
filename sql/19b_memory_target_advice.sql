@@ -1,6 +1,6 @@
 prompt <h2>SGA Target Advice</h2>
 
-SELECT
+select /* db-html-report */
     *
 FROM
     GV$SGA_TARGET_ADVICE;

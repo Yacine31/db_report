@@ -1,6 +1,6 @@
 prompt <h2>Les objets par utilisateur</h2>
 
-SELECT
+select /* db-html-report */
   *
 FROM
   (

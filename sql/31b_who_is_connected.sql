@@ -1,7 +1,7 @@
 prompt <h2>Sessions Aggregate per Module and Action</h2>
 
 WITH X AS (
-      SELECT
+      select /* db-html-report */
             COUNT(*),
  --con_id,
             MODULE,
