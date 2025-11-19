@@ -5,7 +5,8 @@ select /* db-html-report */
 select 
   a.inst_id, 
   a.sql_id,
-  to_char(numtodsinterval(a.elapsed_time/ 1000000, 'SECOND'), 'HH24:MI') as elapsed,
+  -- to_char(numtodsinterval(a.elapsed_time/ 1000000, 'SECOND'), 'HH24:MI') as elapsed,
+  to_char(trunc(sysdate) + numtodsinterval(a.elapsed_time/ 1000000, 'SECOND'), 'HH24:MI:SS') as elapsed,
   substrb(replace(a.sql_text,'',' '),1,55) as sql_text,
   a.buffer_gets, -- Lecture en memoire
   a.disk_reads, -- Lecture sur disque
