@@ -7,9 +7,9 @@ select /* db-html-report */
 select 
   a.inst_id, 
   a.sql_id,
-  a.elapsed_time / 1000000 as elapsed,
+  round(time / 1000000 as elapsed),
   substrb(replace(a.sql_text,'',' '),1,55) as sql_text,
-  a.cpu_time / 1000000 as cpu_time,
+  round(a.cpu_time / 1000000) as cpu_time,
   a.buffer_gets, -- Lecture en memoire
   a.disk_reads, -- Lecture sur disque
   a.physical_read_bytes,
