@@ -72,12 +72,12 @@ case "$os_type" in
         print_h2 "Statistiques VM (vmstat 2 20)"
         run_and_print "vmstat 2 20"
 
-        print_h2 "Top 10 processus par utilisation CPU (top -b -n 1)"
-        run_and_print "top -b -n 1 | head -n 17"
+        print_h2 "Top 10 processus par utilisation CPU (ps --width 150)"
+        run_and_print "ps -eo pid,user,%cpu,%mem,vsz,rss,tty,stat,start,time,command --sort=-%cpu --width 1000 | head -n 17 | cut -c 1-180"
 
-        print_h2 "Derniers messages du noyau (dmesg | tail -n 30)"
+        print_h2 "Derniers messages du noyau (dmesg -T | tail -n 30)"
         if sudo -ln &> /dev/null; then
-            run_and_print "sudo dmesg | tail -n 30"
+            run_and_print "sudo dmesg -T | tail -n 30"
         else
             echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter dmesg.</pre>"
         fi

@@ -59,8 +59,4 @@ Un script de synthèse (`summary.sh`) est également exécuté pour agréger cer
 
 - Modifiez `.env` pour changer le répertoire de sortie.
 - Ajoutez des scripts dans `sh/` ou `sql/` pour étendre les rapports.
-- Consultez `AGENTS.md` pour les commandes de build/lint/test.
 
-## Licence
-
-[Ajoutez votre licence ici, e.g., MIT]

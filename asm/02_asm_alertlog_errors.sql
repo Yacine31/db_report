@@ -1,6 +1,6 @@
 prompt <h2>Les dernières erreurs ASM (Les 30 derniers jours et les 50 dernières lignes)</h2>
 
-SELECT
+SELECT /* db-html-report */
     TO_CHAR(ORIGINATING_TIMESTAMP, 'DD-MM-YYYY HH-MM-SS') "Date",
     MESSAGE_TEXT                                          "Message"
 FROM

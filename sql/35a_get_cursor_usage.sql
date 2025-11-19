@@ -1,7 +1,7 @@
 -- SCRIPT - to Set the 'SESSION_CACHED_CURSORS' and 'OPEN_CURSORS' Parameters Based on Usage (Doc ID 208857.1)
 prompt <h2>Sessions and Cursors usage </h2>
 
-select /* axiome */
+select /* db-html-report */
 	'session_cached_cursors'         PARAMETER,
 	LPAD(VALUE, 5)                   VALUE,
 	DECODE(VALUE, 0, ' n/a', TO_CHAR(100 * USED / VALUE, '990')

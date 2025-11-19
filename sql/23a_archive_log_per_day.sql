@@ -31,7 +31,7 @@ col 23 for 999
 col 24 for 999
 
 
-select /* axiome */ to_char(first_time, 'YYYY/MM/dd') "Date",
+select /* db-html-report */ to_char(first_time, 'YYYY/MM/dd') "Date",
 count(1) "Total",
 sum(decode(to_char(first_time, 'hh24'),'00',1,0)) "00",
 sum(decode(to_char(first_time, 'hh24'),'01',1,0)) "01",

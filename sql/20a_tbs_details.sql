@@ -12,7 +12,7 @@ COL free FORMAT 99999999.00 HEAD "Free MB"
 COL max FORMAT 99999999.00 HEAD "MaxSize MB"
 COL Pct_Used FORMAT 999.00 HEAD "% Used"
 
-select /* axiome */
+select /* db-html-report */
     a.tablespace_name,
     t.bigfile,
     a.bytes_alloc/1024/1024 alloc,

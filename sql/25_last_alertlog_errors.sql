@@ -1,6 +1,6 @@
 prompt <h2>Les dernières erreurs de la base de données (Les 30 derniers jours et les 50 dernières lignes)</h2>
 
-select /* axiome */
+select /* db-html-report */
     TO_CHAR(ORIGINATING_TIMESTAMP, 'DD-MM-YYYY HH24:MM:SS') "Date",
     MESSAGE_TEXT                                          "Message"
 FROM

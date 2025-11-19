@@ -1,6 +1,6 @@
 prompt <h2>DBA_Profiles </h2>
 
-select /* axiome */
+select /* db-html-report */
     *
 FROM
     DBA_PROFILES

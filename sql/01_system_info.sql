@@ -1,6 +1,6 @@
 prompt <h2>System Information</h2>
 WITH /* 1a.1 */
- rac AS (select /* axiome */ /*+  MATERIALIZE NO_MERGE  */ COUNT(*) instances, CASE COUNT(*) WHEN 1 THEN 'Single-instance' ELSE COUNT(*)||'-node RAC cluster' END db_type FROM gv$instance),
+ rac AS (select /* db-html-report */ /*+  MATERIALIZE NO_MERGE  */ COUNT(*) instances, CASE COUNT(*) WHEN 1 THEN 'Single-instance' ELSE COUNT(*)||'-node RAC cluster' END db_type FROM gv$instance),
 hrac AS (SELECT /*+  MATERIALIZE NO_MERGE  */ CASE 1 WHEN 1 THEN ' (historically Single-instance in AWR)' ELSE ' (historicly 1-node RAC cluster in AWR)' END db_type
            FROM rac WHERE TO_CHAR(RAC.instances)<>1),
 mem AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) target FROM gv$system_parameter2 WHERE name = 'memory_target'),

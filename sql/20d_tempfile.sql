@@ -20,7 +20,7 @@ WITH
 -- Sous-requête pour les fichiers de données dans une CDB
 cdb_files AS (
     -- cdb_files.sql
-    select /* axiome */
+    select /* db-html-report */
         p.con_id AS pdb_id,
         p.pdb_name AS pdb_name,
         d.file_id,

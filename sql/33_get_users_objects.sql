@@ -1,6 +1,6 @@
 prompt <h2>Les objets par utilisateur</h2>
 
-select /* axiome */
+select /* db-html-report */
   *
 FROM
   (

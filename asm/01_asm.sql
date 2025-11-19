@@ -1,6 +1,6 @@
 PRO <h2>Configuratiom ASM</h2>
 
-SELECT
+SELECT /* db-html-report */
     DG.NAME,
     DG.STATE,
     DG.TYPE,
@@ -13,7 +13,7 @@ FROM
     V$ASM_DISKGROUP DG;
 -- Viewing disks in disk groups with V$ASM_DISK
 
-SELECT
+SELECT /* db-html-report */
     DG.NAME                                      "Disk Grp Name",
     A.NAME                                       "Name",
     A.FAILGROUP,
@@ -37,7 +37,7 @@ ORDER BY
     A.NAME;
 
 -- Viewing disk group clients with V$ASM_CLIENT
-SELECT
+SELECT /* db-html-report */
     DG.NAME            AS DISKGROUP,
     C.INSTANCE_NAME    AS INSTANCE,
     DB_NAME            AS DBNAME,

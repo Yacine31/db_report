@@ -1,6 +1,6 @@
 prompt <h2>Paramèters de la base de données : </h2>
 
-select /* axiome */
+select /* db-html-report */
     NAME,
     DISPLAY_VALUE,
     DESCRIPTION,

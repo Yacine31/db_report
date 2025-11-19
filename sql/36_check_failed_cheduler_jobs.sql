@@ -1,6 +1,6 @@
 prompt <h2>Failed scheduled jobs </h2>
 
-select /* axiome */
+select /* db-html-report */
     OWNER,
     JOB_NAME,
     JOB_TYPE,

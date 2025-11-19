@@ -4,7 +4,7 @@ col application_root for a25
 col application_pdb for a25
 col application_seed for a25
 
-select /* axiome */
+select /* db-html-report */
     p.con_id,
     p.dbid,
     p.name,

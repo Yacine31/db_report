@@ -1,6 +1,6 @@
 prompt <h2>Dictionary Stats / Fixed Objects Stats</h2>
 
-select /* axiome */
+select /* db-html-report */
 	TO_CHAR(MAX(END_TIME), 'dd/mm/yyyy hh24:mi') LATEST,
 	OPERATION
 FROM
