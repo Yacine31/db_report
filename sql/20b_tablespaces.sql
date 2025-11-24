@@ -7,6 +7,7 @@ COL used_mb FORMAT 99999999.00 HEAD "Used MB"
 COL free_mb FORMAT 99999999.00 HEAD "Free MB"
 COL max_mb FORMAT 99999999.00 HEAD "MaxSize MB"
 COL Pct_Used FORMAT 999.00 HEAD "% Used"
+COL nbr_of_files FORMAT 999 HEAD "Nbr Of Files"
 COL BIGFILE FORMAT A8 HEAD "Bigfile"
 
 select /* db-html-report */  
@@ -14,6 +15,7 @@ select /* db-html-report */
     c.NAME,
     a.tablespace_name,
     t.bigfile,
+    a.nbr_of_files,
     a.bytes_alloc/1024/1024 alloc_mb,
     (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used_mb,
     (nvl(b.bytes_free, 0))/1024/1024  free_mb,
@@ -24,6 +26,7 @@ from
         select
             f.con_id,
             f.tablespace_name,
+            count(*) as nbr_of_files,
             sum(f.bytes) bytes_alloc,
             sum(decode(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) maxbytes
         from
