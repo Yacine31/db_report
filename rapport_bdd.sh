@@ -340,5 +340,5 @@ export HNAME="${hostname}"
 bash summary.sh
 
 log_info "Génération du graphique RMAN."
-bash rman_chart.sh
+bash generate_all_reports.sh
 log_info "Fin du script."

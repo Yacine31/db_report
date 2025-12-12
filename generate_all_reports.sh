@@ -7,12 +7,12 @@
 
 # --- CONFIGURATION ---
 HTML_FILE="rapport_rman_global.html"
-SQL_SCRIPT="summary/24_rman_chart.sql"
+SQL_SCRIPT="generate_chart_data.sql"
 # --- FIN CONFIGURATION ---
 
 # Étape 1: Créer l'en-tête du fichier HTML
 echo "Initialisation du rapport : ${HTML_FILE}"
-cat html/01_html_chart_header.html > "${HTML_FILE}"
+cat html_header.html > "${HTML_FILE}"
 
 # Étape 2: Découvrir et boucler sur chaque base de données active
 echo "Découverte des bases de données via les processus 'pmon'..."
@@ -27,14 +27,14 @@ for sid in $(ps -eaf | grep ora_pmon | grep -v grep | grep -v -e '-MGMTDB' -e 'A
     # Ajout du titre pour la section de cette base
     echo "<h2>Sauvegardes RMAN pour la base : ${sid}</h2>" >> "${HTML_FILE}"
 
-    # Exécution de sqlplus et ajout du fragment (JS + div) au fichier HTML
-    # L'argument "$sid" est passé au script SQL et sera utilisé pour remplacer "&1"
+    # Exécution de sqlplus en injectant la définition de la variable &db_sid au début du script.
+    # Cette méthode est très robuste et évite les problèmes de passage de paramètres.
     (echo "DEFINE db_sid = ${sid}"; cat "${SQL_SCRIPT}") | sqlplus -s / as sysdba >> "${HTML_FILE}"
-    
+
 done
 
 # Étape 3: Finaliser le fichier HTML
 echo "Finalisation du rapport."
-cat html/98_html_chart_footer.html >> "${HTML_FILE}"
+cat html_footer.html >> "${HTML_FILE}"
 
 echo "Terminé ! Le rapport est disponible ici : ${HTML_FILE}"

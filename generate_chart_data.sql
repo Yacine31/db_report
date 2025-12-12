@@ -85,4 +85,3 @@ prompt <div id="chart_div_&db_sid" style="width: 95%; height: 600px;"></div>
 set feedback on
 set verify on
 set heading on
-exit
