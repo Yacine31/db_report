@@ -66,34 +66,6 @@ case "$os_type" in
         else
             echo "<pre>L'utilisateur n'a pas les droits sudo pour lire les fichiers log.</pre>"
         fi
-        print_h2 "Liste des disques disponibles (lsblk)"
-        run_and_print "lsblk"
-
-        print_h2 "Taille mémoire en Mo (free -m)"
-        run_and_print "free -m"
-
-        print_h2 "Caractéristiques CPU (lscpu)"
-        run_and_print "lscpu"
-
-        print_h2 "Statistiques VM (vmstat 2 20)"
-        run_and_print "vmstat 2 20"
-
-        print_h2 "Top 10 processus par utilisation CPU (ps --width 150)"
-        run_and_print "ps -eo pid,user,%cpu,%mem,vsz,rss,tty,stat,start,time,command --sort=-%cpu --width 1000 | head -n 17 | cut -c 1-180"
-
-        print_h2 "Derniers messages du noyau (dmesg -T | tail -n 30)"
-        if sudo -ln &> /dev/null; then
-            run_and_print "sudo dmesg -T | tail -n 30"
-        else
-            echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter dmesg.</pre>"
-        fi
-
-        print_h2 "Les 30 dernières erreurs dans /var/log/messages"
-        if sudo -ln &> /dev/null; then
-            run_and_print "sudo cat /var/log/messages | egrep -i 'error|failed' | tail -30"
-        else
-            echo "<pre>L'utilisateur n'a pas les droits sudo pour lire les fichiers log.</pre>"
-        fi
         ;;
 esac
 
