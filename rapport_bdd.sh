@@ -176,5 +176,6 @@ export OUTPUT_DIR="${output_dir}"
 export DATETIME="${timestamp}"
 export HNAME="${hostname}"
 bash summary.sh
+bash rman_chart.sh
 
 log_info "Fin du script."
