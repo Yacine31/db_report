@@ -5,6 +5,10 @@
 # RMAN pour toutes les bases de données détectées sur le serveur.
 # ==============================================================================
 
+# Importe les fonctions utilitaires
+# Le chemin est relatif au script appelant (rapport_bdd.sh)
+source "$(dirname "$0")/sh/utils.sh"
+
 # --- CONFIGURATION ---
 # on prepare le fichier output
 HTML_FILE="${OUTPUT_DIR}/RMAN_Chart_${HNAME}_${DATETIME}.html"
