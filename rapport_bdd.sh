@@ -59,7 +59,7 @@ execute_scripts() {
     case "${script_type}" in
       sh)
         # le script sh/09_os_info.sh dure 20 secondes : message d'info pour l'utilisateur
-        if [[ "${script_file}" -eq "sh/09_os_info.sh" ]]; then
+        if [ "${script_file}" = "sh/09_os_info.sh" ]; then
           log_info "Exécution du script : ${0} .... pause de 20 secondes pour vmstat"
         fi
         # Exécute le script Bash et ajoute sa sortie au rapport
