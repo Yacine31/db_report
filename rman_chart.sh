@@ -29,8 +29,8 @@ for sid in $(ps -eaf | grep ora_pmon | grep -v grep | grep -v -e '-MGMTDB' -e 'A
 
     # Exécution de sqlplus et ajout du fragment (JS + div) au fichier HTML
     # L'argument "$sid" est passé au script SQL et sera utilisé pour remplacer "&1"
-    sqlplus -s / as sysdba @"${SQL_SCRIPT}" "${sid}" >> "${HTML_FILE}"
-
+    (echo "DEFINE db_sid = ${sid}"; cat "${SQL_SCRIPT}") | sqlplus -s / as sysdba >> "${HTML_FILE}"
+    
 done
 
 # Étape 3: Finaliser le fichier HTML

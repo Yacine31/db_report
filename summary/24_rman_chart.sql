@@ -13,8 +13,8 @@ set linesize 3000
 -- Note: No spool, no HTML head. This is just a fragment.
 
 prompt <script type="text/javascript">
-prompt   google.setOnLoadCallback(drawChart_&1);
-prompt   function drawChart_&1() {
+prompt   google.setOnLoadCallback(drawChart_&db_sid);
+prompt   function drawChart_&db_sid() {
 prompt     var data = new google.visualization.DataTable();
 prompt     data.addColumn('datetime', 'Date');
 prompt     data.addColumn('number', 'Input Go');
@@ -52,7 +52,7 @@ FROM
 prompt     ]);
 prompt
 prompt     var options = {
-prompt       title: 'Performance des Sauvegardes RMAN pour la base &1',
+prompt       title: 'Performance des Sauvegardes RMAN pour la base &db_sid',
 prompt       curveType: 'function',
 prompt       legend: { position: 'bottom' },
 prompt       height: 600,
@@ -75,11 +75,11 @@ prompt         axis: 'horizontal'
 prompt       }
 prompt     };
 prompt
-prompt     var chart = new google.visualization.LineChart(document.getElementById('chart_div_&1'));
+prompt     var chart = new google.visualization.LineChart(document.getElementById('chart_div_&db_sid'));
 prompt     chart.draw(data, options);
 prompt   }
 prompt </script>
-prompt <div id="chart_div_&1" style="width: 95%; height: 600px;"></div>
+prompt <div id="chart_div_&db_sid" style="width: 95%; height: 600px;"></div>
 
 -- Reset settings
 set feedback on
