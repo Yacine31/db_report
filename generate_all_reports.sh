@@ -6,13 +6,18 @@
 # ==============================================================================
 
 # --- CONFIGURATION ---
-HTML_FILE="rapport_rman_global.html"
-SQL_SCRIPT="generate_chart_data.sql"
+# on prepare le fichier output
+FILENAME=$(basename "$sqlfile" | cut -d_ -f2)
+BASENAME="${FILENAME%.*}"
+HTML_FILE="${OUTPUT_DIR}/Rman_Chart_${BASENAME}_${HNAME}_${DATETIME}.html"
+
+# HTML_FILE="rapport_rman_global.html"
+SQL_SCRIPT="generate_rman_chart.sql"
 # --- FIN CONFIGURATION ---
 
 # Étape 1: Créer l'en-tête du fichier HTML
 echo "Initialisation du rapport : ${HTML_FILE}"
-cat html_header.html > "${HTML_FILE}"
+cat html/00_chart_html_header.html > "${HTML_FILE}"
 
 # Étape 2: Découvrir et boucler sur chaque base de données active
 echo "Découverte des bases de données via les processus 'pmon'..."
@@ -35,6 +40,6 @@ done
 
 # Étape 3: Finaliser le fichier HTML
 echo "Finalisation du rapport."
-cat html_footer.html >> "${HTML_FILE}"
+cat html/99_chart_html_footer.html >> "${HTML_FILE}"
 
 echo "Terminé ! Le rapport est disponible ici : ${HTML_FILE}"
