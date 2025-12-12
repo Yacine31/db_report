@@ -1,9 +1,4 @@
 prompt <h2>Détail des tablespaces : </h2>
--- COL TABLESPACE_NAME FORMAT A20 HEAD "Nom Tablespace"
--- COL PCT_OCCUPATION_THEORIQUE FORMAT 990.00 HEAD "% Occup"
--- COL TAILLE_MIB FORMAT 99999990.00 HEAD "Taille MB"
--- COL TAILLE_MAX_MIB FORMAT 99999990.00 HEAD "Taille max MB"
--- COL TAILLE_OCCUPEE_MIB FORMAT 99999990.00 HEAD "Espace occupé MiB"
 
 COL TABLESPACE_NAME FORMAT A20 HEAD "Tablespace"
 COL alloc FORMAT 99999999.00 HEAD "Allocated MB"
@@ -11,10 +6,12 @@ COL used FORMAT 99999999.00 HEAD "Used MB"
 COL free FORMAT 99999999.00 HEAD "Free MB"
 COL max FORMAT 99999999.00 HEAD "MaxSize MB"
 COL Pct_Used FORMAT 999.00 HEAD "% Used"
+COL nb_of_file FORMAT 999 HEAD "Nbr Of Files"
 
 select /* db-html-report */
     a.tablespace_name,
     t.bigfile,
+    a.nb_of_file,
     a.bytes_alloc/1024/1024 alloc,
     (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used,
     (nvl(b.bytes_free, 0))/1024/1024  free,
@@ -24,6 +21,7 @@ from
     (
         select
             f.tablespace_name,
+            count(*) as nb_of_file,
             sum(f.bytes) bytes_alloc,
             sum(decode(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) maxbytes
         from
@@ -48,6 +46,7 @@ union all
 select
     h.tablespace_name,
     dt.bigfile,
+    count(*) as nb_of_file,
     (sum(h.bytes_free + h.bytes_used))/1024/1024 alloc,
     (sum(nvl(p.bytes_used, 0)))/1024/1024 used,
     (sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0)))/1024/1024 free,
