@@ -4,6 +4,8 @@ source "$(dirname "$0")/utils.sh"
 
 # --- Script principal ---
 
+os_type=$(uname -s)
+
 print_h2 "Uptime"
 run_and_print "uptime"
 

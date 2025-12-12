@@ -4,8 +4,6 @@ source "$(dirname "$0")/utils.sh"
 
 # --- Script principal ---
 
-os_type=$(uname -s)
-
 print_h2 "Bases de données en cours d'exécution"
 run_and_print "ps -ef | grep pmon | grep -v grep"
 
