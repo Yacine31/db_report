@@ -43,8 +43,10 @@ case "$os_type" in
         print_h2 "Caractéristiques CPU (lscpu)"
         run_and_print "lscpu"
 
+        log_info "Exécution du script : ${0} .... pause de 20 secondes pour vmstat"
         print_h2 "Statistiques VM (vmstat 2 20)"
         run_and_print "vmstat 2 20"
+        log_info "Exécution du script : ${0} .... suite de la collecte"
 
         print_h2 "Top 10 processus par utilisation CPU (ps --width 150)"
         run_and_print "ps -eo pid,user,%cpu,%mem,vsz,rss,tty,stat,start,time,command --sort=-%cpu --width 1000 | head -n 17 | cut -c 1-180"
