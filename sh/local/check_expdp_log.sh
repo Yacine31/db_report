@@ -28,11 +28,11 @@ else
     fi
 
     # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
-    echo "<h3>Affichage des 10 premières et 10 dernières lignes des fichiers logs :</h3>"
+    echo "<h1>Affichage des 10 premières et 10 dernières lignes des fichiers logs :</h1>"
     # préparation de la commande find : définition de la fonction d'affichage plus lisible
     show_log_excerpt() {
       local file="$1"
-      echo "<br><b>--- ${file} ---</b> "    # affiche le nom du fichier en gras
+      echo "<br><h2>--- ${file} ---</h2> "    # affiche le nom du fichier en gras
       echo "<pre>"
       head -10 "$file"                      # affiche les 10 première lignes dans le bloc PRE
       echo "</pre><pre>" 
