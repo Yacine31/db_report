@@ -17,16 +17,17 @@ h3               { font-size:14pt; font-weight:normal; color:#336699; margin-top
 p                { line-height: 1.0; margin-bottom: 1.2em; }
 pre              { display: inline-block; background-color: #f8f8f8; border: 1px solid #ccc; padding: 1em; overflow-x: auto; font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Roboto Mono', 'Source Code Pro', monospace; font-size: 0.9em; line-height: 1.2; color: #333; white-space: pre-wrap; word-break: break-all; }
 a                {color:#663300; }
-table            { font-size:10pt; border-collapse: collapse; margin: 10px 0; background-color: #fff; empty-cells:show; white-space:nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+table            { font-size:10pt; border-collapse: collapse; margin: 15px 0; background-color: #fff; empty-cells:show; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 li               { font-size:10pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px; }
-tr               { color:black; background:white; }
-tr:hover         { color:white; background:#0066CC; }
+tr               { color:black; background:white; border-bottom: 1px solid #eee; }
+tr:nth-of-type(even) { background-color: #f9f9f9; }
+tr:hover         { color:#000; background:#e6f2ff; }
 tr.main          { color:black; background:white; }
 tr.main:hover    { color:black; background:white; }
 tr.selected      { background-color: #d1eaff !important; }
-td               { padding: 1px 5px; border: 1px solid #ddd; }
-th               { background-color: #0066CC; color: white; font-weight:normal; cursor: pointer; }
-th:hover         { background-color: #0066AA; }
+td               { padding: 8px 12px; border: 0; }
+th               { background-color: #f2f2f2; color: #333; font-weight:bold; cursor: pointer; padding: 10px 12px; border: 0; text-align: left; }
+th:hover         { background-color: #e0e0e0; }
 th.asc::after    { content: " 🔼"; }
 th.desc::after   { content: " 🔽"; }
 td.c             { text-align:center; }
