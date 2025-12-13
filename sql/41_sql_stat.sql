@@ -2,7 +2,6 @@ prompt <h2>Top SQL</h2>
 
 alter session set nls_date_format='DD/MM/YYYY HH24:MI:SS';
 
-col inst_id format a2 head inst_id
 col sql_id head sql_id
 col elapsed FORMAT 99999999 head "elapsed (second)"
 col sql_text head sql_text

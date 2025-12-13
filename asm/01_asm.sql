@@ -11,7 +11,7 @@ SELECT /* db-html-report */
     DG.DATABASE_COMPATIBILITY
 FROM
     V$ASM_DISKGROUP DG;
--- Viewing disks in disk groups with V$ASM_DISK
+
 
 SELECT /* db-html-report */
     DG.NAME                                      "Disk Grp Name",
@@ -36,7 +36,6 @@ ORDER BY
     DG.NAME,
     A.NAME;
 
--- Viewing disk group clients with V$ASM_CLIENT
 SELECT /* db-html-report */
     DG.NAME            AS DISKGROUP,
     C.INSTANCE_NAME    AS INSTANCE,

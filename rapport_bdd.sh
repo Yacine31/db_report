@@ -120,7 +120,6 @@ if [ -z "${database_sids}" ]; then
   exit 0
 fi
 
-
 log_info "Début de la génération des rapports pour les bases : "${database_sids}""
 
 for database_sid in ${database_sids}; do
@@ -153,14 +152,15 @@ for database_sid in ${database_sids}; do
     echo "<br><br>"
    } >> "${html_report_file}"
 
-  # Si une instance ASM est détectée, exécute les scripts ASM
-  if [ "$(ps -ef | grep pmon | grep ASM | wc -l)" -gt 0 ]; then
-    execute_scripts "Configuration de l'instance ASM" "asm/*.sql" "sql" "sql/sql_header.txt"
-  fi
-
   # Si la base est un CDB (Container Database), exécute les scripts pour les PDBs
   if [ "$(/bin/sh sql/cdb/is_CDB.sh | tail -1)" = "YES" ]; then
     execute_scripts "Informations sur les PDBs" "sql/cdb/*.sql" "sql" "sql/sql_header.txt"
+  fi
+
+  # Si une instance ASM est détectée, exécute les scripts ASM
+  if [ "$(ps -ef | grep pmon | grep ASM | wc -l)" -gt 0 ]; then
+      # exécution des scripts ASM sur cette instance
+      execute_scripts "Configuration de l'instance ASM" "asm/*.sql" "sql" "sql/sql_header.txt"
   fi
 
   execute_scripts "Configuration de la base de données "${ORACLE_SID}"" "sql/*.sql" "sql" "sql/sql_header.txt"
