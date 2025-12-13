@@ -17,7 +17,7 @@ control AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(block_size * file_size_blks
 core AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) cnt FROM gv$osstat WHERE stat_name = 'NUM_CPU_CORES'),
 cpu AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) cnt FROM gv$osstat WHERE stat_name = 'NUM_CPUS'),
 pmem AS (SELECT /*+  MATERIALIZE NO_MERGE  */ SUM(value) bytes FROM gv$osstat WHERE stat_name = 'PHYSICAL_MEMORY_BYTES')
-SELECT /*+  NO_MERGE  */ /* 1a.1 */
+SELECT /* db-html-report */ /*+  NO_MERGE  */ /* 1a.1 */
        'Database name:' system_item, db.name system_value FROM db
 -- UNION ALL
 --  SELECT '    pdb:'||name, 'Open Mode:'||open_mode FROM pdbs -- need 12c flag

@@ -5,8 +5,8 @@ select /* db-html-report */
     JOB_NAME,
     JOB_TYPE,
     STATE,
-    TRUNC(START_DATE)    SDATE,
-    TRUNC(NEXT_RUN_DATE) NXTRUN,
+    START_DATE,
+    NEXT_RUN_DATE,
     FAILURE_COUNT
 FROM
     DBA_SCHEDULER_JOBS

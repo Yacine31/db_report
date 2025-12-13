@@ -2,7 +2,7 @@ prompt <h3>Les dernières sauvegardes RMAN (30 derniers jours/50 dernières lign
 
 ALTER SESSION SET NLS_DATE_FORMAT='DD/MM/YYYY HH24:MI:SS';
 
-SELECT
+SELECT /* db-html-report */
     B.SESSION_KEY                                                                      "Session Key",
     B.INPUT_TYPE                                                                       "Type",
     TO_CHAR(B.START_TIME, 'DD-MM-YYYY HH24:MI')                                        "Start Time",

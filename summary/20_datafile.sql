@@ -1,25 +1,25 @@
-COL con_id HEAD "con_id"
-COL pdb_id HEAD "pdb_id"
-COL pdb_name HEAD "pdb_name"
-COL file_id HEAD "file_id"
-COL file_name HEAD "file_name"
-COL tablespace_name FORMAT A20 HEAD "tablespace"
+COL con_id HEAD "CON ID"
+COL pdb_id HEAD "PDB ID"
+COL pdb_name HEAD "PDB Name"
+COL file_id HEAD "File ID"
+COL file_name HEAD "File Name"
+COL tablespace_name FORMAT A20 HEAD "Tablespace"
 
-COL file_size_mb FORMAT 999999999.00 HEAD "file_size_mb"
-COL percent_used FORMAT 999.00 HEAD "percent_used"
-COL space_used_mb FORMAT 999999999.00 HEAD "space_used_mb"
-COL space_free_mb FORMAT 999999999.00 HEAD "space_free_mb"
-COL maxsize_mb FORMAT 999999999.00 HEAD "maxsize_mb"
+COL file_size_mb FORMAT 999999999 HEAD "File Size MB"
+COL percent_used FORMAT 999.00 HEAD "% Used"
+COL space_used_mb FORMAT 999999999 HEAD "Space Used MB"
+COL space_free_mb FORMAT 999999999 HEAD "Space Free MB"
+COL maxsize_mb FORMAT 999999999 HEAD "Maxsize MB"
 
-COL autoextensible FORMAT A15 HEAD "autoextensible"
-COL status head "status"
-COL online_status format a15 head "online_status"
+COL autoextensible FORMAT A15 HEAD "Autoextensible"
+COL status head "Status"
+COL online_status format a15 head "Online Status"
 
 WITH
 -- Sous-requête pour les fichiers de données dans une CDB
 cdb_files AS (
     -- cdb_files.sql
-    SELECT
+    SELECT /* db-html-report */
         p.con_id AS pdb_id,
         p.pdb_name AS pdb_name,
         d.file_id,
@@ -56,7 +56,7 @@ cdb_files AS (
 -- Sous-requête pour les fichiers de données dans une non-CDB
 non_cdb_files AS (
     -- non_cdb_files.sql
-    SELECT
+    SELECT /* db-html-report */
         NULL AS pdb_id,
         NULL AS pdb_name,
         d.file_id,

@@ -1,14 +1,14 @@
 prompt <h3>Détail des tablespaces : </h3>
 
-COL TABLESPACE_NAME FORMAT A20 HEAD "tablespace"
-COL BIGFILE FORMAT A10 HEAD "bigfile"
-COL alloc FORMAT 99999999.00 HEAD "allocated_mb"
-COL used FORMAT 99999999.00 HEAD "used_mb"
-COL free FORMAT 99999999.00 HEAD "free_mb"
-COL max FORMAT 99999999.00 HEAD "maxsize_mb"
-COL Pct_Used FORMAT 999.00 HEAD "percent_used"
+COL TABLESPACE_NAME FORMAT A20 HEAD "Tablespace"
+COL BIGFILE FORMAT A10 HEAD "Bigfile"
+COL alloc FORMAT 99999999 HEAD "Allocated MB"
+COL used FORMAT 99999999 HEAD "Used MB"
+COL free FORMAT 99999999 HEAD "Free MB"
+COL max FORMAT 99999999 HEAD "MaxSize MB"
+COL Pct_Used FORMAT 999.00 HEAD "% Used"
 
-select
+select /* db-html-report */
     a.tablespace_name,
     t.bigfile,
     a.bytes_alloc/1024/1024 alloc,
@@ -41,7 +41,7 @@ where
     a.tablespace_name = b.tablespace_name (+)
     and b.tablespace_name = t.tablespace_name
 union all
-select
+select /* db-html-report */
     h.tablespace_name,
     dt.bigfile,
     (sum(h.bytes_free + h.bytes_used))/1024/1024 alloc,
