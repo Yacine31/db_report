@@ -39,7 +39,7 @@ do
             . oraenv -s > /dev/null
 
             # ajout du nom de la base
-            echo "<h3>Base de données : ${sid}</h3>" >> "${HTML_FILE}"
+            echo "<h2>Base de données : ${sid}</h2>" >> "${HTML_FILE}"
             # ajouter le resultat du script sql dans la page html
             # Utilise le sql_header.txt standard
             cat sql/sql_header.txt "$sqlfile" | sqlplus -s / as sysdba >> "${HTML_FILE}"

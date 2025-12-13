@@ -1,3 +1,5 @@
+prompt <h3>Les informations des datafiles</h3>
+
 COL con_id HEAD "CON ID"
 COL pdb_id HEAD "PDB ID"
 COL pdb_name HEAD "PDB Name"

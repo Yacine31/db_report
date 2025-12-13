@@ -13,4 +13,4 @@ union all
 select 'supplemental_log_data_all' as property, supplemental_log_data_all as value from v$database
 union all
 select 'supplemental_log_data_pl' as property, supplemental_log_data_pl as value from v$database
-
+;

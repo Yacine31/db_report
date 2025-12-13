@@ -1,4 +1,4 @@
-prompt <h3>Détail du tablespace UNDO : </h3>
+prompt <h2>Détail du tablespace UNDO : </h2>
 
 col tablespace_name head "Tablespace Name"
 col file_id head "File ID"

@@ -1,69 +1,62 @@
-prompt <h3>Détail des tablespaces : </h3>
+prompt <h3>Les informations des tablespaces</h3>
 
+COL con_id HEAD "CON ID"
+COL db_pdb_name HEAD "DB/PDB Name"
 COL TABLESPACE_NAME FORMAT A20 HEAD "Tablespace"
-COL BIGFILE FORMAT A10 HEAD "Bigfile"
-COL alloc FORMAT 99999999 HEAD "Allocated MB"
-COL used FORMAT 99999999 HEAD "Used MB"
-COL free FORMAT 99999999 HEAD "Free MB"
-COL max FORMAT 99999999 HEAD "MaxSize MB"
-COL Pct_Used FORMAT 999.00 HEAD "% Used"
+COL bigfile FORMAT A10 HEAD "Bigfile"
+COL allocated_mb FORMAT 99999999 HEAD "Allocated MB"
+COL nbr_files FORMAT 99 HEAD "Nbr Of Files"
+COL used_mb FORMAT 99999999 HEAD "Used MB"
+COL free_mb FORMAT 99999999 HEAD "Free MB"
+COL max_mb FORMAT 99999999 HEAD "MaxSize MB"
+COL pct_used FORMAT 999.00 HEAD "% Used"
+
 
 select /* db-html-report */
-    a.tablespace_name,
-    t.bigfile,
-    a.bytes_alloc/1024/1024 alloc,
-    (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used,
-    (nvl(b.bytes_free, 0))/1024/1024  free,
-    maxbytes/1024/1024 Max,
-    (a.bytes_alloc - nvl(b.bytes_free, 0)) / maxbytes * 100 Pct_Used
+  a.con_id,
+  c.NAME as db_pdb_name,
+  a.tablespace_name,
+  t.bigfile,
+  a.nbr_files,
+  a.bytes_alloc/1024/1024 allocated_mb,
+  (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used_mb,
+  (nvl(b.bytes_free, 0))/1024/1024 free_mb, 
+  maxbytes/1024/1024 max_mb,
+  (a.bytes_alloc - nvl(b.bytes_free, 0)) / maxbytes * 100 pct_used
 from
-    (
-        select
-            f.tablespace_name,
-            sum(f.bytes) bytes_alloc,
-            sum(decode(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) maxbytes
-        from
-            dba_data_files f
-        group by
-            tablespace_name
-    ) a,
-    (
-        select
-            f.tablespace_name,
-            sum(f.bytes) bytes_free
-        from
-            dba_free_space f
-        group by
-            tablespace_name
-    ) b,
-    dba_tablespaces t
+  (
+    select
+      f.con_id,
+      f.tablespace_name,
+      count(*) as nbr_files,
+      sum(f.bytes) bytes_alloc,
+      sum(decode(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) maxbytes
+    from
+      cdb_data_files f
+    group by
+      con_id, tablespace_name
+  ) a,
+  (
+    select
+      f.con_id,
+      f.tablespace_name,
+      count(*) as nbr_files,
+      sum(f.bytes) bytes_free
+    from
+      cdb_free_space f
+    group by
+      con_id, tablespace_name
+  ) b,
+  v$containers c,
+  cdb_tablespaces t
 where
-    a.tablespace_name = b.tablespace_name (+)
-    and b.tablespace_name = t.tablespace_name
-union all
-select /* db-html-report */
-    h.tablespace_name,
-    dt.bigfile,
-    (sum(h.bytes_free + h.bytes_used))/1024/1024 alloc,
-    (sum(nvl(p.bytes_used, 0)))/1024/1024 used,
-    (sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0)))/1024/1024 free,
-    (sum(f.maxbytes))/1024/1024 max,
-    (sum(h.bytes_free + h.bytes_used) - sum((h.bytes_free + h.bytes_used) - nvl(p.bytes_used, 0))) / sum(f.maxbytes) Pct_Used
-from
-    sys.v_$temp_space_header h,
-    sys.v_$temp_extent_pool p,
-    dba_temp_files f,
-    dba_tablespaces dt
-where
-    p.file_id(+) = h.file_id
-    and p.tablespace_name(+) = h.tablespace_name
-    and f.file_id = h.file_id
-    and f.tablespace_name = h.tablespace_name
-    and h.tablespace_name = dt.tablespace_name
-group by
-    h.tablespace_name,
-    dt.contents,
-    dt.bigfile
+  a.con_id = b.con_id
+  and a.con_id = c.con_id(+)
+  and a.con_id = t.con_id
+  and a.tablespace_name = b.tablespace_name (+)
+  and a.tablespace_name = t.tablespace_name
 order by
-    1
+  a.con_id,
+  c.NAME,
+  a.tablespace_name
 ;
