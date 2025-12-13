@@ -19,7 +19,7 @@
           thresholds: [
             { min: 90, color: "#fecaca", text: "#991b1b" },    // rouge
             { min: 80, color: "#fef08a", text: "#92400e" },    // jaune
-            { min: 0,  color: "#bbf7d0", text: "#065f46" }     // vert
+            { min: 0,  color: "#d4edda", text: "#065f46" }     // vert
           ]
         },
         {
@@ -35,7 +35,7 @@
           keywords: ["status"], // 👈 règle pour la colonne STATUS
           matchText: "COMPLETED",  // mot-clé à détecter
           style: {              // style à appliquer si trouvé
-            backgroundColor: "#bbf7d0", // vert
+            backgroundColor: "#d4edda", // vert
             fontWeight: "bold"
           }
         },
@@ -43,11 +43,18 @@
           keywords: ["account_status"], // 👈 règle pour la colonne STATUS
           matchText: "OPEN",  // mot-clé à détecter
           style: {              // style à appliquer si trouvé
-            backgroundColor: "#bbf7d0", // vert
+            backgroundColor: "#d4edda", // vert
+            fontWeight: "bold"
+          }
+        },
+        {
+          keywords: ["open_mode"], // 👈 règle pour la colonne STATUS
+          matchText: "READ WRITE",  // mot-clé à détecter
+          style: {              // style à appliquer si trouvé
+            backgroundColor: "#d4edda", // vert
             fontWeight: "bold"
           }
         }
-        // Tu peux ajouter d’autres règles ici si besoin
       ];
       
       // 🎨 Appliquer les règles de coloration dynamiquement
