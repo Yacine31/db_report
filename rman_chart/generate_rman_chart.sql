@@ -43,8 +43,8 @@ FROM
         FROM
             V$RMAN_BACKUP_JOB_DETAILS B
         WHERE
-            B.START_TIME > ( SYSDATE - 30 )
-            AND B.STATUS = 'COMPLETED'
+            B.START_TIME > ( SYSDATE - 90 )
+            -- AND B.STATUS = 'COMPLETED'
         ORDER BY
             B.START_TIME ASC
     ) B;
