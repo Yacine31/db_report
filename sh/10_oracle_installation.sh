@@ -5,10 +5,10 @@ source "$(dirname "$0")/utils.sh"
 
 # --- Script principal ---
 
-print_h2 "Contenu du fichier /etc/oratab"
+print_h2 "Content of /etc/oratab"
 run_and_print "cat /etc/oratab | egrep -v '^$|^#'"
 
-print_h2 "Contenu du fichier Inventory.xml"
+print_h2 "Content of Inventory.xml"
 # On s'assure que le fichier oraInst.loc existe et est lisible
 if [ -r /etc/oraInst.loc ]; then
   ORA_INVENTORY=$(grep inventory_loc /etc/oraInst.loc | cut -d= -f2)
@@ -21,7 +21,7 @@ else
   echo "<pre>Fichier /etc/oraInst.loc non trouvé.</pre>"
 fi
 
-print_h2 "Niveau de patch des ORACLE_HOME (opatch lspatches)"
+print_h2 "ORACLE_HOME Patch Level (opatch lspatches)"
 if [ -r "${ORA_INVENTORY}/ContentsXML/inventory.xml" ]; then
   # Utilise un `while read` pour plus de robustesse que `cat ... | while`
   while read -r line; do

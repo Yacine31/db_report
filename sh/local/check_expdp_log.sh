@@ -10,7 +10,7 @@ source "$(dirname "$0")/../utils.sh"
 
 CURRENT_DATE=$(date +%Y_%m)   # date au format 2025_04
 
-print_h2 "Vérification des logs des exports Datapump"
+print_h2 "Datapump Export Log Verification"
 
 #  vérifier si une erreur ORA- est pésente dans les fichiers logs 
 echo "<h3>Vérification de la présence d'erreurs dans les logs :</h3>"

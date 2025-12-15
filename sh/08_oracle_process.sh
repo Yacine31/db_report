@@ -4,13 +4,13 @@ source "$(dirname "$0")/utils.sh"
 
 # --- Script principal ---
 
-print_h2 "Bases de données en cours d'exécution"
+print_h2 "Running Databases"
 run_and_print "ps -ef | grep pmon | grep -v grep"
 
-print_h2 "Listeners en cours d'exécution"
+print_h2 "Running Listeners"
 run_and_print "ps -ef | grep tnslsnr | grep -v grep"
 
-print_h2 "Statut du listener : ${listener_name}"
+print_h2 "Listener Status: ${listener_name}"
 # Boucle pour le statut du listener, car elle est plus complexe
 ps -ef | grep tnslsnr | egrep -i " LISTENER |${ORACLE_SID}" | grep -v grep | while read -r l; do
   binary_path=$(echo "$l" | perl -lne 'print $1 if /(\S*tnslsnr\S*)/' | sed 's#/bin/tnslsnr##')
@@ -24,7 +24,7 @@ ps -ef | grep tnslsnr | egrep -i " LISTENER |${ORACLE_SID}" | grep -v grep | whi
   fi
 done
 
-print_h2 "Limites de l'utilisateur (ulimit -a)"
+print_h2 "User Limits (ulimit -a)"
 run_and_print "ulimit -a | sort"
 
 

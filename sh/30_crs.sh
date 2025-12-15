@@ -11,7 +11,7 @@ count=$(ps -ef | grep ohasd | grep -v grep | wc -l)
 
 if [ "$count" -gt 0 ]; then
 
-	print_h2 "Services CRS"
+	print_h2 "CRS Services"
 
 	# BIN_DIR=$(dirname $(ps -ef | grep ohasd.bin | grep -v grep | egrep -o '/.*ohasd\.bin'))
 	# la commande egrep -o ne fonctionne pas sous AIX

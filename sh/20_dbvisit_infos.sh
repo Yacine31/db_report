@@ -12,7 +12,7 @@ count=$(ps -ef | grep dbvctl | grep -v grep | grep "${ORACLE_SID}" | wc -l)
 if [ "$count" -gt 0 ]; then
 
 	echo "<h1>Configuration DBVisit</h1>"
-	print_h2 "Process DBVisit en cours d'exécution"
+	print_h2 "Running DBVisit Processes"
 	run_and_print "ps -ef | grep dbvctl | grep -v grep"
 
 	# on récupère le chemin de l'executable dbvctl
@@ -24,13 +24,13 @@ if [ "$count" -gt 0 ]; then
 		export DBV_HOME="/usr/dbvisit/standby"
 	fi
 
-	print_h2 "Statut de la base : ${ORACLE_SID} sur le serveur $(hostname)"
+	print_h2 "Database Status: ${ORACLE_SID} on $(hostname)"
 	run_and_print "${DBV_HOME}/dbvctl -d ${ORACLE_SID} -o status"
 
 	# on récupère le statut de la base pour exécuter la commande sur la base primaire
 	db_prim=$("${DBV_HOME}/dbvctl" -d "${ORACLE_SID}" -o status | grep -i "read write" | wc -l)
 	if [ "${db_prim}" -gt 0 ]; then
-		print_h2 "Rapport de GAP DBVisit pour la base ${ORACLE_SID}"
+		print_h2 "DBVisit GAP Report for Database ${ORACLE_SID}"
 		run_and_print "${DBV_HOME}/dbvctl -d ${ORACLE_SID} -i"
 	fi
 fi
