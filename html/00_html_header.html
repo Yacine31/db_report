@@ -56,6 +56,7 @@ a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226
 
 /* Styles pour l'index flottant */
 #floating-index {
+    display: none; /* Hidden by default */
     position: fixed;
     top: 20px;
     right: 20px;
@@ -69,6 +70,9 @@ a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226
     border-radius: 8px;
     z-index: 1000;
     font-family: 'Montserrat', sans-serif;
+}
+#floating-index.visible {
+    display: block; /* Shown when 'visible' class is added */
 }
 #floating-index h3 {
     margin-top: 0;
@@ -96,10 +100,7 @@ a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226
     text-decoration: underline;
 }
 
-/* Adjust body padding to prevent content from going under the floating index */
-body {
-    padding-right: 280px; /* Width of floating index + some margin */
-}
+/* Adjust body padding removed as index is hidden by default */
 
 /* Media query for smaller screens */
 @media (max-width: 1024px) {
@@ -113,6 +114,26 @@ body {
         padding-right: 20px; /* Reset padding */
     }
 }
+#menu-toggle-bubble {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #A93226;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5em;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+#menu-toggle-bubble.hidden {
+    display: none; /* Hidden when menu is open */
+}
 </style>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -122,7 +143,6 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if there are any h2 elements to create an index
     var h2Elements = document.querySelectorAll('h2');
     if (h2Elements.length === 0) {
         return; // No h2 elements, no index needed
@@ -140,22 +160,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var idCounter = 0;
     h2Elements.forEach(function(h2) {
-        // Ensure each h2 has a unique ID
         if (!h2.id) {
             h2.id = 'section-' + idCounter++;
         }
-
-        // Create a list item and link for the index
         var listItem = document.createElement('li');
         var link = document.createElement('a');
         link.href = '#' + h2.id;
         link.textContent = h2.textContent;
+        // Add click listener to hide menu
+        link.addEventListener('click', function() {
+            floatingIndex.classList.remove('visible');
+            menuToggleBubble.classList.remove('hidden'); // Show bubble again
+        });
         listItem.appendChild(link);
         indexList.appendChild(listItem);
     });
 
     floatingIndex.appendChild(indexList);
     document.body.appendChild(floatingIndex);
+
+    // Create the floating toggle bubble
+    var menuToggleBubble = document.createElement('div');
+    menuToggleBubble.id = 'menu-toggle-bubble';
+    menuToggleBubble.textContent = '☰'; // Hamburger icon
+    document.body.appendChild(menuToggleBubble);
+
+    var menuTimeout;
+
+    function showMenu() {
+        clearTimeout(menuTimeout);
+        floatingIndex.classList.add('visible');
+        menuToggleBubble.classList.add('hidden'); // Hide bubble when menu is shown
+    }
+
+    function hideMenuWithDelay() {
+        menuTimeout = setTimeout(function() {
+            floatingIndex.classList.remove('visible');
+            menuToggleBubble.classList.remove('hidden'); // Show bubble again
+        }, 300); // Small delay before hiding
+    }
+
+    // Event listeners for hover behavior
+    menuToggleBubble.addEventListener('mouseover', showMenu);
+    menuToggleBubble.addEventListener('mouseout', hideMenuWithDelay);
+    floatingIndex.addEventListener('mouseover', showMenu);
+    floatingIndex.addEventListener('mouseout', hideMenuWithDelay);
 });
 </script>
 </head>
