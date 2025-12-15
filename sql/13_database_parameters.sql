@@ -1,4 +1,4 @@
-prompt <h2>Paramèters de la base de données : </h2>
+prompt <h2>Database Parameters</h2>
 
 select /* db-html-report */
     NAME,

@@ -1,4 +1,4 @@
-prompt <h2>Les dernières sauvegardes RMAN (30 derniers jours/50 dernières lignes)</h2>
+prompt <h2>Last RMAN Backups</h2>
 
 ALTER SESSION SET NLS_DATE_FORMAT='DD/MM/YYYY HH24:MI:SS';
 

@@ -1,4 +1,4 @@
-prompt <h2>Database/Instance Status</h2>
+prompt <h2>DB/Instance Status</h2>
 alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 
 select /* db-html-report */ 'DATABASE_NAME' AS property, name AS value FROM gv$database

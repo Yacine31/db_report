@@ -1,4 +1,4 @@
-prompt <h2>Statut des jobs autotask </h2>
+prompt <h2>Autotask Job Status</h2>
 
 select /* db-html-report */
     CLIENT_NAME,

@@ -1,5 +1,5 @@
 -- Qui est connecté à la base :
-prompt <h2>Sessions Aggregate per User and Type</h2>
+prompt <h2>Sessions by User/Type</h2>
 
 WITH X AS (
        select /* db-html-report */

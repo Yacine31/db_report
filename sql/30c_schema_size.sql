@@ -1,4 +1,4 @@
-prompt <h2>Taille des objets par schéma (Mo):</h2>
+prompt <h2>Schema Size (MB)</h2>
 
 select /* db-html-report */
     DS.OWNER                           "Owner",

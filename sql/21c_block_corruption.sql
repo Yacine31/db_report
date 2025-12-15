@@ -1,4 +1,4 @@
-prompt <h2>Existance de blocks corrompus :</h2>
+prompt <h2>Corrupted Blocks</h2>
 
 select /* db-html-report */
     *

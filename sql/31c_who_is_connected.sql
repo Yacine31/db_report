@@ -1,4 +1,4 @@
-prompt <h2>Who is connected ? </h2>
+prompt <h2>Who is Connected?</h2>
 
 col PROGRAM for a35
 col MACHINE for a20

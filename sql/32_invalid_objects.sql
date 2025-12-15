@@ -1,4 +1,4 @@
-prompt <h2>Invalid objects</h2>
+prompt <h2>Invalid Objects</h2>
 
 select /* db-html-report */
     OWNER,

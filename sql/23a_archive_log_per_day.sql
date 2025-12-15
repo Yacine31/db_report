@@ -1,4 +1,4 @@
-prompt <h2>Historique de bascule de fichiers redolog par jour : </h2>
+prompt <h2>Redo Log Switch History</h2>
 
 set head on
 set pages 999 lines 200

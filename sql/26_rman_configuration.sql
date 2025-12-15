@@ -1,4 +1,4 @@
-prompt <h2>Configuration RMAN: pramètres modifiés :</h2>
+prompt <h2>RMAN Config</h2>
 
 select /* db-html-report */
     *

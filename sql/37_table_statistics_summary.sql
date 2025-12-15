@@ -1,4 +1,4 @@
-prompt <h2>Table Statistics Summary</h2>
+prompt <h2>Table Stats Summary</h2>
 
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 

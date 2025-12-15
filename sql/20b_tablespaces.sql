@@ -1,4 +1,4 @@
-prompt <h2>Détail des tablespaces (dans toutes les PDB si la base est CDB) : </h2>
+prompt <h2>Tablespaces Details</h2>
 
 COL con_id HEAD "CON ID"
 COL db_pdb_name HEAD "DB/PDB Name"

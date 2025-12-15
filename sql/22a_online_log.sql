@@ -1,4 +1,4 @@
-prompt <h2>Fichiers de journalisation (Redolog) :</h2>
+prompt <h2>Redo Log Files</h2>
 
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 

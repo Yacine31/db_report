@@ -1,4 +1,4 @@
-prompt <h2>Multiplexage des fichiers de journalisation (Redolog et standbylog)</h2>
+prompt <h2>Redo/Standby Log Multiplexing</h2>
 alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 
 COL MEMBER FORMAT A90 WRAPPED

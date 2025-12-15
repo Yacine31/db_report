@@ -1,4 +1,4 @@
-prompt <h2>Memory Information</h2>
+prompt <h2>Memory Configuration</h2>
 WITH
 system_parameter AS (
 select /* db-html-report */ inst_id,

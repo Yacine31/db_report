@@ -1,4 +1,4 @@
-prompt <h2>Database supplemental logging :</h2>
+prompt <h2>Supplemental Logging</h2>
 
 select /* db-html-report */ 'force_logging' as property, force_logging as value from v$database
 union all

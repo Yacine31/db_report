@@ -1,5 +1,5 @@
 -- SCRIPT - to Set the 'SESSION_CACHED_CURSORS' and 'OPEN_CURSORS' Parameters Based on Usage (Doc ID 208857.1)
-prompt <h2>Sessions and Cursors usage </h2>
+prompt <h2>Session & Cursor Usage</h2>
 
 select /* db-html-report */
   'session_cached_cursors'         PARAMETER,

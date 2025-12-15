@@ -1,4 +1,4 @@
-prompt <h2>Liste des derniers jobs dans : CDB_SCHEDULER_JOB_LOG </h2>
+prompt <h2>Scheduler Job Log</h2>
 
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 

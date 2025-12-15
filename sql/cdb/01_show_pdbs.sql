@@ -1,4 +1,4 @@
-prompt <h2>Liste des PLuggables Databases</h2>
+prompt <h2>PDB List</h2>
 
 col application_root for a25
 col application_pdb for a25

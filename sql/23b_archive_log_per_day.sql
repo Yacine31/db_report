@@ -1,4 +1,4 @@
-prompt <h2>Taille des redolog par jour :</h2>
+prompt <h2>Redo Size per Day</h2>
 
 select /* db-html-report */
         TO_CHAR(FIRST_TIME, 'YYYY/MM/dd')          "Jour",

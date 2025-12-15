@@ -1,4 +1,4 @@
-prompt <h2>Resource Limit (GV$RESOURCE_LIMIT)</h2>
+prompt <h2>Resource Limits</h2>
 
 select /* db-html-report */
     *

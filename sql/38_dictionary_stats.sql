@@ -1,4 +1,4 @@
-prompt <h2>Dictionary Stats / Fixed Objects Stats</h2>
+prompt <h2>Dictionary & Fixed Obj Stats</h2>
 
 select /* db-html-report */
 	TO_CHAR(MAX(END_TIME), 'dd/mm/yyyy hh24:mi') LATEST,

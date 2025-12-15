@@ -1,4 +1,4 @@
-prompt <h2>CDB/PDB - Détail des datafiles : </h2>
+prompt <h2>CDB/PDB Datafiles</h2>
 
 COL con_id HEAD "CON ID"
 COL pdb_name HEAD "PDB Name"

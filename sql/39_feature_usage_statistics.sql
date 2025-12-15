@@ -1,4 +1,4 @@
-prompt <h2>Les options utilisée (à partir de DBA_FEATURE_USAGE_STATISTICS): </h2>
+prompt <h2>Feature Usage Stats</h2>
 
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 

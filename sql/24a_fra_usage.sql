@@ -1,4 +1,4 @@
-prompt <h2>Fast Recovery Area Usage</h2>
+prompt <h2>FRA Usage Summary</h2>
 
 select /* db-html-report */
     'Taille FRA MiB'                                  AS PROPERTY,

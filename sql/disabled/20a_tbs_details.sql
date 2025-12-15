@@ -1,4 +1,4 @@
-prompt <h2>Détail des tablespaces : </h2>
+prompt <h2>Tablespace Details</h2>
 
 COL TABLESPACE_NAME FORMAT A20 HEAD "Tablespace"
 COL alloc FORMAT 99999999 HEAD "Allocated MB"

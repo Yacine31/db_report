@@ -1,4 +1,4 @@
-prompt <h2>Failed scheduled jobs </h2>
+prompt <h2>Failed Scheduled Jobs</h2>
 
 select /* db-html-report */
     OWNER,
