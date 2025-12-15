@@ -53,6 +53,66 @@ font.f           { font-size:10pt; color:#999999; border-top:1px solid #A93226; 
     word-break: break-all;
 }
 a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226; color: white; padding: 10px; text-decoration: none; border-radius: 5px; }
+
+/* Styles pour l'index flottant */
+#floating-index {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    max-height: calc(100vh - 40px); /* Adjust height to not overlap footer */
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+}
+#floating-index h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #A93226;
+    font-size: 1.1em;
+}
+#floating-index ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#floating-index li {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+#floating-index a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 3px 0;
+}
+#floating-index a:hover {
+    color: #A93226;
+    text-decoration: underline;
+}
+
+/* Adjust body padding to prevent content from going under the floating index */
+body {
+    padding-right: 280px; /* Width of floating index + some margin */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 1024px) {
+    #floating-index {
+        position: static; /* No longer floating */
+        width: auto;
+        max-height: none;
+        margin-bottom: 20px;
+    }
+    body {
+        padding-right: 20px; /* Reset padding */
+    }
+}
 </style>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -60,4 +120,42 @@ google.load("visualization", "1", {packages:["corechart"]});
 // Les fonctions drawChart_DBNAME seront ajoutées ici par sqlplus
 </script>
 
-    
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there are any h2 elements to create an index
+    var h2Elements = document.querySelectorAll('h2');
+    if (h2Elements.length === 0) {
+        return; // No h2 elements, no index needed
+    }
+
+    // Create the floating index container
+    var floatingIndex = document.createElement('nav');
+    floatingIndex.id = 'floating-index';
+
+    var indexTitle = document.createElement('h3');
+    indexTitle.textContent = 'Index des sections';
+    floatingIndex.appendChild(indexTitle);
+
+    var indexList = document.createElement('ul');
+
+    var idCounter = 0;
+    h2Elements.forEach(function(h2) {
+        // Ensure each h2 has a unique ID
+        if (!h2.id) {
+            h2.id = 'section-' + idCounter++;
+        }
+
+        // Create a list item and link for the index
+        var listItem = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = '#' + h2.id;
+        link.textContent = h2.textContent;
+        listItem.appendChild(link);
+        indexList.appendChild(listItem);
+    });
+
+    floatingIndex.appendChild(indexList);
+    document.body.appendChild(floatingIndex);
+});
+</script>
+</head>
