@@ -52,7 +52,7 @@ FROM
 prompt     ]);
 prompt
 prompt     var options = {
-prompt       title: 'Performance des Sauvegardes RMAN pour la base &db_sid',
+prompt       title: 'RMAN Backup History for Database &db_sid',
 prompt       curveType: 'function',
 prompt       legend: { position: 'bottom' },
 prompt       height: 600,
@@ -62,11 +62,11 @@ prompt         1: {targetAxisIndex: 0, color: '#109618'},
 prompt         2: {targetAxisIndex: 1, color: '#dc3912'}
 prompt       },
 prompt       vAxes: {
-prompt         0: {title: 'Taille (Go)', format: 'short', viewWindow: {min: 0}},
-prompt         1: {title: 'Durée (minutes)', format: 'short', viewWindow: {min: 0}}
+prompt         0: {title: 'Size (Go)', format: 'short', viewWindow: {min: 0}},
+prompt         1: {title: 'Duration (minutes)', format: 'short', viewWindow: {min: 0}}
 prompt       },
 prompt       hAxis: {
-prompt         title: 'Date de la sauvegarde',
+prompt         title: 'Date',
 prompt         format: 'dd/MM/yy HH:mm'
 prompt       },
 prompt       explorer: {

@@ -1,4 +1,4 @@
-prompt <h3>Les informations des tablespaces</h3>
+prompt <h3>Tablespace Details</h3>
 
 COL con_id HEAD "CON ID"
 COL db_pdb_name HEAD "DB/PDB Name"

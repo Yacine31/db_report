@@ -1,4 +1,4 @@
-prompt <h3>Les informations des datafiles</h3>
+prompt <h3>Datafile Details</h3>
 
 COL con_id HEAD "CON ID"
 COL pdb_id HEAD "PDB ID"
