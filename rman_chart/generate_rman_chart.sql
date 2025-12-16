@@ -24,30 +24,59 @@ prompt     data.addRows([
 
 -- This is where the SQL query will inject the data for the chart
 SELECT
-    decode(rownum, 1, '', ','),
-    '[new Date(' ||
-        TO_CHAR(B.START_TIME, 'YYYY') || ',' ||
-        (TO_NUMBER(TO_CHAR(B.START_TIME, 'MM')) - 1) || ',' ||
-        TO_CHAR(B.START_TIME, 'DD,HH24,MI,SS') ||
-    '),' ||
-    B.INPUT_GO || ',' ||
-    B.OUTPUT_GO || ',' ||
-    B.DURATION_MINUTES || ']'
-FROM
-    (
-        SELECT
-            B.START_TIME,
-            ROUND(NVL(B.INPUT_BYTES, 0) / (1024*1024*1024), 2) AS INPUT_GO,
-            ROUND(NVL(B.OUTPUT_BYTES, 0) / (1024*1024*1024), 2) AS OUTPUT_GO,
-            ROUND(NVL(B.ELAPSED_SECONDS, 0) / 60, 2) AS DURATION_MINUTES
-        FROM
-            V$RMAN_BACKUP_JOB_DETAILS B
-        WHERE
-            B.START_TIME > ( SYSDATE - 90 )
-            -- AND B.STATUS = 'COMPLETED'
-        ORDER BY
-            B.START_TIME ASC
-    ) B;
+     decode(rownum, 1, '', ','),
+     '[new Date(' ||
+         TO_CHAR(B.START_TIME, 'YYYY') || ',' ||
+         (TO_NUMBER(TO_CHAR(B.START_TIME, 'MM')) - 1) || ',' ||
+         TO_CHAR(B.START_TIME, 'DD') || ',' ||      -- Séparer le jour
+         TO_CHAR(B.START_TIME, 'HH24') || ',' ||    -- Séparer l'heure
+         TO_CHAR(B.START_TIME, 'MI') || ',' ||      -- Séparer les minutes
+         TO_CHAR(B.START_TIME, 'SS') ||             -- Séparer les secondes
+     '),' ||
+     NVL(REPLACE(TO_CHAR(B.INPUT_GO), ',', '.'), 'null') || ',' ||        -- Remplacer virgule par point, gérer NULL
+     NVL(REPLACE(TO_CHAR(B.OUTPUT_GO), ',', '.'), 'null') || ',' ||       -- Remplacer virgule par point, gérer NULL
+     NVL(REPLACE(TO_CHAR(B.DURATION_MINUTES), ',', '.'), 'null') || ']'   -- Remplacer virgule par point, gérer NULL
+ FROM
+     (
+         SELECT
+             B.START_TIME,
+             ROUND(NVL(B.INPUT_BYTES, 0) / (1024*1024*1024), 2) AS INPUT_GO,
+             ROUND(NVL(B.OUTPUT_BYTES, 0) / (1024*1024*1024), 2) AS OUTPUT_GO,
+             ROUND(NVL(B.ELAPSED_SECONDS, 0) / 60, 2) AS DURATION_MINUTES
+         FROM
+             V$RMAN_BACKUP_JOB_DETAILS B
+         WHERE
+             B.START_TIME > ( SYSDATE - 90 )
+             -- AND B.STATUS = 'COMPLETED'
+         ORDER BY
+             B.START_TIME ASC
+     ) B;
+
+-- SELECT
+--     decode(rownum, 1, '', ','),
+--     '[new Date(' ||
+--         TO_CHAR(B.START_TIME, 'YYYY') || ',' ||
+--         (TO_NUMBER(TO_CHAR(B.START_TIME, 'MM')) - 1) || ',' ||
+--         TO_CHAR(B.START_TIME, 'DD,HH24,MI,SS') ||
+--     '),' ||
+--     B.INPUT_GO || ',' ||
+--     B.OUTPUT_GO || ',' ||
+--     B.DURATION_MINUTES || ']'
+-- FROM
+--     (
+--         SELECT
+--             B.START_TIME,
+--             ROUND(NVL(B.INPUT_BYTES, 0) / (1024*1024*1024), 2) AS INPUT_GO,
+--             ROUND(NVL(B.OUTPUT_BYTES, 0) / (1024*1024*1024), 2) AS OUTPUT_GO,
+--             ROUND(NVL(B.ELAPSED_SECONDS, 0) / 60, 2) AS DURATION_MINUTES
+--         FROM
+--             V$RMAN_BACKUP_JOB_DETAILS B
+--         WHERE
+--             B.START_TIME > ( SYSDATE - 90 )
+--             -- AND B.STATUS = 'COMPLETED'
+--         ORDER BY
+--             B.START_TIME ASC
+--     ) B;
 
 prompt     ]);
 prompt
