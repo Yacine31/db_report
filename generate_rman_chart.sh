@@ -29,7 +29,7 @@ for sid in $(ps -eaf | grep ora_pmon | grep -v grep | grep -v -e '-MGMTDB' -e 'A
     . oraenv -s > /dev/null
 
     # Ajout du titre pour la section de cette base
-    echo "<h2>Evolution de la sauvegardes RMAN pour la base : ${sid}</h2>" >> "${HTML_FILE}"
+    echo "<h2>RMAN Backup Evolution for Database: ${sid}</h2>" >> "${HTML_FILE}"
 
     # Exécution de sqlplus en injectant la définition de la variable &db_sid au début du script.
     # Cette méthode est très robuste et évite les problèmes de passage de paramètres.
@@ -39,4 +39,4 @@ done
 # Étape 3: Finaliser le fichier HTML
 cat rman_chart/99_chart_html_footer.html >> "${HTML_FILE}"
 
-log_info "Génrération du graphique des sauvegardes RMAN dans ${HTML_FILE}"
+log_info "Generating RMAN backup chart in ${HTML_FILE}"
