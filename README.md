@@ -30,7 +30,7 @@ cp .env.local .env
 
 ```bash
 # Exécuter le script principal
-bash rapport_bdd.sh
+bash oracle_db_report.sh
 ```
 
 ## Sortie
@@ -47,7 +47,7 @@ Un script de synthèse (`summary.sh`) est également exécuté pour agréger cer
 
 ## Structure du projet
 
-- `rapport_bdd.sh` : Script principal qui orchestre la génération du rapport serveur et des rapports de base de données.
+- `oracle_db_report.sh` : Script principal qui orchestre la génération du rapport serveur et des rapports de base de données.
 - `sh/` : Scripts Bash pour la collecte des informations système (utilisés pour le rapport serveur).
 - `sql/` : Requêtes SQL pour les données de base de données.
 - `html/` : Templates HTML pour l'en-tête et le pied de page des rapports.
