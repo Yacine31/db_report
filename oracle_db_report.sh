@@ -85,6 +85,9 @@ mkdir -p "${output_dir}"
 #------------------------------------------------------------------------------
 log_info "Starting report generation for server: "${hostname}""
 
+# Defines the HTML report file name
+html_report_file="${output_dir}/Rapport_"${hostname}"_"${timestamp}".html"
+
 # Copies the HTML header and adds the anchor for the "back to top" link
 cat html/00_html_header.html > "${html_report_file}"
 echo '<div id="top"></div>' >> "${html_report_file}"
