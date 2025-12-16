@@ -10,9 +10,19 @@ log_info() {
   echo "[INFO] $(date +'%Y-%m-%d %H:%M:%S') - ${1}"
 }
 
+# Affiche un titre H3
+print_h3() {
+  echo "<h3>$1</h3>"
+}
+
 # Affiche un titre H2
 print_h2() {
   echo "<h2>$1</h2>"
+}
+
+# Affiche un titre H1
+print_h1() {
+  echo "<h1>$1</h1>"
 }
 
 # Exécute une commande et affiche sa sortie dans une balise <pre>

@@ -13,7 +13,7 @@ CURRENT_DATE=$(date +%Y_%m)   # date au format 2025_04
 print_h2 "Datapump Export Log Verification"
 
 #  vérifier si une erreur ORA- est pésente dans les fichiers logs 
-echo "<h3>Vérification de la présence d'erreurs dans les logs :</h3>"
+print_h3 "Vérification de la présence d'erreurs dans les logs :"
 
 if [ -z "${EXPDP_DIR}" ]; then
     echo "<pre>La variable EXPDP_DIR n'est pas définie. Impossible de vérifier les logs Datapump.</pre>"
@@ -28,11 +28,12 @@ else
     fi
 
     # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
-    echo "<h1>Affichage des 10 premières et 10 dernières lignes des fichiers logs :</h1>"
+    print_h1 "Affichage des 10 premières et 10 dernières lignes des fichiers logs"
     # préparation de la commande find : définition de la fonction d'affichage plus lisible
     show_log_excerpt() {
       local file="$1"
-      echo "<br><h2>--- ${file} ---</h2> "    # affiche le nom du fichier en gras
+      echo "<br><h2>$(echo "${file}" | cut -d/ -f4)</h2>"    # affiche le nom de la base
+      echo "<br><h3>${file}</h2>"           # affiche le nom du fichier en gras
       echo "<pre>"
       head -10 "$file"                      # affiche les 10 première lignes dans le bloc PRE
       echo "</pre><pre>" 
