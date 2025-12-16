@@ -69,7 +69,7 @@ do
             # Insert HTML header
             cat html/00_html_header.html > "${HTML_FILE}"
             # Exécution du script local en utilisant run_and_print
-            print_h2 "Script Result: ${FILENAME}" >> "${HTML_FILE}"
+            print_h1 "Script Result: ${FILENAME}" >> "${HTML_FILE}"
             # The shfile script itself must be executed, and it already contains its own print_h2/run_and_print calls
             # Therefore, execute it directly.
             bash "$shfile" >> "${HTML_FILE}"            # Insert HTML footer
