@@ -1,62 +1,61 @@
 # DB Report
 
-Génère des rapports HTML détaillés sur la configuration d'un serveur et de ses bases de données Oracle.
+Generates detailed HTML reports on the configuration of a server and its Oracle databases.
 
-## Fonctionnalités
+## Features
 
-- Génération d'un rapport de configuration pour le serveur hôte.
-- Collecte automatique des bases de données Oracle en cours d'exécution.
-- Génération d'un rapport HTML structuré et détaillé pour chaque base de données.
-- Support pour les instances ASM et les PDBs (Pluggable Databases).
-- Scripts modulaires pour une personnalisation facile.
+- Generates a configuration report for the host server.
+- Automatically collects information about running Oracle databases.
+- Generates a structured and detailed HTML report for each database.
+- Support for ASM instances and PDBs (Pluggable Databases).
+- Modular scripts for easy customization.
 
-## Prérequis
+## Prerequisites
 
-- Système Linux/Unix avec Bash.
-- Oracle Database installé et configuré (avec `sqlplus` et `oraenv`).
-- Permissions pour exécuter des requêtes SQL en tant que `sysdba`.
+- Linux/Unix system with Bash.
+- Oracle Database installed and configured (with `sqlplus` and `oraenv`).
+- Permissions to execute SQL queries as `sysdba`.
 
 ## Installation
 
 ```bash
 git clone https://github.com/Yacine31/db_report
 cd db_report
-# Copier le fichier d'exemple de configuration (optionnel)
+# Copy the example configuration file (optional)
 cp .env.local .env
-# Éditer .env si nécessaire (e.g., pour personnaliser OUTPUT_DIR)
+# Edit .env if necessary (e.g., to customize OUTPUT_DIR)
 ```
 
-## Utilisation
+## Usage
 
 ```bash
-# Exécuter le script principal
+# Execute the main script
 bash oracle_db_report.sh
 ```
 
-## Sortie
+## Output
 
-Le script génère deux types de rapports dans le répertoire `output/YYYYMMDD/`:
+The script generates two types of reports in the `output/YYYYMMDD/` directory:
 
-1.  **Rapport Serveur** : Un rapport unique contenant les informations de configuration du système d'exploitation.
-    - Nom du fichier : `Rapport_{hostname}_{timestamp}.html`
+1.  **Server Report**: A single report containing the operating system configuration information.
+    - Filename: `Rapport_{hostname}_{timestamp}.html`
 
-2.  **Rapports Base de Données** : Un rapport détaillé pour chaque instance de base de données Oracle détectée.
-    - Nom du fichier : `Rapport_{hostname}_{SID}_{timestamp}.html`
+2.  **Database Reports**: A detailed report for each detected Oracle database instance.
+    - Filename: `Rapport_{hostname}_{SID}_{timestamp}.html`
 
-Un script de synthèse (`summary.sh`) est également exécuté pour agréger certaines données des différentes bases.
+A summary script (`summary.sh`) is also executed to aggregate certain data from the different databases.
 
-## Structure du projet
+## Project Structure
 
-- `oracle_db_report.sh` : Script principal qui orchestre la génération du rapport serveur et des rapports de base de données.
-- `sh/` : Scripts Bash pour la collecte des informations système (utilisés pour le rapport serveur).
-- `sql/` : Requêtes SQL pour les données de base de données.
-- `html/` : Templates HTML pour l'en-tête et le pied de page des rapports.
-- `asm/` : Scripts SQL spécifiques aux instances ASM.
-- `summary/` : Scripts SQL utilisés par le script de synthèse.
-- `summary.sh` : Script d'agrégation des rapports.
+- `oracle_db_report.sh`: Main script that orchestrates the generation of the server report and database reports.
+- `sh/`: Bash scripts for collecting system information (used for the server report).
+- `sql/`: SQL queries for database data.
+- `html/`: HTML templates for the report headers and footers.
+- `asm/`: SQL scripts specific to ASM instances.
+- `summary/`: SQL scripts used by the summary script.
+- `summary.sh`: Report aggregation script.
 
-## Personnalisation
+## Customization
 
-- Modifiez `.env` pour changer le répertoire de sortie.
-- Ajoutez des scripts dans `sh/` ou `sql/` pour étendre les rapports.
-
+- Modify `.env` to change the output directory.
+- Add scripts in `sh/` or `sql/` to extend the reports.
