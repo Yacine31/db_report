@@ -96,7 +96,7 @@ echo '<div id="top"></div>' >> "${html_report_file}"
 current_date="$(date +"%d/%m/%Y %Hh%M")"
 {
   echo "<h1>Server Configuration Report for "${hostname}"</h1>"
-  echo "<h2>Date: "${current_date}"</h2>"
+  echo "<h3>Date: "${current_date}"</h3>"
   echo "<h2>Hostname: "${hostname}"</h2>"
   echo "<br><br>"
  } >> "${html_report_file}"
