@@ -157,6 +157,11 @@ for database_sid in ${database_sids}; do
     execute_scripts "PDB Information" "sql/cdb/*.sql" "sql" "sql/sql_header.txt"
   fi
 
+  # Si la base participe à une configuration Data Guard, exécute les scripts DG
+  if [ "$(/bin/sh sql/dataguard/is_dataguard.sh | tail -1)" = "YES" ]; then
+    execute_scripts "Data Guard Configuration" "sql/dataguard/*.sql" "sql" "sql/sql_header.txt"
+  fi
+
   # If an ASM instance is detected, execute ASM scripts
   if [ "$(ps -ef | grep pmon | grep ASM | wc -l)" -gt 0 ]; then
       # Execute ASM scripts on this instance
