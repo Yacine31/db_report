@@ -4,3 +4,4 @@ output/
 docs/
 .vscode/
 history.log
+.claude/settings.local.json
