@@ -1,3 +1,4 @@
+SET DEFINE OFF
 prompt <h2>Data Guard — Database Role &amp; Protection</h2>
 alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 
