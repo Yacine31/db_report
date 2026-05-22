@@ -11,7 +11,6 @@ select /* db-html-report */
     status,
     target,
     archiver,
-    schedule,
     destination,
     db_unique_name,
     applied_seq#,
