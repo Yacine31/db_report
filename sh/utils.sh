@@ -25,29 +25,29 @@ print_h1() {
   echo "<h1>$1</h1>"
 }
 
+html_escape() {
+  sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g'
+}
+
 # Exécute une commande et affiche sa sortie dans une balise <pre>
 # Si la commande échoue, elle affiche un message d'erreur mis en évidence.
 run_and_print() {
   local cmd="$1"
   local cmd_html
+  local output
 
-  # Échapper les caractères HTML pour un affichage sûr
-  cmd_html=$(echo "${cmd}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+  cmd_html=$(echo "${cmd}" | html_escape)
 
   echo "<br><pre>"
-  # Affiche la commande échappée en rouge et gras
   echo "<b style=\"color:red;\">${cmd_html}</b>"
-
-  # Ajoute une ligne vide pour la séparation
   echo ""
 
-  # Exécute la commande originale, redirige stderr vers stdout pour tout capturer
   if output=$(eval "${cmd}" 2>&1); then
-    echo "$output"
+    echo "$output" | html_escape
   else
     echo "<div class=\"error-block\">"
     echo "ERREUR: La commande a échoué avec le message suivant :"
-    echo "$output"
+    echo "$output" | html_escape
     echo "</div>"
   fi
   echo "</pre>"
