@@ -52,14 +52,14 @@ case "$os_type" in
         run_and_print "ps -eo pid,user,%cpu,%mem,vsz,rss,tty,stat,start,time,command --sort=-%cpu --width 1000 | head -n 17 | cut -c 1-180"
 
         print_h2 "Last Kernel Messages (dmesg)"
-        if sudo -ln &> /dev/null; then
+        if sudo -n dmesg &>/dev/null 2>&1; then
             run_and_print "sudo dmesg -T | tail -n 30"
         else
             echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter dmesg.</pre>"
         fi
 
         print_h2 "Last 30 Errors in /var/log/messages"
-        if sudo -ln &> /dev/null; then
+        if sudo -n cat /var/log/messages &>/dev/null 2>&1; then
             run_and_print "sudo cat /var/log/messages | egrep -i 'error|failed' | tail -30"
         else
             echo "<pre>L'utilisateur n'a pas les droits sudo pour lire les fichiers log.</pre>"

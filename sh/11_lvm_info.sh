@@ -4,7 +4,7 @@ source "$(dirname "$0")/utils.sh"
 os_type=$(uname -s)
 
 if [ "$os_type" = "Linux" ] && command -v pvs &>/dev/null; then
-    if sudo -ln &>/dev/null; then
+    if sudo -n pvs &>/dev/null 2>&1; then
         print_h2 "LVM — Physical Volumes (pvs)"
         run_and_print "sudo pvs"
 

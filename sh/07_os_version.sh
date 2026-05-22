@@ -5,8 +5,8 @@ os_type=$(uname -s)
 
 case "$os_type" in
     Linux)
-        print_h2 "OS Version (/etc/os-release)"
-        run_and_print "cat /etc/os-release"
+        print_h2 "OS Version"
+        run_and_print "cat /etc/os-release 2>/dev/null || cat /etc/redhat-release 2>/dev/null || cat /etc/debian_version 2>/dev/null || uname -a"
         ;;
     AIX)
         print_h2 "OS Version (oslevel)"
