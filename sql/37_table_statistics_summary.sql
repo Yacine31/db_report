@@ -4,7 +4,7 @@ ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
 
 WITH X AS (
   select /* db-html-report */ /*+  NO_MERGE  */
-    --con_id,
+    CON_ID,
     OWNER,
     OBJECT_TYPE,
     COUNT(*)                                                    TYPE_COUNT,
@@ -23,31 +23,31 @@ WITH X AS (
     PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY LAST_ANALYZED) LAST_ANALYZED_95_PERCENTILE,
     PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY LAST_ANALYZED) LAST_ANALYZED_99_PERCENTILE
   FROM
-    DBA_TAB_STATISTICS  S
+    CDB_TAB_STATISTICS  S
   WHERE
     TABLE_NAME NOT LIKE 'BIN$%' -- bug 9930151 reported by brad peek
     AND NOT EXISTS (
       SELECT /*+  NO_MERGE  */
         NULL
       FROM
-        DBA_EXTERNAL_TABLES E
+        CDB_EXTERNAL_TABLES E
       WHERE
         E.OWNER = S.OWNER
-        --AND e.con_id = s.con_id
+        AND E.CON_ID = S.CON_ID
         AND E.TABLE_NAME = S.TABLE_NAME
     )
   GROUP BY
-    --con_id,
+    CON_ID,
     OWNER,
     OBJECT_TYPE
 )
 SELECT
+  C.NAME DB_PDB_NAME,
   X.*
-  --,c.name con_name
 FROM
   X
-  --LEFT OUTER JOIN v$containers c ON c.con_id = x.con_id
+  LEFT OUTER JOIN V$CONTAINERS C ON C.CON_ID = X.CON_ID
 ORDER BY
-  --x.con_id,
+  X.CON_ID,
   OWNER,
   OBJECT_TYPE;

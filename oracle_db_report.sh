@@ -196,7 +196,7 @@ if [ -z "${database_sids}" ]; then
   exit 0
 fi
 
-log_info "Starting report generation for databases: "${database_sids}""
+log_info "Starting report generation for databases: ${database_sids}"
 
 for database_sid in ${database_sids}; do
   # Disables oraenv prompts and sets the current database

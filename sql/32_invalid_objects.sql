@@ -1,13 +1,17 @@
 prompt <h2>Invalid Objects</h2>
 
 select /* db-html-report */
-    OWNER,
-    COUNT(*) "Invalid Objects"
+    C.NAME      "DB/PDB Name",
+    O.OWNER,
+    COUNT(*)    "Invalid Objects"
 FROM
-    DBA_OBJECTS
+    CDB_OBJECTS O
+    LEFT JOIN V$CONTAINERS C ON C.CON_ID = O.CON_ID
 WHERE
-    STATUS <> 'VALID'
+    O.STATUS <> 'VALID'
 GROUP BY
-    OWNER
+    C.NAME,
+    O.OWNER
 ORDER BY
-    OWNER;
+    C.NAME,
+    O.OWNER;

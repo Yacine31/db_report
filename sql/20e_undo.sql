@@ -3,7 +3,7 @@ prompt <h2>Undo Tablespace Details</h2>
 col tablespace_name head "Tablespace Name"
 col file_id head "File ID"
 col size_mb format 999999999 head "Size MB"
-col autoextensible head "AutoExt"
+col autoextensible format a7 head "AutoExt"
 col free_mb format 999999999 head "Free MB"
 col used_mb format 999999999 head "Used MB"
 col pct_used format 999.00 head "% Used"

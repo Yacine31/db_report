@@ -57,6 +57,28 @@ list_db_sids() {
   ps -eo args | sed -n 's/^ora_pmon_//p' | sort -u
 }
 
+# Fonction: set_oracle_env
+# Description: Positionne l'environnement Oracle (ORACLE_SID, ORACLE_HOME, PATH) pour un SID.
+# Parametres:
+#   $1 - Le SID de l'instance.
+set_oracle_env() {
+  export ORAENV_ASK=NO
+  export ORACLE_SID="$1"
+  # shellcheck source=/dev/null
+  . oraenv -s > /dev/null
+}
+
+# Fonction: sql_value
+# Description: Execute une requete sur l'instance courante ("/ as sysdba") et retourne
+#   sa valeur unique, sans espaces autour. Retourne une chaine vide si rien n'est renvoye.
+# Parametres:
+#   $1 - La requete, terminee par un point-virgule.
+sql_value() {
+  printf 'set pages 0 feedback off heading off verify off lines 500 trimspool on\n%s\nexit\n' "$1" \
+    | sqlplus -s / as sysdba 2>/dev/null \
+    | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | grep . | tail -1
+}
+
 # Affiche un titre H3
 print_h3() {
   echo "<h3>$1</h3>"
