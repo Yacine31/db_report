@@ -19,12 +19,13 @@ COL status head "Status"
 COL online_status format a15 head "Online Status"
 
 WITH
--- Sous-requête pour les fichiers de données dans une CDB
+-- CDB : un datafile par ligne, avec son conteneur. V$CONTAINERS contient CDB$ROOT,
+-- contrairement a CDB_PDBS ; PDB$SEED est exclu (CDB_DATA_FILES n'expose pas ses fichiers).
+-- Les file_id sont rapproches par conteneur (con_id, file_id).
 cdb_files AS (
-    -- cdb_files.sql
-    select /* db-html-report */
-        p.con_id AS pdb_id,
-        p.pdb_name AS pdb_name,
+    SELECT /* db-html-report */
+        c.con_id,
+        c.name AS pdb_name,
         d.file_id,
         d.tablespace_name,
         d.file_name,
@@ -32,35 +33,33 @@ cdb_files AS (
         (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
         NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
         a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.maxbytes, 0) * 100, 2) AS percent_used,
         d.autoextensible,
         d.status,
         d.online_status
     FROM
         (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_alloc,
-                SUM(DECODE(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) AS maxbytes
-            FROM cdb_data_files f GROUP BY file_id
+            SELECT con_id, file_id,
+                   SUM(bytes) AS bytes_alloc,
+                   SUM(DECODE(autoextensible, 'YES', maxbytes, 'NO', bytes)) AS maxbytes
+            FROM cdb_data_files
+            GROUP BY con_id, file_id
         ) a
         LEFT JOIN (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_free
-            FROM cdb_free_space f GROUP BY file_id
-        ) b ON a.file_id = b.file_id
-        JOIN cdb_data_files d ON a.file_id = d.file_id
-        RIGHT JOIN cdb_pdbs p ON d.con_id = p.pdb_id
-    WHERE 
+            SELECT con_id, file_id, SUM(bytes) AS bytes_free
+            FROM cdb_free_space
+            GROUP BY con_id, file_id
+        ) b ON b.con_id = a.con_id AND b.file_id = a.file_id
+        JOIN cdb_data_files d ON d.con_id = a.con_id AND d.file_id = a.file_id
+        JOIN v$containers c ON c.con_id = d.con_id
+    WHERE
         (SELECT cdb FROM v$database) = 'YES'
-    ORDER BY p.pdb_id, d.tablespace_name, d.file_name
+        AND c.name <> 'PDB$SEED'
 ),
--- Sous-requête pour les fichiers de données dans une non-CDB
+-- Non-CDB : les datafiles de la base, sans conteneur
 non_cdb_files AS (
-    -- non_cdb_files.sql
-    SELECT
-        NULL AS pdb_id,
+    SELECT /* db-html-report */
+        NULL AS con_id,
         NULL AS pdb_name,
         d.file_id,
         d.tablespace_name,
@@ -69,30 +68,28 @@ non_cdb_files AS (
         (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
         NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
         a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / a.maxbytes * 100, 2) AS percent_used,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.maxbytes, 0) * 100, 2) AS percent_used,
         d.autoextensible,
         d.status,
         d.online_status
     FROM
         (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_alloc,
-                SUM(DECODE(f.autoextensible, 'YES', f.maxbytes, 'NO', f.bytes)) AS maxbytes
-            FROM dba_data_files f GROUP BY file_id
+            SELECT file_id,
+                   SUM(bytes) AS bytes_alloc,
+                   SUM(DECODE(autoextensible, 'YES', maxbytes, 'NO', bytes)) AS maxbytes
+            FROM dba_data_files
+            GROUP BY file_id
         ) a
         LEFT JOIN (
-            SELECT
-                f.file_id,
-                SUM(f.bytes) AS bytes_free
-            FROM dba_free_space f GROUP BY file_id
-        ) b ON a.file_id = b.file_id
-        JOIN dba_data_files d ON a.file_id = d.file_id
---    WHERE 
---        (SELECT cdb FROM v$database) = 'NO'
-    ORDER BY d.tablespace_name, d.file_name
+            SELECT file_id, SUM(bytes) AS bytes_free
+            FROM dba_free_space
+            GROUP BY file_id
+        ) b ON b.file_id = a.file_id
+        JOIN dba_data_files d ON d.file_id = a.file_id
+    WHERE
+        (SELECT cdb FROM v$database) = 'NO'
 )
--- Requête finale combinant les résultats des sous-requêtes
 SELECT * FROM cdb_files
 UNION ALL
-SELECT * FROM non_cdb_files;
+SELECT * FROM non_cdb_files
+ORDER BY 1 NULLS LAST, 4, 5;
