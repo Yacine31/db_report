@@ -638,18 +638,23 @@ def write_tablespaces(doc, servers, args):
             if not header:
                 continue
             index = {name: position for position, name in enumerate(header)}
-            needed = ["DB/PDB Name", "Tablespace", "Allocated MB", "Used MB", "MaxSize MB", "% Used"]
+            # Rapports d'une version antérieure : une seule colonne "% Used", calculée sur la taille max
+            if "% Used (max)" not in index and "% Used" in index:
+                index["% Used (max)"] = index["% Used"]
+            needed = ["DB/PDB Name", "Tablespace", "Allocated MB", "Used MB", "MaxSize MB", "% Used (max)"]
             if any(name not in index for name in needed):
                 warn("%s: unexpected columns in '%s', section ignored." % (database.sid, SEC_TABLESPACES))
                 continue
+            shown = needed[:5] + ["% Used (alloc)", "% Used (max)"]
             for line in lines:
                 if len(line) < len(header):
                     continue
                 total += 1
-                percent = number(line[index["% Used"]])
+                percent = number(line[index["% Used (max)"]])
                 if percent is not None and percent >= args.tbs_min_pct:
                     selected.append((percent, [server.host, database.sid] +
-                                     [display_number(line[index[name]]) for name in needed]))
+                                     [display_number(line[index[name]]) if name in index else "-"
+                                      for name in shown]))
 
     threshold = ("%g" % args.tbs_min_pct).replace(".", ",")
     if total == 0:
@@ -663,7 +668,10 @@ def write_tablespaces(doc, servers, args):
         doc.text("%s sur %d à %s %% ou plus de la taille maximale (autoextend compris) :" % (
             plural(len(selected), "tablespace"), total, threshold))
         doc.table(["Server", "Database", "DB/PDB Name", "Tablespace", "Allocated MB", "Used MB",
-                   "MaxSize MB", "% Used"], [row for _percent, row in selected])
+                   "MaxSize MB", "% Used (alloc)", "% Used (max)"], [row for _percent, row in selected])
+        doc.text("% Used (alloc) : espace utilisé rapporté à l'espace actuellement alloué. "
+                 "% Used (max) : espace utilisé rapporté à la taille maximale, autoextend compris ; "
+                 "c'est cette valeur qui est comparée au seuil.")
     doc.todo("À compléter : commentaires sur les tablespaces.")
 
 

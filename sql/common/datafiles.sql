@@ -12,7 +12,8 @@ COL file_size_mb FORMAT 999999999 HEAD "File Size MB"
 COL space_used_mb FORMAT 999999999 HEAD "Space Used MB"
 COL space_free_mb FORMAT 999999999 HEAD "Space Free MB"
 COL maxsize_mb FORMAT 999999999 HEAD "Max Size MB"
-COL percent_used FORMAT 999.00 HEAD "% Used"
+COL pct_used_alloc FORMAT 999.00 HEAD "% Used (alloc)"
+COL pct_used_max FORMAT 999.00 HEAD "% Used (max)"
 
 COL autoextensible FORMAT A15 HEAD "Auto Extensible"
 COL status head "Status"
@@ -33,7 +34,8 @@ cdb_files AS (
         (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
         NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
         a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.maxbytes, 0) * 100, 2) AS percent_used,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.bytes_alloc, 0) * 100, 2) AS pct_used_alloc,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.maxbytes, 0) * 100, 2) AS pct_used_max,
         d.autoextensible,
         d.status,
         d.online_status
@@ -68,7 +70,8 @@ non_cdb_files AS (
         (a.bytes_alloc - NVL(b.bytes_free, 0))/1024/1024 AS space_used_mb,
         NVL(b.bytes_free, 0)/1024/1024 AS space_free_mb,
         a.maxbytes/1024/1024 AS maxsize_mb,
-        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.maxbytes, 0) * 100, 2) AS percent_used,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.bytes_alloc, 0) * 100, 2) AS pct_used_alloc,
+        ROUND((a.bytes_alloc - NVL(b.bytes_free, 0)) / NULLIF(a.maxbytes, 0) * 100, 2) AS pct_used_max,
         d.autoextensible,
         d.status,
         d.online_status
@@ -93,3 +96,5 @@ SELECT * FROM cdb_files
 UNION ALL
 SELECT * FROM non_cdb_files
 ORDER BY 1 NULLS LAST, 4, 5;
+
+prompt <p><i>% Used (alloc): space used / space currently allocated. % Used (max): space used / maximum size, autoextend included (the value used by the health summary).</i></p>

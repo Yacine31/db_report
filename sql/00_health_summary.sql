@@ -34,7 +34,7 @@ DEFINE seq_warn_pct     = 80
 COL "Value" ENTMAP ON
 
 with ts as (
-    -- meme calcul que sql/20b_tablespaces.sql
+    -- meme calcul que la colonne "% Used (max)" de sql/common/tablespaces.sql
     select a.con_id, a.tablespace_name,
            (a.bytes_alloc - nvl(b.bytes_free, 0)) / a.maxbytes * 100 pct
     from (

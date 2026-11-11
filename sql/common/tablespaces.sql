@@ -1,6 +1,7 @@
 -- Detail des tablespaces (taille allouee, utilisee, maximale).
 -- Requete commune a sql/20b_tablespaces.sql (rapport de base) et summary/21_tablespaces.sql (page Summary) :
 -- le titre de section reste dans le script appelant.
+-- Le generateur Word (docx_report) relit les colonnes "% Used (alloc)" et "% Used (max)" : garder ces en-tetes.
 
 COL con_id HEAD "CON ID"
 COL db_pdb_name HEAD "DB/PDB Name"
@@ -11,7 +12,8 @@ COL nbr_files FORMAT 99 HEAD "Nbr Of Files"
 COL used_mb FORMAT 99999999 HEAD "Used MB"
 COL free_mb FORMAT 99999999 HEAD "Free MB"
 COL max_mb FORMAT 99999999 HEAD "MaxSize MB"
-COL pct_used FORMAT 999.00 HEAD "% Used"
+COL pct_used_alloc FORMAT 999.00 HEAD "% Used (alloc)"
+COL pct_used_max FORMAT 999.00 HEAD "% Used (max)"
 
 
 select /* db-html-report */
@@ -22,9 +24,10 @@ select /* db-html-report */
   a.nbr_files,
   a.bytes_alloc/1024/1024 allocated_mb,
   (a.bytes_alloc - nvl(b.bytes_free, 0))/1024/1024 used_mb,
-  (nvl(b.bytes_free, 0))/1024/1024 free_mb, 
+  (nvl(b.bytes_free, 0))/1024/1024 free_mb,
   maxbytes/1024/1024 max_mb,
-  (a.bytes_alloc - nvl(b.bytes_free, 0)) / maxbytes * 100 pct_used
+  (a.bytes_alloc - nvl(b.bytes_free, 0)) / nullif(a.bytes_alloc, 0) * 100 pct_used_alloc,
+  (a.bytes_alloc - nvl(b.bytes_free, 0)) / nullif(a.maxbytes, 0) * 100 pct_used_max
 from
   (
     select
@@ -42,7 +45,6 @@ from
     select
       f.con_id,
       f.tablespace_name,
-      count(*) as nbr_files,
       sum(f.bytes) bytes_free
     from
       cdb_free_space f
@@ -62,3 +64,5 @@ order by
   c.NAME,
   a.tablespace_name
 ;
+
+prompt <p><i>% Used (alloc): space used / space currently allocated. % Used (max): space used / maximum size, autoextend included (the value used by the health summary).</i></p>
