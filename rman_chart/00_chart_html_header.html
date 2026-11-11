@@ -1,38 +1,258 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>RMAN Backup History</title>
   <style>
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-      body { font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif; margin: 20px; color: #333; }
+      /* Aucune dependance externe : polices systeme et graphique SVG embarque */
+      :root {
+          --surface: #fcfcfb;
+          --ink: #0b0b0b;
+          --ink-2: #52514e;
+          --grid: #e4e3df;
+          --axis: #a3a29c;
+          --accent: #A93226;
+          --s-input: #2a78d6;
+          --s-output: #eb6834;
+          --s-duration: #1baf7a;
+          --title-font: 'Montserrat', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      }
+      body { font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; margin: 20px; color: #333; background: #f9f9f9; }
       h1 {
-          font-family: 'Montserrat', sans-serif;
+          font-family: var(--title-font);
           font-size: 16pt;
           font-weight: bold;
-          color: #A93226;
+          color: var(--accent);
           text-align: center;
-          border-bottom: 1px solid #A93226; /* Harmonize with main report H1 */
+          border-bottom: 1px solid var(--accent); /* Harmonize with main report H1 */
           padding-bottom: 5px; /* Add some padding for the border */
       }
       h2 {
-          font-family: 'Montserrat', sans-serif;
+          font-family: var(--title-font);
           font-size: 14pt;
           font-weight: bold;
-          color: #A93226;
-          border-bottom: 1px solid #A93226;
+          color: var(--accent);
+          border-bottom: 1px solid var(--accent);
           padding-bottom: 5px;
           margin-top: 40px;
       }
-      hr { border-top: 2px solid #A93226; margin-top: 40px; }
       p.footer { text-align: center; margin-top: 20px; }
-      a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226; color: white; padding: 10px; text-decoration: none; border-radius: 5px; }
-  </style>  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+      a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; padding: 10px; text-decoration: none; border-radius: 5px; }
+
+      .rman-chart { position: relative; max-width: 1100px; background: var(--surface); border: 1px solid var(--grid); border-radius: 6px; padding: 12px 16px 8px; }
+      .rman-panel { margin-bottom: 8px; }
+      .rman-panel-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; margin: 4px 0 2px; }
+      .rman-panel-title { font-family: var(--title-font); font-size: 11pt; font-weight: bold; color: var(--ink); }
+      .rman-legend { display: flex; gap: 14px; font-size: 9.5pt; color: var(--ink-2); }
+      .rman-swatch { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+      .rman-chart svg { display: block; width: 100%; height: auto; }
+      .rman-chart svg text { font-size: 12px; fill: var(--ink-2); }
+      .rman-chart svg text.end-label { fill: var(--ink); font-weight: 600; }
+      .rman-chart .grid { stroke: var(--grid); stroke-width: 1; }
+      .rman-chart .axis { stroke: var(--axis); stroke-width: 1; }
+      .rman-chart .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+      .rman-chart .dot { stroke: var(--surface); stroke-width: 1.5; }
+      .rman-chart .cursor { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; visibility: hidden; }
+      .rman-tooltip { position: absolute; display: none; pointer-events: none; z-index: 5; min-width: 190px; background: #fff; border: 1px solid var(--axis); border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); padding: 6px 9px; font-size: 9.5pt; color: var(--ink); }
+      .rman-tooltip b { display: block; margin-bottom: 3px; }
+      .rman-tooltip div { display: flex; justify-content: space-between; gap: 14px; color: var(--ink-2); }
+      .rman-tooltip div span:last-child { color: var(--ink); font-variant-numeric: tabular-nums; }
+      .rman-empty { color: var(--ink-2); font-style: italic; padding: 10px 0; }
+      .rman-chart details { margin-top: 4px; font-size: 9.5pt; color: var(--ink-2); }
+      .rman-chart summary { cursor: pointer; }
+      .rman-chart table { border-collapse: collapse; margin-top: 6px; font-size: 9.5pt; color: var(--ink); }
+      .rman-chart th { text-align: left; padding: 3px 12px 3px 0; border-bottom: 1px solid var(--axis); }
+      .rman-chart td { padding: 2px 12px 2px 0; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+      .rman-chart td.num, .rman-chart th.num { text-align: right; }
+  </style>
   <script type="text/javascript">
-    google.load("visualization", "1", {packages:["corechart"]});
-    // Les fonctions drawChart_DBNAME seront ajoutées ici par sqlplus
+  // ---------------------------------------------------------------------------
+  // rmanChart(sid, rows) : trace l'historique des sauvegardes RMAN d'une base.
+  //   rows = [ ["YYYY-MM-DDTHH:MI:SS", input_gb, output_gb, duration_min], ... ]
+  // Appele par le fragment genere par rman_chart/generate_rman_chart.sql.
+  // Deux graphiques superposes (tailles, puis duree) partagent le meme axe de
+  // temps : les deux mesures n'ont pas la meme unite, donc pas de double axe.
+  // ---------------------------------------------------------------------------
+  (function () {
+    var NS = 'http://www.w3.org/2000/svg';
+    var W = 1000, M = { l: 62, r: 92, t: 12, b: 28 };
+
+    function svgEl(name, attrs, parent, text) {
+      var e = document.createElementNS(NS, name);
+      for (var k in attrs) { e.setAttribute(k, attrs[k]); }
+      if (text !== undefined) { e.textContent = text; }
+      if (parent) { parent.appendChild(e); }
+      return e;
+    }
+    function htmlEl(name, cls, parent, text) {
+      var e = document.createElement(name);
+      if (cls) { e.className = cls; }
+      if (text !== undefined) { e.textContent = text; }
+      if (parent) { parent.appendChild(e); }
+      return e;
+    }
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function fmtDay(d) { return pad(d.getDate()) + '/' + pad(d.getMonth() + 1); }
+    function fmtFull(d) { return fmtDay(d) + '/' + d.getFullYear() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+    function fmtNum(v) { return v == null ? '-' : (v >= 100 ? v.toFixed(0) : v.toFixed(2)); }
+    function niceMax(v) {
+      if (!(v > 0)) { return 1; }
+      var p = Math.pow(10, Math.floor(Math.log(v) / Math.LN10));
+      var n = v / p;
+      return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p;
+    }
+
+    function panel(host, title, unit, series, pts, t0, t1, H) {
+      var wrap = htmlEl('div', 'rman-panel', host);
+      var head = htmlEl('div', 'rman-panel-head', wrap);
+      htmlEl('span', 'rman-panel-title', head, title + ' (' + unit + ')');
+      if (series.length > 1) {
+        var legend = htmlEl('span', 'rman-legend', head);
+        series.forEach(function (s) {
+          var item = htmlEl('span', '', legend);
+          htmlEl('span', 'rman-swatch', item).style.background = s.color;
+          item.appendChild(document.createTextNode(s.name));
+        });
+      }
+      var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': title }, wrap);
+      var max = 0;
+      series.forEach(function (s) {
+        pts.forEach(function (p) { if (p[s.idx] != null && p[s.idx] > max) { max = p[s.idx]; } });
+      });
+      var top = niceMax(max);
+      var decimals = top >= 10 ? 0 : top >= 1 ? 1 : 2;
+      var x = function (t) { return M.l + (t - t0) / (t1 - t0) * (W - M.l - M.r); };
+      var y = function (v) { return H - M.b - v / top * (H - M.t - M.b); };
+      var i;
+
+      for (i = 0; i <= 4; i++) {
+        var v = top * i / 4;
+        svgEl('line', { x1: M.l, x2: W - M.r, y1: y(v), y2: y(v), 'class': i === 0 ? 'axis' : 'grid' }, svg);
+        svgEl('text', { x: M.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, svg, v.toFixed(decimals));
+      }
+      for (i = 0; i <= 5; i++) {
+        var t = t0 + (t1 - t0) * i / 5;
+        svgEl('text', { x: x(t), y: H - 8, 'text-anchor': 'middle' }, svg, fmtDay(new Date(t)));
+      }
+      var cursor = svgEl('line', { y1: M.t, y2: H - M.b, 'class': 'cursor' }, svg);
+
+      var ends = [];
+      series.forEach(function (s) {
+        var d = '', last = null;
+        pts.forEach(function (p) {
+          if (p[s.idx] == null) { return; }
+          d += (d ? 'L' : 'M') + x(p[0]).toFixed(1) + ',' + y(p[s.idx]).toFixed(1);
+          last = p;
+        });
+        if (!last) { return; }
+        svgEl('path', { d: d, 'class': 'line', stroke: s.color }, svg);
+        if (pts.length <= 150) {
+          pts.forEach(function (p) {
+            if (p[s.idx] == null) { return; }
+            svgEl('circle', { cx: x(p[0]), cy: y(p[s.idx]), r: 4, fill: s.color, 'class': 'dot' }, svg);
+          });
+        }
+        ends.push({ y: y(last[s.idx]) + 4, x: x(last[0]) + 9, text: fmtNum(last[s.idx]) + ' ' + unit });
+      });
+      // Etiquettes de derniere valeur : on les ecarte si elles se chevauchent
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (i = 1; i < ends.length; i++) {
+        if (ends[i].y - ends[i - 1].y < 14) { ends[i].y = ends[i - 1].y + 14; }
+      }
+      ends.forEach(function (e) { svgEl('text', { x: e.x, y: e.y, 'class': 'end-label' }, svg, e.text); });
+
+      return {
+        svg: svg,
+        setCursor: function (p) {
+          if (!p) { cursor.style.visibility = 'hidden'; return; }
+          cursor.setAttribute('x1', x(p[0]));
+          cursor.setAttribute('x2', x(p[0]));
+          cursor.style.visibility = 'visible';
+        }
+      };
+    }
+
+    window.rmanChart = function (sid, raw) {
+      var script = document.currentScript;
+      var host = htmlEl('div', 'rman-chart');
+      script.parentNode.insertBefore(host, script);
+
+      var pts = (raw || []).map(function (r) {
+        return [new Date(r[0]).getTime(), r[1], r[2], r[3]];
+      }).filter(function (p) { return !isNaN(p[0]); }).sort(function (a, b) { return a[0] - b[0]; });
+
+      if (pts.length === 0) {
+        htmlEl('div', 'rman-empty', host, 'No RMAN backup recorded for ' + sid + ' in the last 90 days.');
+        return;
+      }
+
+      var t0 = pts[0][0], t1 = pts[pts.length - 1][0];
+      if (t1 - t0 < 3600000) { t0 -= 12 * 3600000; t1 += 12 * 3600000; }
+
+      var sizeSeries = [
+        { name: 'Input', idx: 1, color: 'var(--s-input)' },
+        { name: 'Output', idx: 2, color: 'var(--s-output)' }
+      ];
+      var durSeries = [{ name: 'Duration', idx: 3, color: 'var(--s-duration)' }];
+      var panels = [
+        panel(host, 'Backup size', 'GB', sizeSeries, pts, t0, t1, 300),
+        panel(host, 'Backup duration', 'min', durSeries, pts, t0, t1, 220)
+      ];
+
+      // Survol : curseur commun aux deux graphiques + infobulle
+      var tip = htmlEl('div', 'rman-tooltip', host);
+      function hide() {
+        tip.style.display = 'none';
+        panels.forEach(function (p) { p.setCursor(null); });
+      }
+      panels.forEach(function (pn) {
+        pn.svg.addEventListener('mousemove', function (ev) {
+          var r = pn.svg.getBoundingClientRect();
+          var sx = (ev.clientX - r.left) / r.width * W;
+          var t = t0 + (sx - M.l) / (W - M.l - M.r) * (t1 - t0);
+          var best = pts[0];
+          pts.forEach(function (p) { if (Math.abs(p[0] - t) < Math.abs(best[0] - t)) { best = p; } });
+          panels.forEach(function (p) { p.setCursor(best); });
+
+          tip.textContent = '';
+          htmlEl('b', '', tip, fmtFull(new Date(best[0])));
+          [['Input', best[1], 'GB', 'var(--s-input)'], ['Output', best[2], 'GB', 'var(--s-output)'],
+           ['Duration', best[3], 'min', 'var(--s-duration)']].forEach(function (row) {
+            var line = htmlEl('div', '', tip);
+            var label = htmlEl('span', '', line);
+            htmlEl('span', 'rman-swatch', label).style.background = row[3];
+            label.appendChild(document.createTextNode(row[0]));
+            htmlEl('span', '', line, fmtNum(row[1]) + ' ' + row[2]);
+          });
+          var hr = host.getBoundingClientRect();
+          var left = ev.clientX - hr.left + 14;
+          if (left > hr.width - 220) { left = ev.clientX - hr.left - 214; }
+          tip.style.left = left + 'px';
+          tip.style.top = (ev.clientY - hr.top + 14) + 'px';
+          tip.style.display = 'block';
+        });
+        pn.svg.addEventListener('mouseleave', hide);
+      });
+
+      // Vue tableau des memes donnees
+      var details = htmlEl('details', '', host);
+      htmlEl('summary', '', details, 'Data table (' + pts.length + ' backups)');
+      var table = htmlEl('table', '', details);
+      var trh = htmlEl('tr', '', table);
+      htmlEl('th', '', trh, 'Start time');
+      htmlEl('th', 'num', trh, 'Input (GB)');
+      htmlEl('th', 'num', trh, 'Output (GB)');
+      htmlEl('th', 'num', trh, 'Duration (min)');
+      pts.slice().reverse().forEach(function (p) {
+        var tr = htmlEl('tr', '', table);
+        htmlEl('td', '', tr, fmtFull(new Date(p[0])));
+        htmlEl('td', 'num', tr, fmtNum(p[1]));
+        htmlEl('td', 'num', tr, fmtNum(p[2]));
+        htmlEl('td', 'num', tr, fmtNum(p[3]));
+      });
+    };
+  })();
   </script>
 </head>
 <body>
-  <a name="top"></a>
-  <!-- <h1>RMAN Backup History</h1> -->
+  <div id="top"></div>

@@ -10,6 +10,44 @@ log_info() {
   echo "[INFO] $(date +'%Y-%m-%d %H:%M:%S') - ${1}"
 }
 
+# Fonction: log_warn
+# Description: Affiche un message d'avertissement dans les logs avec un timestamp.
+log_warn() {
+  echo "[WARN] $(date +'%Y-%m-%d %H:%M:%S') - ${1}"
+}
+
+# Fonction: run_sql_script
+# Description: Execute un script SQL (precede de l'en-tete SQL*Plus) avec "/ as sysdba",
+#   ajoute sa sortie au fichier HTML et signale les erreurs ORA-/SP2-/PLS- d'execution.
+#   Les lignes situees dans une cellule de tableau (<td> ou <th>) sont ignorees :
+#   ce sont des donnees ou des titres de colonne (ex. messages de l'alert log), pas des erreurs du script.
+#   Si DB_REPORT_ERROR_LOG est definie, les erreurs y sont consignees pour le recapitulatif final.
+# Parametres:
+#   $1 - Fichier d'en-tete SQL*Plus (ex. sql/sql_header.txt)
+#   $2 - Script SQL a executer
+#   $3 - Fichier HTML de sortie
+run_sql_script() {
+  local sql_header_file="$1"
+  local script_file="$2"
+  local html_file="$3"
+  local output errors
+
+  output="$(cat "${sql_header_file}" "${script_file}" | sqlplus -s / as sysdba 2>&1)" || true
+  printf '%s\n' "${output}" >> "${html_file}"
+
+  errors="$(printf '%s\n' "${output}" | awk '
+    /^<t[dh]/    { incell = 1 }
+    /^<\/t[dh]>/ { incell = 0 }
+    !incell && /^(ORA|SP2|PLS)-[0-9]+/ { print }')"
+
+  if [ -n "${errors}" ]; then
+    log_warn "SQL error in ${script_file} (${ORACLE_SID:-?}): $(printf '%s\n' "${errors}" | head -1)"
+    if [ -n "${DB_REPORT_ERROR_LOG:-}" ]; then
+      printf '%s\n' "${errors}" | sed "s|^|${ORACLE_SID:-?} ${script_file}: |" >> "${DB_REPORT_ERROR_LOG}"
+    fi
+  fi
+}
+
 # Fonction: list_db_sids
 # Description: Liste les SID des instances de base en cours d'execution (une par ligne, triee).
 #   Seuls les processus ora_pmon_<SID> sont retenus, ce qui exclut ASM (asm_pmon_+ASM),

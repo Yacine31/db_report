@@ -3,26 +3,27 @@
 # ==============================================================================
 # Script pour générer un rapport HTML unique avec les graphiques de sauvegarde
 # RMAN pour toutes les bases de données détectées sur le serveur.
+# Le graphique est un SVG tracé par du JavaScript embarqué dans la page :
+# aucune dépendance externe, le rapport s'affiche hors ligne.
 # ==============================================================================
 
 # Importe les fonctions utilitaires
-# Le chemin est relatif au script appelant (rapport_bdd.sh)
+# Le chemin est relatif au script appelant (oracle_db_report.sh)
 source "$(dirname "$0")/sh/utils.sh"
 
 # --- CONFIGURATION ---
 # on prepare le fichier output
 HTML_FILE="${OUTPUT_DIR}/RMAN_Chart_${HNAME}_${DATETIME}.html"
 
-# HTML_FILE="rapport_rman_global.html"
 SQL_SCRIPT="rman_chart/generate_rman_chart.sql"
 # --- FIN CONFIGURATION ---
 
 # Étape 1: Créer l'en-tête du fichier HTML
-# echo "Initialisation du rapport : ${HTML_FILE}"
 cat rman_chart/00_chart_html_header.html > "${HTML_FILE}"
 
-# Étape 2: Découvrir et boucler sur chaque base de données active
-for sid in $(list_db_sids); do
+# Étape 2: Boucler sur les bases à traiter
+# DB_REPORT_SIDS est positionnée par oracle_db_report.sh (option -s) ; à défaut, toutes les bases actives
+for sid in ${DB_REPORT_SIDS:-$(list_db_sids)}; do
     # Configuration de l'environnement Oracle pour le SID en cours
     export ORAENV_ASK=NO
     export ORACLE_SID="$sid"
