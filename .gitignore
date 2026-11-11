@@ -11,3 +11,6 @@ ai_analysis/
 docx_report/templates/
 *.docx
 __pycache__/
+
+# Notes de travail locales
+TODO_*
