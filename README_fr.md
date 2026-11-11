@@ -107,6 +107,7 @@ Les noms des styles utilisés dans le modèle sont listés dans le dictionnaire 
 - `oracle_db_report.sh` : Script principal qui orchestre la génération du rapport serveur et des rapports de base de données.
 - `sh/` : Scripts Bash pour la collecte des informations système (utilisés pour le rapport serveur).
 - `sql/` : Requêtes SQL pour les données de base de données.
+- `sql/common/` : requêtes communes à une section du rapport de base et à une page de synthèse (non exécutées seules).
 - `html/` : Templates HTML pour l'en-tête et le pied de page des rapports.
 - `asm/` : Scripts SQL spécifiques aux instances ASM.
 - `summary/` : Scripts SQL utilisés par le script de synthèse.

@@ -107,6 +107,7 @@ The style names used in the template are listed in the `STYLES` dictionary at th
 - `oracle_db_report.sh`: Main script that orchestrates the generation of the server report and database reports.
 - `sh/`: Bash scripts for collecting system information (used for the server report).
 - `sql/`: SQL queries for database data.
+- `sql/common/`: queries shared by a database report section and a summary page (not run on their own).
 - `html/`: HTML templates for the report headers and footers.
 - `asm/`: SQL scripts specific to ASM instances.
 - `summary/`: SQL scripts used by the summary script.
