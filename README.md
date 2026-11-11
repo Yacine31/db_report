@@ -29,21 +29,46 @@ cp .env.local .env
 ## Usage
 
 ```bash
-# Execute the main script
+# All running databases
 bash oracle_db_report.sh
+
+# Only one database (the option can be repeated)
+bash oracle_db_report.sh -s ORCL
+bash oracle_db_report.sh -s ORCL -s TEST
+
+# Show the help
+bash oracle_db_report.sh -h
 ```
+
+The script can be started from any directory.
+
+| Option | Description |
+|---|---|
+| `-s SID` | Report only this database. Can be repeated. The database must be running, otherwise the script stops and lists the running databases. Default: all running databases. |
+| `--vmstat` | Add a live `vmstat 2 20` sample to the server report (about 40 seconds). Off by default. |
+| `-h`, `--help` | Show the usage and exit. |
+
+The server report is always generated, whatever the options.
+
+At the end of the run, the log lists the SQL errors (`ORA-`, `SP2-`, `PLS-`) raised by the report scripts, with the database and the script concerned, or `No SQL error detected`.
 
 ## Output
 
-The script generates two types of reports in the `output/YYYYMMDD/` directory:
+The script generates the following reports in the `output/YYYYMMDD/` directory (`{hostname}` is the short host name):
 
-1.  **Server Report**: A single report containing the operating system configuration information.
+1.  **Server Report**: A single report containing the operating system configuration information (OS, disks, memory, swap activity, Oracle homes and patches, network, kernel parameters).
     - Filename: `Rapport_{hostname}_{timestamp}.html`
 
-2.  **Database Reports**: A detailed report for each detected Oracle database instance.
+2.  **Database Reports**: A detailed report for each selected Oracle database instance.
     - Filename: `Rapport_{hostname}_{SID}_{timestamp}.html`
 
-A summary script (`summary.sh`) is also executed to aggregate certain data from the different databases.
+3.  **Summary Reports**: One page per topic (datafiles, tablespaces, alert log errors, RMAN backups) gathering all the selected databases, produced by `summary.sh`.
+    - Filename: `Summary_{topic}_{hostname}_{timestamp}.html`
+
+4.  **RMAN Chart**: Backup size and duration over the last 90 days for each selected database, produced by `generate_rman_chart.sh`.
+    - Filename: `RMAN_Chart_{hostname}_{timestamp}.html`
+
+The reports are self-contained HTML files: no external font, script or library is loaded, so they can be opened offline and sent as single files.
 
 ## Project Structure
 
@@ -54,6 +79,8 @@ A summary script (`summary.sh`) is also executed to aggregate certain data from 
 - `asm/`: SQL scripts specific to ASM instances.
 - `summary/`: SQL scripts used by the summary script.
 - `summary.sh`: Report aggregation script.
+- `rman_chart/`: HTML template and SQL script for the RMAN chart.
+- `generate_rman_chart.sh`: RMAN chart generation script.
 
 ## Customization
 
