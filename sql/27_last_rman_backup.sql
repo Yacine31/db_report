@@ -2,7 +2,11 @@ prompt <h2>Last RMAN Backups</h2>
 
 ALTER SESSION SET NLS_DATE_FORMAT='DD/MM/YYYY HH24:MI:SS';
 
+-- tri AVANT le filtre ROWNUM pour garder les 50 derniers jobs
 select /* db-html-report */
+    *
+FROM (
+SELECT
     B.SESSION_KEY                                                                      "Session Key",
     B.INPUT_TYPE                                                                       "Type",
     TO_CHAR(B.START_TIME, 'DD-MM-YYYY HH24:MI')                                        "Start Time",
@@ -23,8 +27,10 @@ FROM
     V$RMAN_BACKUP_JOB_DETAILS B
 WHERE
     B.START_TIME > ( SYSDATE - 30 )
-    AND ROWNUM <= 50
 ORDER BY
-    B.SESSION_KEY DESC;
+    B.SESSION_KEY DESC
+)
+WHERE
+    ROWNUM <= 50;
 
 --    b.start_time DESC;

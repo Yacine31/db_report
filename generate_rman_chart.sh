@@ -22,7 +22,7 @@ SQL_SCRIPT="rman_chart/generate_rman_chart.sql"
 cat rman_chart/00_chart_html_header.html > "${HTML_FILE}"
 
 # Étape 2: Découvrir et boucler sur chaque base de données active
-for sid in $(ps -eaf | grep ora_pmon | grep -v grep | grep -v -e '-MGMTDB' -e 'APX' | cut -d '_' -f3 | sort); do
+for sid in $(list_db_sids); do
     # Configuration de l'environnement Oracle pour le SID en cours
     export ORAENV_ASK=NO
     export ORACLE_SID="$sid"

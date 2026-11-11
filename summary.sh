@@ -31,7 +31,7 @@ do
     # Insert HTML header
     cat html/00_html_header.html > "${HTML_FILE}"
 
-    for sid in $(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3)
+    for sid in $(list_db_sids)
     do
             export ORAENV_ASK=NO
             export ORACLE_SID="$sid"

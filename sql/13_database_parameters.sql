@@ -1,5 +1,7 @@
 prompt <h2>Database Parameters</h2>
 
+COL display_value ENTMAP ON
+
 select /* db-html-report */
     NAME,
     DISPLAY_VALUE,

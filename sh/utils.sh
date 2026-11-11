@@ -10,6 +10,15 @@ log_info() {
   echo "[INFO] $(date +'%Y-%m-%d %H:%M:%S') - ${1}"
 }
 
+# Fonction: list_db_sids
+# Description: Liste les SID des instances de base en cours d'execution (une par ligne, triee).
+#   Seuls les processus ora_pmon_<SID> sont retenus, ce qui exclut ASM (asm_pmon_+ASM),
+#   APX (apx_pmon_+APX) et MGMTDB (mdb_pmon_-MGMTDB). Le SID est pris en entier,
+#   meme s'il contient un underscore.
+list_db_sids() {
+  ps -eo args | sed -n 's/^ora_pmon_//p' | sort -u
+}
+
 # Affiche un titre H3
 print_h3() {
   echo "<h3>$1</h3>"

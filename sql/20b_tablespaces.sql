@@ -50,7 +50,7 @@ from
   v$containers c,
   cdb_tablespaces t
 where
-  a.con_id = b.con_id
+  a.con_id = b.con_id (+)
   and a.con_id = c.con_id(+)
   and a.con_id = t.con_id
   and a.tablespace_name = b.tablespace_name (+)

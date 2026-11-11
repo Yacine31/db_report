@@ -5,6 +5,9 @@
 # Stops the script on error (errors, undefined variables, failed pipes)
 set -euo pipefail
 
+# Se place dans le repertoire du script : tous les chemins (sh/, sql/, html/) sont relatifs
+cd "$(dirname "$0")"
+
 source sh/utils.sh
 
 # --- Initial Configuration ---
@@ -113,7 +116,7 @@ log_info "Report generated: "${html_report_file}""
 # Detects running Oracle databases
 # Excludes ASM and APX instances to focus on user databases
 #-----------------------------------------------------------------------------
-database_sids="$(ps -eaf | grep pmon | egrep -v 'grep|ASM|APX1' | cut -d '_' -f3 || true)"
+database_sids="$(list_db_sids)"
 
 if [ -z "${database_sids}" ]; then
   echo "[WARN] No Oracle databases detected. Script terminated."

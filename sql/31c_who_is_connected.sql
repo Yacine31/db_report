@@ -1,7 +1,7 @@
 prompt <h2>Who is Connected?</h2>
 
-col PROGRAM for a35
-col MACHINE for a20
+col PROGRAM for a35 entmap on
+col MACHINE for a20 entmap on
 col OSUSER for a10
 
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS';
