@@ -44,17 +44,17 @@ CURRENT_DATE=$(date +%Y_%m)   # date au format 2025_04
 print_h2 "Datapump Export Log Verification"
 
 #  vérifier si une erreur ORA- est présente dans les fichiers logs
-print_h3 "Checking for errors in the logs:"
+print_h3 "Checking for errors in the logs of the month ${CURRENT_DATE}:"
 
 if [ -z "${EXPDP_DIR:-}" ]; then
     echo "<pre>The EXPDP_DIR variable is not defined. Unable to verify Datapump logs.</pre>"
 elif [ ! -d "${EXPDP_DIR}" ]; then
     echo "<pre>The directory EXPDP_DIR ('${EXPDP_DIR}') does not exist or is not accessible.</pre>"
 else
-    # La recherche porte sur tous les logs export_*.log présents, pas seulement ceux du mois
-    RESULT=$(find "${EXPDP_DIR}" -iname "export_*.log" -exec grep -H "ORA-" "{}" \; | sort)
+    # La recherche porte sur les logs du mois, comme les extraits affichés plus bas
+    RESULT=$(find "${EXPDP_DIR}" -iname "export_*${CURRENT_DATE}*.log" -exec grep -H "ORA-" "{}" \; | sort)
     if [ -z "$RESULT" ]; then
-        echo "<pre>No ORA- errors detected in the export log files.</pre>"
+        echo "<pre>No ORA- errors detected in the export log files of the month ${CURRENT_DATE}.</pre>"
     else
         echo "<pre>"
         echo "$RESULT" | html_escape
