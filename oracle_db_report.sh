@@ -17,7 +17,8 @@ export LANG=en_US
 # Generates a timestamp for file naming
 timestamp="$(date +%Y%m%d%H%M)"
 # Retrieves the server's hostname
-hostname="$(hostname)"
+# Nom court : evite un point dans les noms de fichiers (ex. srv.lan)
+hostname="$(hostname -s)"
 
 # Loads configuration from .env if the file exists
 if [ -f .env ]; then

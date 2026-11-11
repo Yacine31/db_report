@@ -29,9 +29,12 @@ if [ -r "${ORA_INVENTORY}/ContentsXML/inventory.xml" ]; then
     [[ "$line" =~ ^# ]] || [ -z "$line" ] && continue
 
     oh=$(echo "$line" | cut -d: -f2 | sort -u)
-    if [ -d "$oh" ]; then
+    if [ -x "$oh/OPatch/opatch" ]; then
       export ORACLE_HOME=$oh
       run_and_print "\"$oh/OPatch/opatch\" lspatches"
+    elif [ -d "$oh" ]; then
+      # Home present dans l'inventaire mais sans OPatch (ex. homes OMS clones)
+      echo "<pre>${oh} : OPatch absent, patch level non disponible.</pre>"
     fi
   done < <(grep -oP 'LOC="\K[^"]+' ${ORA_INVENTORY}/ContentsXML/inventory.xml)
 else
