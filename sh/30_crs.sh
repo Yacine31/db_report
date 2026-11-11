@@ -28,6 +28,6 @@ if [ "$count" -gt 0 ]; then
 	if [ -n "$BIN_DIR" ] && [ -x "$BIN_DIR/crsctl" ]; then
 		run_and_print "${BIN_DIR}/crsctl status res -t"
 	else
-		echo "<pre>Impossible de trouver le répertoire d'installation CRS ou crsctl n'est pas exécutable.</pre>"
+		echo "<pre>CRS installation directory not found, or crsctl is not executable.</pre>"
 	fi
 fi

@@ -15,10 +15,10 @@ if [ -r /etc/oraInst.loc ]; then
   if [ -n "${ORA_INVENTORY}" ] && [ -r "${ORA_INVENTORY}/ContentsXML/inventory.xml" ]; then
     run_and_print "grep '<HOME NAME=' ${ORA_INVENTORY}/ContentsXML/inventory.xml | awk '{print \$2 \" \" \$3}'"
   else
-    echo "<pre>Impossible de lire le fichier inventory.xml ou chemin non trouvé.</pre>"
+    echo "<pre>Unable to read inventory.xml, or path not found.</pre>"
   fi
 else
-  echo "<pre>Fichier /etc/oraInst.loc non trouvé.</pre>"
+  echo "<pre>File /etc/oraInst.loc not found.</pre>"
 fi
 
 print_h2 "ORACLE_HOME Patch Level (opatch lspatches)"
@@ -38,6 +38,6 @@ if [ -r "${ORA_INVENTORY}/ContentsXML/inventory.xml" ]; then
     fi
   done < <(grep -oP 'LOC="\K[^"]+' ${ORA_INVENTORY}/ContentsXML/inventory.xml)
 else
-    echo "<pre>Fichier ${ORA_INVENTORY}/ContentsXML/inventory.xml non trouvé.</pre>"
+    echo "<pre>File ${ORA_INVENTORY}/ContentsXML/inventory.xml not found.</pre>"
 fi
 

@@ -111,14 +111,14 @@ case "$os_type" in
         if sudo -n dmesg &>/dev/null 2>&1; then
             run_and_print "sudo dmesg -T | tail -n 30"
         else
-            echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter dmesg.</pre>"
+            echo "<pre>The user has no sudo rights to run dmesg.</pre>"
         fi
 
         print_h2 "Last 30 Errors in /var/log/messages"
         if sudo -n cat /var/log/messages &>/dev/null 2>&1; then
             run_and_print "sudo cat /var/log/messages | egrep -i 'error|failed' | tail -30"
         else
-            echo "<pre>L'utilisateur n'a pas les droits sudo pour lire les fichiers log.</pre>"
+            echo "<pre>The user has no sudo rights to read the log files.</pre>"
         fi
         ;;
 esac

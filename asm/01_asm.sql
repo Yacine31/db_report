@@ -1,4 +1,4 @@
-PRO <h2>ASM Configuratiom</h2>
+PRO <h2>ASM Configuration</h2>
 
 SELECT /* db-html-report */
     DG.NAME,

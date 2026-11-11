@@ -15,6 +15,6 @@ if [ "$os_type" = "Linux" ] && command -v pvs &>/dev/null; then
         run_and_print "sudo lvs"
     else
         print_h2 "LVM Information"
-        echo "<pre>L'utilisateur n'a pas les droits sudo pour exécuter pvs/vgs/lvs.</pre>"
+        echo "<pre>The user has no sudo rights to run pvs/vgs/lvs.</pre>"
     fi
 fi
