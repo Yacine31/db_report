@@ -13,7 +13,7 @@ Generates detailed HTML reports on the configuration of a server and its Oracle 
 ## Prerequisites
 
 - Linux/Unix system with Bash.
-- Oracle Database installed and configured (with `sqlplus` and `oraenv`).
+- Oracle Database 12c or later, installed and configured (with `sqlplus` and `oraenv`).
 - Permissions to execute SQL queries as `sysdba`.
 
 ## Installation
@@ -62,13 +62,21 @@ The script generates the following reports in the `output/YYYYMMDD/` directory (
 2.  **Database Reports**: A detailed report for each selected Oracle database instance.
     - Filename: `Rapport_{hostname}_{SID}_{timestamp}.html`
 
-3.  **Summary Reports**: One page per topic (datafiles, tablespaces, alert log errors, RMAN backups) gathering all the selected databases, produced by `summary.sh`.
+3.  **Summary Reports**: One page per topic (health summary, datafiles, tablespaces, alert log errors, RMAN backups) gathering all the selected databases, produced by `summary.sh`.
     - Filename: `Summary_{topic}_{hostname}_{timestamp}.html`
 
 4.  **RMAN Chart**: Backup size and duration over the last 90 days for each selected database, produced by `generate_rman_chart.sh`.
     - Filename: `RMAN_Chart_{hostname}_{timestamp}.html`
 
 The reports are self-contained HTML files: no external font, script or library is loaded, so they can be opened offline and sent as single files.
+
+## Health Summary
+
+Each report starts with a health summary: one line per check, with its value, its threshold and a status (`OK`, `WARNING`, `CRITICAL` or `INFO`). The detail of each check is in the matching section further down.
+
+- Server checks and their thresholds: top of `sh/05_health_summary.sh`.
+- Database checks and their thresholds: top of `sql/00_health_summary.sql`.
+- `Summary_health_{hostname}_{timestamp}.html` gathers the database summaries of all the selected databases on one page.
 
 ## Project Structure
 

@@ -13,7 +13,7 @@ Génère des rapports HTML détaillés sur la configuration d'un serveur et de s
 ## Prérequis
 
 - Système Linux/Unix avec Bash.
-- Oracle Database installé et configuré (avec `sqlplus` et `oraenv`).
+- Oracle Database 12c ou supérieur, installé et configuré (avec `sqlplus` et `oraenv`).
 - Permissions pour exécuter des requêtes SQL en tant que `sysdba`.
 
 ## Installation
@@ -62,13 +62,21 @@ Le script génère les rapports suivants dans le répertoire `output/YYYYMMDD/` 
 2.  **Rapports Base de Données** : Un rapport détaillé pour chaque instance de base de données Oracle sélectionnée.
     - Nom du fichier : `Rapport_{hostname}_{SID}_{timestamp}.html`
 
-3.  **Rapports de synthèse** : Une page par thème (datafiles, tablespaces, erreurs de l'alert log, sauvegardes RMAN) regroupant toutes les bases sélectionnées, produite par `summary.sh`.
+3.  **Rapports de synthèse** : Une page par thème (synthèse de santé, datafiles, tablespaces, erreurs de l'alert log, sauvegardes RMAN) regroupant toutes les bases sélectionnées, produite par `summary.sh`.
     - Nom du fichier : `Summary_{thème}_{hostname}_{timestamp}.html`
 
 4.  **Graphique RMAN** : Taille et durée des sauvegardes sur les 90 derniers jours pour chaque base sélectionnée, produit par `generate_rman_chart.sh`.
     - Nom du fichier : `RMAN_Chart_{hostname}_{timestamp}.html`
 
 Les rapports sont des fichiers HTML autonomes : aucune police, aucun script ni aucune bibliothèque externe n'est chargé. Ils s'ouvrent hors ligne et peuvent être envoyés tels quels.
+
+## Synthèse de santé
+
+Chaque rapport commence par une synthèse : une ligne par contrôle, avec sa valeur, son seuil et un statut (`OK`, `WARNING`, `CRITICAL` ou `INFO`). Le détail de chaque contrôle se trouve dans la section correspondante, plus bas dans le rapport.
+
+- Contrôles serveur et leurs seuils : en tête de `sh/05_health_summary.sh`.
+- Contrôles base et leurs seuils : en tête de `sql/00_health_summary.sql`.
+- `Summary_health_{hostname}_{timestamp}.html` regroupe sur une page les synthèses de toutes les bases sélectionnées.
 
 ## Structure du projet
 

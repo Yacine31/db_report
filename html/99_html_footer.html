@@ -11,6 +11,10 @@
         return !isNaN(v1) && !isNaN(v2) ? parseFloat(v1) - parseFloat(v2) : v1.localeCompare(v2);
       };
     
+      // Vrai si le texte est un nombre et rien d'autre (ex. "12", "1 234,5", ".09", "88.5%").
+      // parseFloat seul accepte aussi "0 expected" ou "2026/02/04", qui ne sont pas des nombres.
+      const isNumericText = (text) => /^-?(\d[\d\s]*([.,]\d+)?|[.,]\d+)\s*%?$/.test(text.trim());
+
       // 🎯 Configuration des règles de colorisation
       const rules = [
         {
@@ -34,6 +38,34 @@
           keywords: ["status"], // 👈 règle pour la colonne STATUS
           matchText: "COMPLETED",  // mot-clé à détecter
           style: {              // style à appliquer si trouvé
+            backgroundColor: "#d4edda", // vert
+            fontWeight: "bold"
+          }
+        },
+        {
+          keywords: ["status"],   // synthese : statut d'un controle (valeur exacte)
+          matchText: "CRITICAL",
+          exact: true,
+          style: {
+            color: "#fff",
+            backgroundColor: "#dc2626", // rouge foncé
+            fontWeight: "bold"
+          }
+        },
+        {
+          keywords: ["status"],
+          matchText: "WARNING",
+          exact: true,
+          style: {
+            backgroundColor: "#fef08a", // jaune
+            fontWeight: "bold"
+          }
+        },
+        {
+          keywords: ["status"],
+          matchText: "OK",
+          exact: true,
+          style: {
             backgroundColor: "#d4edda", // vert
             fontWeight: "bold"
           }
@@ -94,7 +126,10 @@
                 const numeric = parseFloat(rawText.replace('%', '').replace(',', '.'));
   
                 if (rule.matchText) {
-                  if (rawText.toUpperCase().includes(rule.matchText.toUpperCase())) {
+                  // exact: true -> la cellule doit valoir exactement matchText (sinon : contient)
+                  const cellText = rawText.toUpperCase();
+                  const wanted = rule.matchText.toUpperCase();
+                  if (rule.exact ? cellText === wanted : cellText.includes(wanted)) {
                     Object.entries(rule.style).forEach(([prop, val]) => {
                       cell.style[prop] = val;
                     });
@@ -111,7 +146,7 @@
                 }
   
                 // alignement à droite si numérique
-                if (!isNaN(numeric)) {
+                if (isNumericText(rawText)) {
                   cell.classList.add("numeric");
                 }
               });
@@ -124,8 +159,7 @@
       const alignNumericCells = () => {
         document.querySelectorAll('table tr:nth-child(n+2)').forEach(row => {
           Array.from(row.children).forEach(cell => {
-            const value = parseFloat(cell.textContent.replace(',', '.'));
-            if (!isNaN(value)) {
+            if (isNumericText(cell.textContent)) {
               cell.classList.add('numeric');
             }
           });
