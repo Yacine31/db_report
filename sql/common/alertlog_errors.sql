@@ -1,4 +1,4 @@
--- Dernieres erreurs ORA- de l'alert log.
+-- Dernieres erreurs ORA- de l'alert log sur 30 jours (le rapport est prevu pour une execution mensuelle).
 -- Requete commune a sql/25_last_alertlog_errors.sql (rapport de base) et summary/22_alertlog_errors.sql (page Summary) :
 -- le titre de section reste dans le script appelant.
 
@@ -16,7 +16,7 @@ FROM
         FROM
             X$DBGALERTEXT
         WHERE
-            ORIGINATING_TIMESTAMP > SYSTIMESTAMP - 30
+            ORIGINATING_TIMESTAMP > SYSTIMESTAMP - NUMTODSINTERVAL(30, 'DAY')
             AND REGEXP_LIKE(MESSAGE_TEXT, '(ORA-)')
         ORDER BY
             ORIGINATING_TIMESTAMP DESC

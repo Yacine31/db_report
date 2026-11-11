@@ -517,7 +517,7 @@ def write_summary(doc, servers, args):
     if all_ok(db_health, ["Tablespace usage"]):
         statements.append("Aucun tablespace n'est proche de la saturation.")
     if all_ok(db_health, ["Alert log ORA- errors"]):
-        statements.append("Les fichiers alertlog ne remontent aucune erreur ORA- sur les 7 derniers jours.")
+        statements.append("Les fichiers alertlog ne remontent aucune erreur ORA- sur les 30 derniers jours.")
     exports = [server.expdp for server in servers if server.expdp]
     if exports and all(text.startswith("No ORA- errors") for text in exports):
         statements.append("Les exports Datapump ne présentent aucune erreur.")
@@ -708,8 +708,8 @@ def write_alert_log(doc, servers, args):
                 details.append((server, database, header, lines))
 
     if rows:
-        doc.text("Nombre d'erreurs ORA- dans les fichiers alertlog sur les 7 derniers jours :")
-        doc.table(["Server", "Database", "Alert log ORA- errors (last 7 days)", "Status"], rows, status_column=3)
+        doc.text("Nombre d'erreurs ORA- dans les fichiers alertlog sur les 30 derniers jours :")
+        doc.table(["Server", "Database", "Alert log ORA- errors (last 30 days)", "Status"], rows, status_column=3)
     if not details:
         doc.text("Aucune erreur n'est listée dans les rapports.")
     for server, database, header, lines in details:

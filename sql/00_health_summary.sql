@@ -19,8 +19,9 @@ DEFINE fra_crit_pct     = 90
 -- Age du dernier backup reussi de la base (full ou incremental), en jours
 DEFINE backup_warn_days = 2
 DEFINE backup_crit_days = 7
--- Fenetre d'analyse (alert log, jobs RMAN et scheduler en echec), en jours
-DEFINE recent_days      = 7
+-- Fenetre d'analyse (alert log, jobs RMAN et scheduler en echec), en jours : 30, le rapport
+-- etant prevu pour une execution mensuelle
+DEFINE recent_days      = 30
 -- Age du dernier patch SQL applique (datapatch), en jours
 DEFINE patch_warn_days  = 200
 DEFINE patch_crit_days  = 400
