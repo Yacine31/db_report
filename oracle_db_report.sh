@@ -135,6 +135,10 @@ execute_scripts() {
   echo "<h1>"${section_title}"</h1>" >> "${html_report_file}"
   # Boucle sur chaque script correspondant au pattern
   for script_file in ${script_pattern}; do
+    # sh/utils.sh est une bibliothèque de fonctions, pas un script de collecte
+    if [ "$(basename "${script_file}")" = "utils.sh" ]; then
+      continue
+    fi
     log_info "Executing script: ${script_file}"
     case "${script_type}" in
       sh)

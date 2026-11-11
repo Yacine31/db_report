@@ -99,11 +99,15 @@ html_escape() {
 }
 
 # Exécute une commande et affiche sa sortie dans une balise <pre>
-# Si la commande échoue, elle affiche un message d'erreur mis en évidence.
+# - code retour 0 : la sortie est affichée telle quelle ;
+# - échec sans aucune sortie (ex. un grep qui ne trouve rien) : ce n'est pas une
+#   erreur, on affiche simplement "No result." ;
+# - échec avec une sortie : le message est mis en évidence, avec le code retour.
 run_and_print() {
   local cmd="$1"
   local cmd_html
   local output
+  local rc=0
 
   cmd_html=$(echo "${cmd}" | html_escape)
 
@@ -111,11 +115,15 @@ run_and_print() {
   echo "<b style=\"color:red;\">${cmd_html}</b>"
   echo ""
 
-  if output=$(eval "${cmd}" 2>&1); then
+  output=$(eval "${cmd}" 2>&1) || rc=$?
+
+  if [ "${rc}" -eq 0 ]; then
     echo "$output" | html_escape
+  elif [ -z "${output}" ]; then
+    echo "No result."
   else
     echo "<div class=\"error-block\">"
-    echo "ERREUR: La commande a échoué avec le message suivant :"
+    echo "ERROR: the command failed (exit code ${rc}):"
     echo "$output" | html_escape
     echo "</div>"
   fi

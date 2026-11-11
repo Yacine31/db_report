@@ -4,6 +4,37 @@
 # Importe les fonctions utilitaires
 source "$(dirname "$0")/../utils.sh"
 
+# --- Fonctions ---
+
+# Affiche le début et la fin d'un fichier log.
+# Le titre de la base n'est affiché que lorsqu'elle change : la base est le premier
+# sous-répertoire de EXPDP_DIR (ex. /u04/expdp/<BASE>/export_...log), quelle que soit
+# la profondeur de EXPDP_DIR.
+previous_db=""
+show_log_excerpt() {
+  local file="$1"
+  local relative_path db_name
+
+  relative_path="${file#"${EXPDP_DIR%/}"/}"
+  case "${relative_path}" in
+    */*) db_name="${relative_path%%/*}" ;;
+    *)   db_name="$(basename "${EXPDP_DIR}")" ;;   # log directement dans EXPDP_DIR
+  esac
+
+  if [ "${db_name}" != "${previous_db}" ]; then
+    echo "<br>"
+    print_h2 "$(echo "${db_name}" | html_escape)"
+    previous_db="${db_name}"
+  fi
+
+  print_h3 "$(echo "${file}" | html_escape)"
+  echo "<pre>"
+  head -10 "$file" | html_escape        # les 10 premières lignes
+  echo "</pre><pre>"
+  tail -10 "$file" | html_escape        # les 10 dernières lignes
+  echo "</pre>"
+}
+
 # --- Script principal ---
 
 # EXPDP_DIR="/u04/backup" : la variable d'environnement est chargée depuis le fichier .env
@@ -12,37 +43,36 @@ CURRENT_DATE=$(date +%Y_%m)   # date au format 2025_04
 
 print_h2 "Datapump Export Log Verification"
 
-#  vérifier si une erreur ORA- est pésente dans les fichiers logs 
+#  vérifier si une erreur ORA- est présente dans les fichiers logs
 print_h3 "Checking for errors in the logs:"
 
-if [ -z "${EXPDP_DIR}" ]; then
+if [ -z "${EXPDP_DIR:-}" ]; then
     echo "<pre>The EXPDP_DIR variable is not defined. Unable to verify Datapump logs.</pre>"
 elif [ ! -d "${EXPDP_DIR}" ]; then
     echo "<pre>The directory EXPDP_DIR ('${EXPDP_DIR}') does not exist or is not accessible.</pre>"
 else
-    RESULT=$(find "${EXPDP_DIR}" -iname "export_*.log" -exec grep -H "ORA-" "{}" \;)
+    # La recherche porte sur tous les logs export_*.log présents, pas seulement ceux du mois
+    RESULT=$(find "${EXPDP_DIR}" -iname "export_*.log" -exec grep -H "ORA-" "{}" \; | sort)
     if [ -z "$RESULT" ]; then
-        echo "<pre>No ORA- errors detected in the log files for the month ${CURRENT_DATE}.</pre>"
+        echo "<pre>No ORA- errors detected in the export log files.</pre>"
     else
-        echo "<pre>$RESULT</pre>"
+        echo "<pre>"
+        echo "$RESULT" | html_escape
+        echo "</pre>"
     fi
 
-    # afficher les dernières lignes des fichiers log pour voir les les exports se sont bien déroulés
-    print_h1 "Displaying the first 10 and last 10 lines of the log files"
-    # préparation de la commande find : définition de la fonction d'affichage plus lisible
-    show_log_excerpt() {
-      local file="$1"
-      echo "<br><h2>$(echo "${file}" | cut -d/ -f4)</h2>"    # affiche le nom de la base
-      echo "<br><h3>${file}</h2>"           # affiche le nom du fichier en gras
-      echo "<pre>"
-      head -10 "$file"                      # affiche les 10 première lignes dans le bloc PRE
-      echo "</pre><pre>" 
-      tail -10 "$file"                      # affiche les 10 dernières lignes dans le bloc PRE
-      echo "</pre>"
-    }
-    # export pour rendre la fonction accessible à bash -c
-    export -f show_log_excerpt
+    # afficher le début et la fin des logs du mois pour voir si les exports se sont bien déroulés
+    print_h1 "First 10 and last 10 lines of the log files for the month ${CURRENT_DATE}"
 
-    # find appelle la fonction en lui passant $0 comme paramètre
-    find "${EXPDP_DIR}" -iname "export_*${CURRENT_DATE}*.log" -exec bash -c 'show_log_excerpt "$0"' {} \;
+    # Tri par chemin : les logs d'une même base se suivent
+    log_count=0
+    while IFS= read -r log_file; do
+        [ -n "${log_file}" ] || continue
+        show_log_excerpt "${log_file}"
+        log_count=$((log_count + 1))
+    done < <(find "${EXPDP_DIR}" -iname "export_*${CURRENT_DATE}*.log" | sort)
+
+    if [ "${log_count}" -eq 0 ]; then
+        echo "<pre>No export log file found for the month ${CURRENT_DATE}.</pre>"
+    fi
 fi

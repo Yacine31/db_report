@@ -11,7 +11,7 @@
  
 <style type="text/css">
 /* Polices systeme uniquement : aucune dependance externe, le rapport s'affiche hors ligne */
-body             { font:12pt; font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; background-color: #f9f9f9; padding: 20px; color: #333; }
+body             { font:12pt; font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; background-color: #f9f9f9; padding: 20px 20px 20px 80px; color: #333; }
 h1               { font-size:18pt; font-weight:bold; color:#A93226; border-bottom:1px solid #A93226; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px; font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; }
 h2               { font-size:14pt; font-weight:bold; color:#333; margin-top:10pt; margin-bottom:0pt; border-left: 4px solid #A93226; padding-left: 10px; font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; }
 h3               { font-size:14pt; font-weight:normal; color:#A93226; margin-top:4pt; margin-bottom:0pt; font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; }
@@ -110,10 +110,9 @@ a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226
         max-height: none;
         margin-bottom: 20px;
     }
-    body {
-        padding-left: 20px; /* Reset padding for left-aligned menu */
-    }
 }
+/* La marge gauche du body (80px) reserve une gouttiere au bouton du menu :
+   il ne recouvre ni les titres ni la premiere colonne des tableaux. */
 #menu-toggle-bubble {
     position: fixed;
     top: 20px;
@@ -133,6 +132,11 @@ a[href="#top"] { position: fixed; bottom: 20px; right: 20px; background: #A93226
 }
 #menu-toggle-bubble.hidden {
     display: none; /* Hidden when menu is open */
+}
+/* Impression : pas d'elements flottants, pas de gouttiere */
+@media print {
+    #menu-toggle-bubble, #floating-index, a[href="#top"] { display: none !important; }
+    body { padding: 0; background-color: #fff; }
 }
 </style>
 <script type="text/javascript">

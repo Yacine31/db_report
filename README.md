@@ -22,7 +22,7 @@ Generates detailed HTML reports on the configuration of a server and its Oracle 
 git clone https://github.com/Yacine31/db_report
 cd db_report
 # Copy the example configuration file (optional)
-cp .env.local .env
+cp .env.example .env
 # Edit .env if necessary (e.g., to customize OUTPUT_DIR)
 ```
 

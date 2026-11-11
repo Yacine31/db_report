@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Shell scripts and the environment file are read by bash on the servers:
+# always LF, even when checked out on Windows (a CRLF breaks the shebang
+# and leaves a carriage return at the end of the variables).
+*.sh         text eol=lf
+.env.example text eol=lf

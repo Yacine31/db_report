@@ -22,7 +22,7 @@ Génère des rapports HTML détaillés sur la configuration d'un serveur et de s
 git clone https://github.com/Yacine31/db_report
 cd db_report
 # Copier le fichier d'exemple de configuration (optionnel)
-cp .env.local .env
+cp .env.example .env
 # Éditer .env si nécessaire (e.g., pour personnaliser OUTPUT_DIR)
 ```
 
