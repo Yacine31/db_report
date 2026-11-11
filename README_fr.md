@@ -78,6 +78,30 @@ Chaque rapport commence par une synthèse : une ligne par contrôle, avec sa val
 - Contrôles base et leurs seuils : en tête de `sql/00_health_summary.sql`.
 - `Summary_health_{hostname}_{timestamp}.html` regroupe sur une page les synthèses de toutes les bases sélectionnées.
 
+## Rapport Word
+
+`docx_report/db_report_docx.py` génère un rapport Word pré-rempli à partir des rapports HTML. Il s'exécute sur votre poste, pas sur les serveurs, et ne demande que Python 3 (bibliothèque standard).
+
+1. Créer une fois un modèle à partir d'un rapport Word existant. Le corps est coupé à partir du titre indiqué et remplacé par le marqueur `{{CONTENU}}` ; le mois et la date deviennent `{{MOIS}}` et `{{DATE}}` :
+
+```bash
+python3 docx_report/db_report_docx.py template rapport_2026-06.docx docx_report/templates/mensuel.docx \
+    --content-from "Périmètre" --month "Juin 2026" --date "16/06/2026"
+```
+
+2. Copier le répertoire `output/YYYYMMDD` de chaque serveur sur votre poste, puis générer le rapport (un seul document pour plusieurs serveurs) :
+
+```bash
+python3 docx_report/db_report_docx.py build -t docx_report/templates/mensuel.docx -o rapport.docx \
+    rapports/serveur1 rapports/serveur2
+```
+
+Le document est rédigé en français ; les tableaux gardent les libellés anglais des rapports HTML. Il contient le périmètre (serveurs et bases), la liste des contrôles `WARNING` et `CRITICAL`, la synthèse de santé de chaque serveur et de chaque base, les dernières sauvegardes RMAN, les tablespaces au-dessus d'un seuil, le contrôle des exports Data Pump et les dernières erreurs de l'alert log. Les paragraphes « À compléter » sont réservés à votre analyse.
+
+Options de `build` : `--month`, `--date`, `--tbs-min-pct` (70 par défaut), `--health issues|full` (`issues` par défaut : uniquement les contrôles qui ne sont pas OK), `--alert-rows` (10 par défaut).
+
+Les noms des styles utilisés dans le modèle sont listés dans le dictionnaire `STYLES` en tête du script. Les modèles et les documents générés sont ignorés par git (`docx_report/templates/`, `*.docx`) : ils contiennent des données client.
+
 ## Structure du projet
 
 - `oracle_db_report.sh` : Script principal qui orchestre la génération du rapport serveur et des rapports de base de données.
@@ -89,6 +113,7 @@ Chaque rapport commence par une synthèse : une ligne par contrôle, avec sa val
 - `summary.sh` : Script d'agrégation des rapports.
 - `rman_chart/` : Template HTML et script SQL du graphique RMAN.
 - `generate_rman_chart.sh` : Script de génération du graphique RMAN.
+- `docx_report/` : générateur du rapport Word, à lancer sur le poste de travail (les modèles ne sont pas versionnés).
 
 ## Personnalisation
 

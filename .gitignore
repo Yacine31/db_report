@@ -6,3 +6,8 @@ docs/
 history.log
 .claude/settings.local.json
 ai_analysis/
+
+# Modeles et rapports Word : propres a chaque client, jamais dans le depot
+docx_report/templates/
+*.docx
+__pycache__/
