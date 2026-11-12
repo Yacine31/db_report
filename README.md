@@ -82,30 +82,6 @@ Each report starts with a health summary: one line per check, with its value, it
 
 On a database that is only mounted (for example a physical standby managed by Dbvisit or Data Guard), the dictionary views (`DBA_*`, `CDB_*`) cannot be read. SQL scripts that need an open database start with the line `-- db-report: requires-open`: they are skipped on a mounted database, and the report says so at the top of the database section. Add this line to any new script that reads the dictionary.
 
-## Word Report
-
-`docx_report/db_report_docx.py` builds a pre-filled Word report from the HTML reports. It runs on your workstation, not on the servers, and only needs Python 3 (standard library).
-
-1. Create a template once from an existing Word report. The body is cut from the given heading and replaced by the `{{CONTENU}}` marker; the month and the date become `{{MOIS}}` and `{{DATE}}`:
-
-```bash
-python3 docx_report/db_report_docx.py template report_2026-06.docx docx_report/templates/monthly.docx \
-    --content-from "Périmètre" --month "Juin 2026" --date "16/06/2026"
-```
-
-2. Copy the `output/YYYYMMDD` directory of each server to your workstation, then build the report (one document for several servers):
-
-```bash
-python3 docx_report/db_report_docx.py build -t docx_report/templates/monthly.docx -o report.docx \
-    reports/server1 reports/server2
-```
-
-The document is written in French; the tables keep the English labels of the HTML reports. It contains the scope (servers and databases), the list of `WARNING` and `CRITICAL` checks, the health summary of each server and database, the last RMAN backups, the tablespaces above a threshold, the Data Pump export check and the last alert log errors. Paragraphs marked "À compléter" are left for your own analysis.
-
-Options of `build`: `--month`, `--date`, `--tbs-min-pct` (default 70), `--health issues|full` (default `issues`: only the checks that are not OK), `--alert-rows` (default 10).
-
-The style names used in the template are listed in the `STYLES` dictionary at the top of the script. Templates and generated documents are ignored by git (`docx_report/templates/`, `*.docx`): they hold customer data.
-
 ## Project Structure
 
 - `oracle_db_report.sh`: Main script that orchestrates the generation of the server report and database reports.
@@ -118,7 +94,6 @@ The style names used in the template are listed in the `STYLES` dictionary at th
 - `summary.sh`: Report aggregation script.
 - `rman_chart/`: HTML template and SQL script for the RMAN chart.
 - `generate_rman_chart.sh`: RMAN chart generation script.
-- `docx_report/`: Word report generator, run on the workstation (templates are not versioned).
 
 ## Customization
 
