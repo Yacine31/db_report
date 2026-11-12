@@ -8,6 +8,7 @@ col segtype   format a10
 
 -- Un tablespace temporaire utilise toujours la taille de bloc standard de la base (db_block_size)
 select /* db-html-report */
+    c.name as "DB/PDB Name",
     u.username,
     u.session_num,
     u.sql_id,
@@ -15,5 +16,7 @@ select /* db-html-report */
     u.segtype,
     round(u.blocks * p.block_size / 1024 / 1024, 1) as size_mb
 from v$tempseg_usage u
+-- CDB : sessions de tous les conteneurs, d'ou le nom de la PDB
+left join v$containers c on c.con_id = u.con_id
 cross join (select to_number(value) block_size from v$parameter where name = 'db_block_size') p
 order by u.blocks desc;
