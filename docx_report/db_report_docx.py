@@ -858,7 +858,23 @@ def page_text_width(document_xml):
 # Commande build
 # ------------------------------------------------------------------------------
 
+def resolve_template(name):
+    """Chemin du modèle : le fichier tel quel s'il existe, sinon un modèle du dossier
+    templates/ voisin du script (lien symbolique résolu), avec .docx ajouté si besoin."""
+    if os.path.isfile(name):
+        return name
+    templates_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
+    for candidate in (name, name + ".docx"):
+        path = os.path.join(templates_dir, candidate)
+        if os.path.isfile(path):
+            return path
+    available = sorted(f for f in os.listdir(templates_dir) if f.endswith(".docx")) if os.path.isdir(templates_dir) else []
+    fail("Template %s not found, neither as a file nor in %s. Available templates: %s"
+         % (name, templates_dir, ", ".join(available) or "none"))
+
+
 def command_build(args):
+    args.template = resolve_template(args.template)
     servers = load_servers(args.directories)
     if not servers:
         fail("No db_report HTML report found in: %s" % ", ".join(args.directories))
@@ -1031,7 +1047,9 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
 
     build = commands.add_parser("build", help="fill a template with the HTML reports")
-    build.add_argument("-t", "--template", required=True, help="Word template containing the %s marker" % MARKER_CONTENT)
+    build.add_argument("-t", "--template", required=True,
+                       help="Word template containing the %s marker: a file path, or the name of a template "
+                            "in the templates/ directory next to this script (.docx optional)" % MARKER_CONTENT)
     build.add_argument("-o", "--output", required=True, help="Word document to write")
     build.add_argument("--month", help="month shown on the cover, e.g. 'Novembre 2026' (default: month of the reports)")
     build.add_argument("--date", help="document date, e.g. 11/11/2026 (default: today)")
