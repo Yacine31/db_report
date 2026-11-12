@@ -20,7 +20,8 @@ if [ -z "${listeners}" ]; then
 else
   while read -r binary_path listener_name; do
     listener_home="${binary_path%/bin/tnslsnr}"
-    print_h2 "Listener Status: ${listener_name}"
+    # le home dans le titre distingue deux listeners de meme nom (ex. grid et base)
+    print_h2 "Listener Status: ${listener_name} (${listener_home})"
     # lsnrctl a besoin de l'ORACLE_HOME du listener, qui n'est pas forcément celui du shell courant
     run_and_print "ORACLE_HOME='${listener_home}' TNS_ADMIN='${listener_home}/network/admin' '${listener_home}/bin/lsnrctl' status '${listener_name}'"
   done <<< "${listeners}"
