@@ -167,10 +167,16 @@ from (
     having count(*) > 0
     union all
     -- Data Guard, sur la standby : retard de reception (transport) et d'application (apply).
-    -- Une valeur vide (lag inconnu, par exemple primaire injoignable) donne un WARNING.
+    -- V$DATAGUARD_STATS n'est recalcule qu'a la reception de redo : si la primaire ne
+    -- transmet plus, VALUE reste figee (souvent a 0) et seule DATUM_TIME (derniere donnee
+    -- recue, la primaire en envoie au moins toutes les quelques secondes) vieillit. Le lag
+    -- retenu est donc le plus grand des deux. Une valeur vide (lag inconnu) donne un WARNING.
     select 185, 'Data Guard transport / apply lag',
            nvl(max(case when name = 'transport lag' then value end), 'unknown') || ' / '
-               || nvl(max(case when name = 'apply lag' then value end), 'unknown'),
+               || nvl(max(case when name = 'apply lag' then value end), 'unknown')
+               || case when max(stale_min) > 1
+                       then ' (nothing received from the primary for ' || to_char(max(stale_min), 'FM99999990') || ' min)'
+                  end,
            'warn > &dg_lag_warn_min min / crit > &dg_lag_crit_min min',
            case
                when count(lag_min) < count(*) then 'WARNING'
@@ -179,15 +185,19 @@ from (
                else 'OK'
            end
     from (
-            select g.name, g.value,
-                   extract(day from to_dsinterval(g.value)) * 1440
-                       + extract(hour from to_dsinterval(g.value)) * 60
-                       + extract(minute from to_dsinterval(g.value))
-                       + extract(second from to_dsinterval(g.value)) / 60 lag_min
-            from v$dataguard_stats g
+            select name, value, stale_min, greatest(value_min, stale_min) lag_min
+            from (
+                select g.name, g.value,
+                       extract(day from to_dsinterval(g.value)) * 1440
+                           + extract(hour from to_dsinterval(g.value)) * 60
+                           + extract(minute from to_dsinterval(g.value))
+                           + extract(second from to_dsinterval(g.value)) / 60 value_min,
+                       (sysdate - to_date(g.datum_time, 'MM/DD/YYYY HH24:MI:SS')) * 1440 stale_min
+                from v$dataguard_stats g
             cross join v$database db
             where g.name in ('transport lag', 'apply lag')
-              and db.database_role <> 'PRIMARY'
+                  and db.database_role <> 'PRIMARY'
+            )
          )
     having count(*) > 0
     union all
