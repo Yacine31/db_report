@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>System Information</h2>
 WITH /* 1a.1 */
  rac AS (select /* db-html-report */ /*+  MATERIALIZE NO_MERGE  */ COUNT(*) instances, CASE COUNT(*) WHEN 1 THEN 'Single-instance' ELSE COUNT(*)||'-node RAC cluster' END db_type FROM gv$instance),

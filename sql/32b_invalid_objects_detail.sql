@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Invalid Objects Detail (first 500)</h2>
 alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 

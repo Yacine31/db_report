@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Database Links (DBA_DB_LINKS)</h2>
 alter session set nls_date_format='YYYY/MM/DD HH24:MI:SS';
 

@@ -75,8 +75,12 @@ Les rapports sont des fichiers HTML autonomes : aucune police, aucun script ni a
 Chaque rapport commence par une synthèse : une ligne par contrôle, avec sa valeur, son seuil et un statut (`OK`, `WARNING`, `CRITICAL` ou `INFO`). Le détail de chaque contrôle se trouve dans la section correspondante, plus bas dans le rapport.
 
 - Contrôles serveur et leurs seuils : en tête de `sh/05_health_summary.sh`.
-- Contrôles base et leurs seuils : en tête de `sql/00_health_summary.sql`.
+- Contrôles base : `sql/00a_health_summary.sql` (contrôles possibles sur une base montée) et `sql/00b_health_summary_open.sql` (contrôles qui demandent une base ouverte) ; leurs seuils : `sql/common/health_thresholds.sql`.
 - `Summary_health_{hostname}_{timestamp}.html` regroupe sur une page les synthèses de toutes les bases sélectionnées.
+
+## Bases montées (standby)
+
+Sur une base seulement montée (par exemple une standby physique gérée par Dbvisit ou Data Guard), les vues du dictionnaire (`DBA_*`, `CDB_*`) ne sont pas lisibles. Les scripts SQL qui demandent une base ouverte commencent par la ligne `-- db-report: requires-open` : ils sont sautés sur une base montée, et le rapport l'indique en tête de la partie base. Ajouter cette ligne à tout nouveau script qui lit le dictionnaire.
 
 ## Rapport Word
 

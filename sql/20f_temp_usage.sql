@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Temp Tablespace — Current Usage (V$TEMPSEG_USAGE)</h2>
 
 col username  format a20

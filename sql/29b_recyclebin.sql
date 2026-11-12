@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Recycle Bin Content per Schema</h2>
 -- Aucune ligne = corbeille vide.
 

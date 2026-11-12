@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Sequences Above 80% of Their Maximum Value</h2>
 -- Sequences croissantes sans CYCLE des schemas applicatifs. Aucune ligne = aucune sequence proche de sa limite.
 

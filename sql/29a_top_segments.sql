@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Top 20 Segments by Size</h2>
 
 select /* db-html-report */

@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Unusable Indexes</h2>
 -- Index, partitions et sous-partitions d'index a l'etat UNUSABLE.
 -- Aucune ligne = aucun index inutilisable.

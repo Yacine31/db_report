@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Disabled Constraints (application schemas, first 500)</h2>
 -- Schemas non maintenus par Oracle uniquement. Types : P = cle primaire, U = unique,
 -- R = cle etrangere, C = check.

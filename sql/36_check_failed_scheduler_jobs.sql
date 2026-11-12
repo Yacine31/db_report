@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Failed Scheduled Jobs</h2>
 
 select /* db-html-report */

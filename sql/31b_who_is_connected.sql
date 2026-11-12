@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Sessions by Module/Action</h2>
 
 WITH X AS (

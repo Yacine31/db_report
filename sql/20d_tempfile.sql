@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Temp Tablespace</h2>
 
 -- SELECT /*+  NO_MERGE  */ /* db-html-report */

@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Edition and Management Packs Setting</h2>
 
 select /* db-html-report */ 'EDITION (V$VERSION)' as property, banner as value

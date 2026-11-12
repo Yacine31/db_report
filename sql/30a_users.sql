@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>DBA Users</h2>
 -- CDB_USERS : couvre CDB$ROOT et les PDB ouvertes (une seule ligne de conteneur sur une non-CDB)
 

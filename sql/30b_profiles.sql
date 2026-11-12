@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>DBA Profiles</h2>
 
 select /* db-html-report */

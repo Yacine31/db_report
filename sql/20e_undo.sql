@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Undo Tablespace Details</h2>
 
 col tablespace_name head "Tablespace Name"

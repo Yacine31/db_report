@@ -1,3 +1,4 @@
+-- db-report: requires-open
 -- Qui est connecté à la base :
 prompt <h2>Sessions by User/Type</h2>
 

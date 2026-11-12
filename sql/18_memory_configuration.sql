@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Memory Configuration</h2>
 WITH
 system_parameter AS (

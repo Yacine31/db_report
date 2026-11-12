@@ -231,6 +231,13 @@ for database_sid in ${database_sids}; do
     echo "<br><br>"
    } >> "${html_report_file}"
 
+  # Base seulement montee (ex. standby) : les sections qui lisent le dictionnaire sont sautees
+  set_db_open_state
+  if [ "${DB_REPORT_DB_OPEN}" = "NO" ]; then
+    log_info "Database ${ORACLE_SID} is ${DB_REPORT_OPEN_MODE}: sections requiring an open database are skipped."
+    echo "<p><b>Database is ${DB_REPORT_OPEN_MODE}: the sections that require an open database are skipped.</b></p>" >> "${html_report_file}"
+  fi
+
   # Si la base est un CDB (Container Database), exécute les scripts pour les PDBs
   if [ "$(/bin/sh sql/cdb/is_CDB.sh | tail -1)" = "YES" ]; then
     execute_scripts "PDB Information" "sql/cdb/*.sql" "sql" "sql/sql_header.txt"

@@ -75,8 +75,12 @@ The reports are self-contained HTML files: no external font, script or library i
 Each report starts with a health summary: one line per check, with its value, its threshold and a status (`OK`, `WARNING`, `CRITICAL` or `INFO`). The detail of each check is in the matching section further down.
 
 - Server checks and their thresholds: top of `sh/05_health_summary.sh`.
-- Database checks and their thresholds: top of `sql/00_health_summary.sql`.
+- Database checks: `sql/00a_health_summary.sql` (checks possible on a mounted database) and `sql/00b_health_summary_open.sql` (checks that need an open database); their thresholds: `sql/common/health_thresholds.sql`.
 - `Summary_health_{hostname}_{timestamp}.html` gathers the database summaries of all the selected databases on one page.
+
+## Mounted Databases (Standby)
+
+On a database that is only mounted (for example a physical standby managed by Dbvisit or Data Guard), the dictionary views (`DBA_*`, `CDB_*`) cannot be read. SQL scripts that need an open database start with the line `-- db-report: requires-open`: they are skipped on a mounted database, and the report says so at the top of the database section. Add this line to any new script that reads the dictionary.
 
 ## Word Report
 

@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>User Objects</h2>
 -- Schemas applicatifs uniquement : la jointure sur CDB_USERS.ORACLE_MAINTAINED = 'N'
 -- ecarte les schemas Oracle (et PUBLIC, qui n'est pas un utilisateur).

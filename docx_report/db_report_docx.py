@@ -165,6 +165,16 @@ class Report:
         rows = section["tables"][0]
         return rows[0], rows[1:]
 
+    def rows(self, title):
+        """Lignes de tous les tableaux de la section qui ont l'en-tête du premier.
+        La synthèse de santé d'une base est en deux tableaux (contrôles sur base montée,
+        puis contrôles qui demandent une base ouverte) : ils sont lus comme un seul."""
+        section = self.section(title)
+        if section is None or not section["tables"]:
+            return []
+        header = section["tables"][0][0]
+        return [row for table in section["tables"] if table[0] == header for row in table[1:]]
+
     def pre(self, title):
         section = self.section(title)
         if section is None or not section["pres"]:
@@ -176,7 +186,7 @@ class Database:
     def __init__(self, sid, report):
         self.sid = sid
         self.report = report
-        self.health = report.table(SEC_DB_HEALTH)[1]
+        self.health = report.rows(SEC_DB_HEALTH)
 
     def check(self, prefix):
         """Ligne de la synthèse dont le nom du contrôle commence par prefix."""

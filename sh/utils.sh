@@ -16,6 +16,32 @@ log_warn() {
   echo "[WARN] $(date +'%Y-%m-%d %H:%M:%S') - ${1}"
 }
 
+# Fonction: sql_requires_open
+# Description: Vrai si le script SQL porte, en tete de ligne, le marqueur
+#   "-- db-report: requires-open" : il lit le dictionnaire (DBA_*, CDB_*...) et echoue
+#   avec ORA-01219 sur une base seulement montee (standby). Un script qui en appelle un
+#   autre (@sql/common/...) porte lui-meme le marqueur : seul le fichier execute est lu.
+# Parametres:
+#   $1 - Script SQL
+sql_requires_open() {
+  grep -q '^-- db-report: requires-open' "$1"
+}
+
+# Fonction: set_db_open_state
+# Description: Lit l'OPEN_MODE de l'instance courante (ORACLE_SID) et exporte
+#   DB_REPORT_OPEN_MODE (ex. MOUNTED, READ WRITE) et DB_REPORT_DB_OPEN (NO si la base est
+#   seulement montee, YES sinon). Si l'etat n'a pas pu etre lu, tout est execute (YES) :
+#   les erreurs eventuelles restent signalees par run_sql_script.
+set_db_open_state() {
+  DB_REPORT_OPEN_MODE="$(sql_value 'select open_mode from v$database;')"
+  if [ "${DB_REPORT_OPEN_MODE}" = "MOUNTED" ]; then
+    DB_REPORT_DB_OPEN=NO
+  else
+    DB_REPORT_DB_OPEN=YES
+  fi
+  export DB_REPORT_OPEN_MODE DB_REPORT_DB_OPEN
+}
+
 # Fonction: run_sql_script
 # Description: Execute un script SQL (precede de l'en-tete SQL*Plus) avec "/ as sysdba",
 #   ajoute sa sortie au fichier HTML et signale les erreurs ORA-/SP2-/PLS- d'execution.
@@ -31,6 +57,12 @@ run_sql_script() {
   local script_file="$2"
   local html_file="$3"
   local output errors
+
+  # Base non ouverte (montee) : les scripts marques "requires-open" sont sautes, sans erreur
+  if [ "${DB_REPORT_DB_OPEN:-YES}" = "NO" ] && sql_requires_open "${script_file}"; then
+    log_info "Skipped, database ${DB_REPORT_OPEN_MODE:-not open}: ${script_file}"
+    return 0
+  fi
 
   output="$(cat "${sql_header_file}" "${script_file}" | sqlplus -s / as sysdba 2>&1)" || true
   printf '%s\n' "${output}" >> "${html_file}"

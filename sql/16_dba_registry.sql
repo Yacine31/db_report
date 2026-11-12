@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>DB Features (DBA_REGISTRY)</h2>
 
 select /* db-html-report */

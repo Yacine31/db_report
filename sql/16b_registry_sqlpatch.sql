@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>SQL Patches Applied in the Database (DBA_REGISTRY_SQLPATCH)</h2>
 -- A comparer avec "opatch lspatches" du rapport serveur :
 -- un patch present dans le home mais absent ici = datapatch non execute.

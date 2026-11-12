@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Invalid Objects</h2>
 
 select /* db-html-report */

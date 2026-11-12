@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Dictionary and Fixed Obj Stats</h2>
 -- Une ligne par operation, meme si elle n'a jamais ete executee.
 

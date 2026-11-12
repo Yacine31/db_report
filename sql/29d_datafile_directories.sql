@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Datafile Space per Directory (current vs autoextend maximum)</h2>
 -- A comparer avec "df -h" du rapport serveur : si "Max Size MB" depasse la taille du
 -- filesystem (ou du disk group), l'autoextend ne pourra pas aller jusqu'au bout.

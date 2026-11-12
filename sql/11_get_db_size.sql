@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Database Size</h2>
 
 WITH

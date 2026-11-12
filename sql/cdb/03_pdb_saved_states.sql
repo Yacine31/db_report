@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>PDB Saved States (DBA_PDB_SAVED_STATES)</h2>
 -- Une PDB absente de cette liste ne se rouvre pas automatiquement au redemarrage de la CDB
 -- (sauf gestion par Grid Infrastructure / services).

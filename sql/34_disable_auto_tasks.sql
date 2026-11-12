@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Autotask Job Status</h2>
 
 -- DBA_AUTOTASK_OPERATION et non DBA_AUTOTASK_CLIENT : cette derniere peut prendre

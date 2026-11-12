@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>Schema Size (MB)</h2>
 
 COL "Oracle Maintained" FORMAT A17

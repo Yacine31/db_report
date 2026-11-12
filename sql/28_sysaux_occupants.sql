@@ -1,3 +1,4 @@
+-- db-report: requires-open
 prompt <h2>SYSAUX Occupants</h2>
 
 select /* db-html-report */ /*+  NO_MERGE  */
