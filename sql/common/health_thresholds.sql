@@ -23,4 +23,7 @@ DEFINE proc_warn_pct    = 80
 DEFINE proc_crit_pct    = 90
 -- Sequences : % de la valeur maximale
 DEFINE seq_warn_pct     = 80
+-- Data Guard : transport lag et apply lag de la standby, en minutes
+DEFINE dg_lag_warn_min  = 5
+DEFINE dg_lag_crit_min  = 15
 -- =====================================================================

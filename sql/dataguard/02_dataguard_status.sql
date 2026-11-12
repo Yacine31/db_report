@@ -21,3 +21,5 @@ select /* db-html-report */
     time_computed
 from v$dataguard_stats
 order by name;
+
+prompt <p><i>Lag statistics are computed on the standby database only: this section is empty on a primary.</i></p>

@@ -5,11 +5,11 @@ COL dest_name             FORMAT A20
 COL type                  FORMAT A15
 COL database_mode         FORMAT A15
 COL recovery_mode         FORMAT A30
-COL destination           FORMAT A50 WRAPPED
+COL destination           FORMAT A100
 COL db_unique_name        FORMAT A20
-COL synchronization_status FORMAT A25
+COL synchronized          FORMAT A12
 COL gap_status            FORMAT A25
-COL error                 FORMAT A40 WRAPPED
+COL error                 FORMAT A100
 
 select /* db-html-report */
     dest_id,

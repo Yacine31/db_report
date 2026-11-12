@@ -140,14 +140,69 @@ from (
     from v$restore_point
     where guarantee_flashback_database = 'YES'
     union all
+    -- Data Guard, sur la primaire : destinations vers une standby en erreur ou avec un trou
+    -- dans les archivelogs. Ligne absente s'il n'y a pas de destination standby.
+    select 180, 'Data Guard standby destinations',
+           case
+               when count(case when d.status <> 'VALID' or nvl(s.gap_status, 'NO GAP') <> 'NO GAP' then 1 end) = 0
+                   then count(*) || ' destination(s), all valid without gap'
+               else listagg(
+                        case when d.status <> 'VALID' or nvl(s.gap_status, 'NO GAP') <> 'NO GAP'
+                             then d.dest_name || ': ' || d.status || ', ' || nvl(s.gap_status, '-')
+                                  || nvl2(d.error, ', ' || d.error, '')
+                        end, '; ') within group (order by d.dest_id)
+           end,
+           'VALID and NO GAP expected',
+           case
+               when count(case when d.status in ('ERROR', 'BAD PARAM') then 1 end) > 0 then 'CRITICAL'
+               when count(case when d.status <> 'VALID' or nvl(s.gap_status, 'NO GAP') <> 'NO GAP' then 1 end) > 0 then 'WARNING'
+               else 'OK'
+           end
+    from v$archive_dest d
+    join v$archive_dest_status s on s.dest_id = d.dest_id
+    cross join v$database db
+    where d.target = 'STANDBY'
+      and d.status <> 'INACTIVE'
+      and db.database_role = 'PRIMARY'
+    having count(*) > 0
+    union all
+    -- Data Guard, sur la standby : retard de reception (transport) et d'application (apply).
+    -- Une valeur vide (lag inconnu, par exemple primaire injoignable) donne un WARNING.
+    select 185, 'Data Guard transport / apply lag',
+           nvl(max(case when name = 'transport lag' then value end), 'unknown') || ' / '
+               || nvl(max(case when name = 'apply lag' then value end), 'unknown'),
+           'warn > &dg_lag_warn_min min / crit > &dg_lag_crit_min min',
+           case
+               when count(lag_min) < count(*) then 'WARNING'
+               when max(lag_min) > &dg_lag_crit_min then 'CRITICAL'
+               when max(lag_min) > &dg_lag_warn_min then 'WARNING'
+               else 'OK'
+           end
+    from (
+            select g.name, g.value,
+                   extract(day from to_dsinterval(g.value)) * 1440
+                       + extract(hour from to_dsinterval(g.value)) * 60
+                       + extract(minute from to_dsinterval(g.value))
+                       + extract(second from to_dsinterval(g.value)) / 60 lag_min
+            from v$dataguard_stats g
+            cross join v$database db
+            where g.name in ('transport lag', 'apply lag')
+              and db.database_role <> 'PRIMARY'
+         )
+    having count(*) > 0
+    union all
+    -- Sur une standby, les PDB sont montees (ou en lecture seule avec Active Data Guard) : INFO
     select 190, 'PDBs not open in read write',
            case when max(d.cdb) = 'NO' then 'not a CDB'
-                else count(case when p.open_mode <> 'READ WRITE' then 1 end) || ' of ' || count(p.name) end,
+                else count(case when p.open_mode <> 'READ WRITE' then 1 end) || ' of ' || count(p.name)
+                     || case when max(d.database_role) <> 'PRIMARY' then ' (standby database)' end
+           end,
            '0 expected',
-           case when count(case when p.open_mode <> 'READ WRITE' then 1 end) > 0 then 'WARNING'
-                when max(d.cdb) = 'NO' then 'INFO'
+           case when max(d.cdb) = 'NO' then 'INFO'
+                when max(d.database_role) <> 'PRIMARY' then 'INFO'
+                when count(case when p.open_mode <> 'READ WRITE' then 1 end) > 0 then 'WARNING'
                 else 'OK' end
-    from (select cdb from v$database) d
+    from (select cdb, database_role from v$database) d
     left join v$pdbs p on p.name <> 'PDB$SEED'
 ) checks
 order by ord;
